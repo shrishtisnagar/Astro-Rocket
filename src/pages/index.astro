@@ -11,18 +11,15 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
 import { url } from '@/lib/url';
+import { fetchRSSPosts } from '@/lib/rss';
 
 const projectItems = await getCollection('projects');
 const featuredProjects = projectItems
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 4);
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => {
-    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
-    return b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf();
-  })
-  .slice(0, 3);
+const allRSSPosts = await fetchRSSPosts();
+const posts = allRSSPosts.slice(0, 3);
 ---
 
 <LandingLayout
@@ -50,9 +47,9 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         Get it on GitHub
         <Icon name="arrow-right" size="sm" />
       </Button>
-      <Button size="lg" variant="outline" href={url("/blog/astro-rocket-getting-started")}>
-        <Icon name="rocket" size="sm" />
-        Get started
+      <Button size="lg" variant="outline" href={url("/blog")}>
+        <Icon name="book" size="sm" />
+        Read newsletter
         <Icon name="arrow-right" size="sm" />
       </Button>
     </Fragment>
@@ -325,14 +322,12 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       <div class="grid gap-6 md:grid-cols-3">
         {posts.map((post) => (
           <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            href={url(`/blog/${post.id.replace('en/', '')}`)}
-            publishedAt={post.data.publishedAt}
-            tags={post.data.tags}
-            author={post.data.author}
-            image={post.data.image}
-            svgSlug={post.data.svgSlug}
+            title={post.title}
+            description={post.description}
+            href={post.href}
+            publishedAt={post.publishedAt}
+            tags={post.tags}
+            author={post.author}
           />
         ))}
       </div>
