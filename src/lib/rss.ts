@@ -12,8 +12,18 @@ export interface RSSPost {
   imageUrl?: string;
 }
 
+function extractFirstImage(html: string): string | undefined {
+  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return match?.[1];
+}
+
 function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  return html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function truncate(text: string, max = 200): string {
@@ -41,7 +51,11 @@ export async function fetchRSSPosts(): Promise<RSSPost[]> {
 
       const mediaContent = item['media:content'] as Record<string, string> | undefined;
       const enclosure = item.enclosure as Record<string, string> | undefined;
-      const imageUrl = mediaContent?.['@_url'] ?? enclosure?.['@_url'] ?? undefined;
+      const imageUrl =
+        mediaContent?.['@_url'] ??
+        enclosure?.['@_url'] ??
+        extractFirstImage(rawDesc) ??
+        undefined;
 
       const rawCats = item.category ?? [];
       const tags = (Array.isArray(rawCats) ? rawCats : [rawCats]).map(String).filter(Boolean);
