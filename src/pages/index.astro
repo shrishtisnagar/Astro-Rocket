@@ -10,6 +10,7 @@ import TechStack from '@/components/landing/TechStack.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
+import { url } from '@/lib/url';
 
 const projectItems = await getCollection('projects');
 const featuredProjects = projectItems
@@ -49,7 +50,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         Get it on GitHub
         <Icon name="arrow-right" size="sm" />
       </Button>
-      <Button size="lg" variant="outline" href="/blog/astro-rocket-getting-started">
+      <Button size="lg" variant="outline" href={url("/blog/astro-rocket-getting-started")}>
         <Icon name="rocket" size="sm" />
         Get started
         <Icon name="arrow-right" size="sm" />
@@ -151,7 +152,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
       <div class="grid gap-6 md:grid-cols-2">
         {featuredProjects.map((project) => (
-          <Card variant="elevated" hover padding="lg" href={`/projects/${project.id.replace(/\.mdx?$/, '')}`} class="group flex flex-col" data-reveal>
+          <Card variant="elevated" hover padding="lg" href={url(`/projects/${project.id.replace(/\.mdx?$/, '')}`)} class="group flex flex-col" data-reveal>
             <div class="flex flex-1 flex-col">
               <div class="mb-3 flex items-start justify-between gap-4">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
@@ -273,7 +274,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
           <p class="text-lg text-foreground-muted leading-relaxed mb-8">
            On the blog, I share the ideas and decisions that shape my work.
           </p>
-           <Button variant="outline" href="/about" class="self-start">
+           <Button variant="outline" href={url("/about")} class="self-start">
             More about me
           </Button>
         </div>
@@ -315,7 +316,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
             Featured
           </h2>
         </div>
-        <a href="/blog" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-brand-500 hover:text-brand-600 transition-colors shrink-0">
+        <a href={url("/blog")} class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-brand-500 hover:text-brand-600 transition-colors shrink-0">
           View all posts
           <Icon name="arrow-right" size="sm" />
         </a>
@@ -326,7 +327,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
           <BlogCard
             title={post.data.title}
             description={post.data.description}
-            href={`/blog/${post.id.replace('en/', '')}`}
+            href={url(`/blog/${post.id.replace('en/', '')}`)}
             publishedAt={post.data.publishedAt}
             tags={post.data.tags}
             author={post.data.author}
@@ -337,7 +338,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       </div>
 
       <div class="text-center sm:hidden">
-        <Button variant="outline" href="/blog">
+        <Button variant="outline" href={url("/blog")}>
           View all posts
           <Icon name="arrow-right" size="sm" />
         </Button>
@@ -357,11 +358,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         Whether it's a new build or something that needs a fresh perspective — I'd love to hear about it.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href="/contact" class="cta-btn-brand">
+        <Button size="lg" href={url("/contact")} class="cta-btn-brand">
           Start a project
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href="/about">
+        <Button size="lg" variant="outline" href={url("/about")}>
           More about me
           <Icon name="arrow-right" size="sm" />
         </Button>
@@ -377,11 +378,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         Whether it's a new build or something that needs a fresh perspective — I'd love to hear about it.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href="/contact" class="hero-btn-brand">
+        <Button size="lg" href={url("/contact")} class="hero-btn-brand">
           Start a project
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href="/about">
+        <Button size="lg" variant="outline" href={url("/about")}>
           More about me
           <Icon name="arrow-right" size="sm" />
         </Button>
