@@ -7,7 +7,6 @@ import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import BlogCard from '@/components/blog/BlogCard.astro';
 import TechStack from '@/components/landing/TechStack.astro';
-import LighthouseScores from '@/components/landing/LighthouseScores.astro';
 import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
@@ -255,9 +254,6 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     description="The tools I rely on every day to build fast, modern websites — chosen for performance, great developer experience, and reliability."
     background="primary"
   />
-
-  <!-- Lighthouse scores -->
-  <LighthouseScores />
 
   <!-- About Teaser -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
