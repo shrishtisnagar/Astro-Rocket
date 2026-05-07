@@ -8,11 +8,10 @@ import vercel from '@astrojs/vercel';
 import netlify from '@astrojs/netlify';
 
 const isNetlify = process.env.DEPLOY_TARGET === 'netlify';
-const isGitHubPages = process.env.DEPLOY_TARGET === 'github-pages';
 
 export default defineConfig({
   output: 'static',
-  adapter: isGitHubPages ? undefined : (isNetlify ? netlify() : vercel()),
+  adapter: isNetlify ? netlify() : vercel(),
   site: process.env.SITE_URL || 'https://example.com',
   base: process.env.BASE_PATH || '/',
 
