@@ -33,7 +33,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   includeProfessionalServiceSchema={true}
 >
   <!-- Hero -->
-  <Hero layout="centered" size="xl" class="hero-dark-gradient" showScrollIndicator>
+  <Hero layout="split" size="xl" class="hero-dark-gradient" showScrollIndicator>
     <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-200">Available for new projects</Badge>
 
     <h1 slot="title">
@@ -45,7 +45,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       Astro 6 starter with 12 beautiful themes, 57+ components, dark mode and a fast, modern foundation to build anything on.
     </p>
 
-   <Fragment slot="actions">
+    <Fragment slot="actions">
       <Button size="lg" href="https://github.com/hansmartens68/Astro-Rocket">
         Get it on GitHub
         <Icon name="arrow-right" size="sm" />
@@ -56,6 +56,19 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         <Icon name="arrow-right" size="sm" />
       </Button>
     </Fragment>
+
+    <div slot="aside" class="flex items-center justify-center lg:justify-end">
+      <div class="relative">
+        <div class="absolute inset-0 rounded-full bg-brand-500/20 blur-3xl" aria-hidden="true"></div>
+        <img
+          src="/images/profile-placeholder.svg"
+          alt="Profile photo"
+          width="400"
+          height="400"
+          class="relative rounded-full w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover ring-4 ring-brand-500/30"
+        />
+      </div>
+    </div>
   </Hero>
 
   <!-- Services Section -->
