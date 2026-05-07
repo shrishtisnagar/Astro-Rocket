@@ -1,7 +1,6 @@
 ---
 import '@/styles/global.css';
-import outfitFont from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2?url';
-import manropeFont from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import interFont from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import Analytics from '@/components/layout/Analytics.astro';
@@ -61,15 +60,14 @@ schemas.push(...extraSchemas);
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth dark" data-theme="blue" data-theme-mode="system">
+<html lang="en" class="scroll-smooth dark" data-theme="custom" data-theme-mode="system">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
     <!-- Preload display + body fonts so they're ready for first paint -->
-    <link rel="preload" as="font" type="font/woff2" href={manropeFont} crossorigin="anonymous" />
-    <link rel="preload" as="font" type="font/woff2" href={outfitFont} crossorigin="anonymous" />
+    <link rel="preload" as="font" type="font/woff2" href={interFont} crossorigin="anonymous" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href={siteConfig.branding.favicon.svg} />
@@ -155,7 +153,6 @@ schemas.push(...extraSchemas);
          When mode === 'system', <html>.dark tracks prefers-color-scheme live. -->
     <script is:inline>
       (function () {
-        const COLOR_THEMES = ['orange', 'amber', 'lime', 'emerald', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet', 'purple', 'magenta'];
         const VALID_MODES = ['system', 'light', 'dark'];
 
         function getMode() {
@@ -176,22 +173,7 @@ schemas.push(...extraSchemas);
           else el.classList.remove('dark');
         }
 
-        function applyColorTheme(el) {
-          try {
-            // Color palette — sessionStorage so it resets to default on each new visit
-            const saved = sessionStorage.getItem('color-theme');
-            if (saved && COLOR_THEMES.indexOf(saved) !== -1) {
-              el.setAttribute('data-theme', saved);
-            }
-          } catch { /* ignored */ }
-        }
-
-        function applyTheme(el) {
-          applyMode(el);
-          applyColorTheme(el);
-        }
-
-        applyTheme(document.documentElement);
+        applyMode(document.documentElement);
 
         if (!window.__themeListenersInit) {
           window.__themeListenersInit = true;
