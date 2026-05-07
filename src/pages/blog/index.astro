@@ -63,6 +63,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
                 publishedAt={post.publishedAt}
                 tags={post.tags}
                 author={post.author}
+                imageUrl={post.imageUrl}
               />
             </div>
           ))}
