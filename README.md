@@ -644,7 +644,7 @@ pnpm build
 
 Astro Rocket is optimized for Core Web Vitals:
 
-- **Lighthouse Score**: 95+ across all categories
+- **Lighthouse Score**: 100/100/100/100 on both mobile and desktop
 - **Zero JavaScript** by default (islands architecture)
 - **Optimized fonts** with `font-display: swap`
 - **Image optimization** via Astro's built-in processing
