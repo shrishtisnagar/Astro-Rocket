@@ -30,6 +30,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import ThemeModeDropdown from '@/components/layout/ThemeModeDropdown.astro';
 import siteConfig from '@/config/site.config';
+import { url } from '@/lib/url';
 
 export interface NavItem {
   label: string;
@@ -109,7 +110,7 @@ const navItems: NavItem[] = nav || [...extraNav, ...defaultNav];
 
 const currentPath = Astro.url.pathname;
 const isLandingPage = currentPath === '/';
-const ctaHref = cta.href?.startsWith('#') && !isLandingPage ? `/${cta.href}` : cta.href;
+const ctaHref = url(cta.href?.startsWith('#') && !isLandingPage ? `/${cta.href}` : (cta.href ?? '/'));
 
 const hasLogoSlot = Astro.slots.has('logo');
 const hasNavSlot = Astro.slots.has('nav');
@@ -161,7 +162,7 @@ const buttonId = `${menuId}-button`;
         (hasLogoSlot ? (
           <slot name="logo" />
         ) : (
-          <a href="/" class="flex items-center gap-2">
+          <a href={url('/')} class="flex items-center gap-2">
             <Logo size={size === 'sm' ? 'md' : 'lg'} forceDark={isInvert} />
             <span
               class={cn(
@@ -185,7 +186,7 @@ const buttonId = `${menuId}-button`;
           <nav class="hidden items-center gap-1 md:flex" aria-label="Main navigation">
             {navItems.map(({ label, href }) => (
               <a
-                href={href.startsWith('#') && !isLandingPage ? `/${href}` : href}
+                href={url(href.startsWith('#') && !isLandingPage ? `/${href}` : href)}
                 class={cn(
                   'nav-link relative rounded-md px-3 py-2 text-sm',
                   'transition-all duration-(--transition-fast)',
@@ -362,7 +363,7 @@ const buttonId = `${menuId}-button`;
           )}>
             {navItems.map(({ label, href }) => (
               <a
-                href={href.startsWith('#') && !isLandingPage ? `/${href}` : href}
+                href={url(href.startsWith('#') && !isLandingPage ? `/${href}` : href)}
                 class={cn(
                   'mobile-nav-link block rounded-md px-3 py-2 text-sm',
                   'transition-all duration-(--transition-fast)',
