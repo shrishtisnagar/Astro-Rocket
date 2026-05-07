@@ -29,8 +29,6 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
 import ThemeModeDropdown from '@/components/layout/ThemeModeDropdown.astro';
-import ThemeSelector from '@/components/layout/ThemeSelector.astro';
-import ThemeSelectorDropdown from '@/components/layout/ThemeSelectorDropdown.astro';
 import siteConfig from '@/config/site.config';
 
 export interface NavItem {
@@ -59,7 +57,6 @@ interface Props extends HTMLAttributes<'header'> {
   cta?: { label?: string; href?: string; icon?: string; trailingIcon?: string };
   actions?: HeaderAction[];
   showThemeToggle?: boolean;
-  showThemeSelector?: boolean;
   showMobileMenu?: boolean;
   showActiveState?: boolean;
   logoText?: string;
@@ -86,7 +83,6 @@ const {
   cta = { label: 'Start a project', href: '/contact' },
   actions = [],
   showThemeToggle = true,
-  showThemeSelector = false,
   showMobileMenu = true,
   showSocialLinks = false,
   showActiveState = true,
@@ -223,11 +219,6 @@ const buttonId = `${menuId}-button`;
               </div>
             )}
 
-            {showThemeSelector && (
-              <div class="hidden md:flex">
-                <ThemeSelectorDropdown class={isFloating ? 'hdr-invert-text' : undefined} />
-              </div>
-            )}
 
             {showSocialLinks && siteConfig.socialLinks.length > 0 && (
               <div class="hidden md:flex items-center gap-0.5">
@@ -404,14 +395,6 @@ const buttonId = `${menuId}-button`;
               </div>
             )}
 
-            {showThemeSelector && (
-              <div class="border-border mt-3 border-t pt-3">
-                <div class="flex items-center justify-between px-1">
-                  <span class="text-sm text-foreground-muted">Colour theme</span>
-                  <ThemeSelector />
-                </div>
-              </div>
-            )}
           </div>
         </div>
       ))
