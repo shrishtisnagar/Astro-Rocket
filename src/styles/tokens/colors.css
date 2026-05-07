@@ -40,3 +40,6 @@
 @import '../themes/amber.css';
 @import '../themes/violet.css';
 @import '../themes/magenta.css';
+
+/* — active custom theme — */
+@import '../themes/custom.css';
