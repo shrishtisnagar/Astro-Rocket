@@ -83,36 +83,27 @@ const featuredProjects = projectItems
         <span class="text-2xl md:text-3xl font-semibold text-foreground-muted">a word on what actually works.</span>
       </h2>
 
-      <!-- Body text as two-column card on desktop -->
-      <div class="grid md:grid-cols-2 gap-8 mb-10" data-reveal>
-        <div class="space-y-4 text-base text-foreground-muted leading-relaxed">
-          <p>
-            As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
-          </p>
-          <p>
-            The ones that worked weren't the most creatively unique or the most sophisticated.
-          </p>
-          <p>
-            They got a few fundamentals right — consistently.
-          </p>
-        </div>
+      <!-- Narrative text -->
+      <div class="space-y-4 text-base text-foreground-muted leading-relaxed mb-10" data-reveal>
+        <p>
+          As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
+        </p>
+        <p>
+          The ones that worked weren't the most creatively unique or the most sophisticated.
+        </p>
+        <p>
+          They got a few fundamentals right — consistently.
+        </p>
+      </div>
 
-        <!-- Three pillars -->
-        <div class="flex flex-col gap-4">
-          {[
-            { label: 'Clarity', body: 'Being clear on who they were speaking to and why it mattered' },
-            { label: 'Consistency', body: 'Staying visible long enough to build recognition and trust' },
-            { label: 'Conversion', body: 'Capturing attention to fuel actual business outcomes' },
-          ].map((item) => (
-            <div class="flex items-start gap-4 rounded-xl border border-brand-500/15 bg-brand-500/5 px-5 py-4">
-              <span class="mt-0.5 w-2 h-2 rounded-full bg-brand-500 shrink-0"></span>
-              <div>
-                <p class="text-sm font-semibold text-foreground mb-0.5">{item.label}</p>
-                <p class="text-sm text-foreground-muted leading-relaxed">{item.body}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+      <!-- Sketch showing the pillars -->
+      <div class="flex justify-center mb-10" data-reveal>
+        <img
+          src={url('/images/sketch.png')}
+          alt="The three pillars — a handmade sketch"
+          class="w-full max-w-2xl rounded-2xl object-contain"
+          loading="lazy"
+        />
       </div>
 
       <!-- Closing statement -->
