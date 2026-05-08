@@ -11,13 +11,18 @@ const { badge, title, description, background = 'secondary' } = Astro.props;
 const bgClass = background === 'primary' ? 'bg-background' : 'bg-background-secondary';
 
 const row1 = [
-  'HubSpot', 'Notion', 'LinkedIn', 'Google Analytics', 'Canva',
-  'Mailchimp', 'Figma', 'Webflow', 'Zapier', 'Typeform',
+  'Meta Business Suite', 'LinkedIn Campaign Manager', 'Google Ads Manager',
+  'ChatGPT', 'Claude', 'Grok', 'Gemini', 'Poe', 'character.ai', 'Gamma',
 ];
 
 const row2 = [
-  'Ahrefs', 'SEMrush', 'Buffer', 'Apollo', 'Klaviyo',
-  'Slack', 'Loom', 'Hotjar', 'Clay', 'Beehiiv',
+  'HubSpot', 'Apollo', 'Mailchimp', 'Freshworks', 'Expandi',
+  'Snov.io', 'Zapier', 'n8n', 'ClickUp', 'Notion', 'Asana', 'Trello', 'Whimsical',
+];
+
+const row3 = [
+  'Canva', 'Loom', 'Adobe Premiere Pro', 'WordPress', 'Beehiiv',
+  'Tweethunter', 'Semrush', 'Ubersuggest', 'Google Analytics',
 ];
 ---
 
@@ -57,6 +62,15 @@ const row2 = [
       <div class="marquee-track">
         <div class="marquee-inner marquee-right">
           {[...row2, ...row2].map((tool) => (
+            <span class="marquee-pill">{tool}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Row 3: scrolls left -->
+      <div class="marquee-track">
+        <div class="marquee-inner marquee-left" style="animation-duration:36s">
+          {[...row3, ...row3].map((tool) => (
             <span class="marquee-pill">{tool}</span>
           ))}
         </div>
