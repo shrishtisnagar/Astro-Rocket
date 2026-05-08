@@ -1,6 +1,7 @@
 ---
 import { cn } from '@/lib/cn';
 import siteConfig from '@/config/site.config';
+import { url } from '@/lib/url';
 
 interface Props {
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -24,11 +25,12 @@ const { box, text, radius, img } = sizeClasses[size] ?? sizeClasses.md;
 const letter = letterProp ?? siteConfig.name.charAt(0).toUpperCase();
 const imageUrl = siteConfig.branding.logo.imageUrl;
 const showImage = !!imageUrl && !imageUrl.includes('favicon');
+const resolvedImageUrl = showImage ? url(imageUrl!) : '';
 ---
 
 {showImage ? (
   <img
-    src={imageUrl}
+    src={resolvedImageUrl}
     alt={siteConfig.branding.logo.alt}
     class={cn(img, 'w-auto object-contain shrink-0', className)}
     aria-label={siteConfig.branding.logo.alt}
