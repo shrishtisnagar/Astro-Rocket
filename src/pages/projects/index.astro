@@ -63,28 +63,16 @@ const featuredProjects = projectItems
   </Hero>
 
   <!-- Intro -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background overflow-hidden">
-    <!-- Decorative background glow -->
-    <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
-      <div class="w-[40rem] h-[20rem] rounded-full bg-brand-500/5 blur-3xl"></div>
-    </div>
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
+    <div class="relative mx-auto max-w-2xl px-6">
 
-    <div class="relative mx-auto max-w-4xl px-6">
-      <!-- Top label -->
-      <div class="mb-10 flex items-center gap-3" data-reveal>
-        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-brand-500/30"></div>
-        <Badge variant="brand" pill>The philosophy</Badge>
-        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-brand-500/30"></div>
-      </div>
-
-      <!-- Headline -->
-      <h2 class="font-display text-4xl md:text-5xl font-bold text-foreground text-center mb-12 text-balance leading-tight" data-reveal>
-        Before you scroll <span class="text-brand-500">—</span><br />
-        <span class="text-2xl md:text-3xl font-semibold text-foreground-muted">a word on what actually works.</span>
+      <!-- Heading -->
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-8" data-reveal>
+        Before you scroll
       </h2>
 
-      <!-- Narrative text -->
-      <div class="space-y-4 text-base text-foreground-muted leading-relaxed mb-10" data-reveal>
+      <!-- Narrative — letter feel -->
+      <div class="space-y-5 text-base text-foreground-muted leading-loose mb-10" data-reveal>
         <p>
           As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
         </p>
@@ -97,27 +85,25 @@ const featuredProjects = projectItems
       </div>
 
       <!-- Sketch showing the pillars -->
-      <div class="flex justify-center mb-10" data-reveal>
+      <div class="mb-10" data-reveal>
         <img
           src={url('/images/sketch.png')}
           alt="The three pillars — a handmade sketch"
-          class="w-full max-w-2xl rounded-2xl object-contain"
+          class="w-full rounded-2xl object-contain"
           loading="lazy"
         />
       </div>
 
-      <!-- Closing statement -->
-      <div class="rounded-2xl border border-brand-500/20 bg-brand-500/5 px-8 py-6 text-center" data-reveal>
-        <p class="text-lg text-foreground-muted leading-relaxed mb-2">
-          Everything I do today sits at that intersection —
+      <!-- Closing — plain prose, no box -->
+      <div class="space-y-4 text-base text-foreground-muted leading-loose" data-reveal>
+        <p>
+          Everything I do today sits at that intersection — psychology, marketing, and systems.
         </p>
-        <p class="font-display text-2xl font-bold text-foreground">
-          psychology, marketing, and systems.
-        </p>
-        <p class="mt-3 text-sm text-foreground-muted">
+        <p>
           Time and time again, the only trifecta that works. The work below is what that looks like in practice.
         </p>
       </div>
+
     </div>
   </section>
 
