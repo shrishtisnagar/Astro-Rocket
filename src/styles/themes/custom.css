@@ -121,6 +121,17 @@ html[data-theme="custom"] {
    Dark Mode — deep wine-black
    ------------------------------------------------------------------------- */
 html.dark[data-theme="custom"] {
+  /* Brand scale remapped for dark backgrounds — #F7B5DD as the primary accent */
+  --brand-50:  oklch(20%  0.030 344);
+  --brand-100: oklch(24%  0.035 344);
+  --brand-200: oklch(30%  0.040 344);
+  --brand-300: oklch(88%  0.065 344);
+  --brand-400: oklch(74%  0.085 344);
+  --brand-500: oklch(81%  0.090 344);  /* ≈ #F7B5DD */
+  --brand-600: oklch(70%  0.082 344);
+  --brand-700: oklch(60%  0.075 344);
+  --brand-800: oklch(48%  0.065 344);
+  --brand-900: oklch(35%  0.055 344);
   --background: oklch(10% 0.012 344);
   --background-secondary: oklch(15.5% 0.010 344);
   --background-tertiary: oklch(20.5% 0.008 344);
@@ -143,9 +154,9 @@ html.dark[data-theme="custom"] {
   --secondary-hover: oklch(25% 0.008 344);
   --secondary-foreground: oklch(90% 0.008 344);
 
-  --accent: var(--brand-400);
-  --accent-hover: var(--brand-500);
-  --accent-light: oklch(18% 0.05 344);
+  --accent: var(--brand-500);
+  --accent-hover: var(--brand-400);
+  --accent-light: oklch(20% 0.045 344);
 
   --muted: oklch(20.5% 0.008 344);
   --muted-foreground: oklch(68% 0.008 344);
@@ -155,9 +166,9 @@ html.dark[data-theme="custom"] {
 
   --input-bg: oklch(15.5% 0.010 344);
   --input-border: oklch(28% 0.008 344);
-  --input-focus: var(--brand-400);
+  --input-focus: var(--brand-500);
 
-  --ring: var(--brand-400);
+  --ring: var(--brand-500);
 
   --destructive: oklch(65% 0.22 25);
   --destructive-foreground: var(--gray-0);
