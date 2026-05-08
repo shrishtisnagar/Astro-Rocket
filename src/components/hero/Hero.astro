@@ -384,7 +384,7 @@ const gridClasses = cn(
   (function () {
     function initVideoBg() {
       document.querySelectorAll('video.video-bg[data-speed]').forEach(function (v) {
-        var speed = parseFloat(v.getAttribute('data-speed') || '0.75');
+        const speed = parseFloat(v.getAttribute('data-speed') || '0.75');
         if (!isNaN(speed) && speed > 0) v.playbackRate = speed;
       });
     }
