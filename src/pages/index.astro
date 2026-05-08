@@ -69,13 +69,18 @@ const posts = allRSSPosts.slice(0, 3);
 
   <!-- Brands Section -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-10">
-      <p class="text-center text-sm font-medium text-foreground-muted uppercase tracking-widest" data-reveal>
-        Brands I've worked with
-      </p>
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <div class="flex flex-col items-center gap-6">
+          <Badge variant="brand" pill>Clients</Badge>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+            Brands I've worked with
+          </h2>
+        </div>
+      </div>
 
       <!-- Logo grid — replace each svg with your actual brand logo -->
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 items-center" data-reveal>
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 items-center max-w-5xl mx-auto w-full" data-reveal>
         {[1,2,3,4,5,6].map((n) => (
           <div class="brand-logo-slot" title={`Brand ${n}`}>
             <svg viewBox="0 0 120 48" xmlns="http://www.w3.org/2000/svg" aria-label={`Brand ${n} logo placeholder`}>
@@ -128,6 +133,13 @@ const posts = allRSSPosts.slice(0, 3);
             </div>
           </Card>
         ))}
+      </div>
+
+      <div class="flex justify-center" data-reveal>
+        <Button variant="outline" href={url("/projects")}>
+          See more projects
+          <Icon name="arrow-right" size="sm" />
+        </Button>
       </div>
     </div>
   </section>
