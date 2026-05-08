@@ -62,70 +62,81 @@ const featuredProjects = projectItems
     </div>
   </Hero>
 
-  <!-- Intro -->
+  <!-- Intro / Flowchart -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background overflow-hidden">
-    <!-- Decorative background glow -->
     <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
-      <div class="w-[40rem] h-[20rem] rounded-full bg-brand-500/5 blur-3xl"></div>
+      <div class="w-[50rem] h-[30rem] rounded-full bg-brand-500/5 blur-3xl"></div>
     </div>
 
     <div class="relative mx-auto max-w-4xl px-6">
-      <!-- Top label -->
-      <div class="mb-10 flex items-center gap-3" data-reveal>
+
+      <!-- Header -->
+      <div class="mb-12 flex items-center gap-3" data-reveal>
         <div class="h-px flex-1 bg-gradient-to-r from-transparent to-brand-500/30"></div>
         <Badge variant="brand" pill>The philosophy</Badge>
         <div class="h-px flex-1 bg-gradient-to-l from-transparent to-brand-500/30"></div>
       </div>
 
-      <!-- Headline -->
-      <h2 class="font-display text-4xl md:text-5xl font-bold text-foreground text-center mb-12 text-balance leading-tight" data-reveal>
-        Before you scroll <span class="text-brand-500">—</span><br />
-        <span class="text-2xl md:text-3xl font-semibold text-foreground-muted">a word on what actually works.</span>
-      </h2>
+      <!-- FLOWCHART -->
+      <div class="flow-chart" data-reveal>
 
-      <!-- Body text as two-column card on desktop -->
-      <div class="grid md:grid-cols-2 gap-8 mb-10" data-reveal>
-        <div class="space-y-4 text-base text-foreground-muted leading-relaxed">
-          <p>
-            As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
-          </p>
-          <p>
-            The ones that worked weren't the most creatively unique or the most sophisticated.
-          </p>
-          <p>
-            They got a few fundamentals right — consistently.
+        <!-- Node 1: Trigger -->
+        <div class="flow-node flow-node--muted">
+          <p class="text-sm text-foreground-muted leading-relaxed text-center">
+            If you're here, you're probably trying to figure out if I'm worth your time.
+            <span class="text-foreground font-medium"> Perfectly fair.</span>
           </p>
         </div>
 
-        <!-- Three pillars -->
-        <div class="flex flex-col gap-4">
+        <div class="flow-arrow" aria-hidden="true"></div>
+
+        <!-- Node 2: Insight -->
+        <div class="flow-node flow-node--accent">
+          <p class="text-base font-semibold text-foreground text-center">
+            The campaigns that worked got a few fundamentals right — consistently.
+          </p>
+        </div>
+
+        <div class="flow-arrow flow-arrow--branch" aria-hidden="true">
+          <div class="flow-branch-line"></div>
+        </div>
+
+        <!-- Node 3: Three pillars -->
+        <div class="flow-pillars">
           {[
-            { label: 'Clarity', body: 'Being clear on who they were speaking to and why it mattered' },
-            { label: 'Consistency', body: 'Staying visible long enough to build recognition and trust' },
-            { label: 'Conversion', body: 'Capturing attention to fuel actual business outcomes' },
-          ].map((item) => (
-            <div class="flex items-start gap-4 rounded-xl border border-brand-500/15 bg-brand-500/5 px-5 py-4">
-              <span class="mt-0.5 w-2 h-2 rounded-full bg-brand-500 shrink-0"></span>
-              <div>
-                <p class="text-sm font-semibold text-foreground mb-0.5">{item.label}</p>
-                <p class="text-sm text-foreground-muted leading-relaxed">{item.body}</p>
-              </div>
+            { num: '01', label: 'Clarity', body: 'Clear on who they spoke to and why it mattered' },
+            { num: '02', label: 'Consistency', body: 'Visible long enough to build recognition and trust' },
+            { num: '03', label: 'Conversion', body: 'Attention that fuelled actual business outcomes' },
+          ].map((p) => (
+            <div class="flow-pillar">
+              <span class="flow-pillar-num">{p.num}</span>
+              <p class="flow-pillar-label">{p.label}</p>
+              <p class="flow-pillar-body">{p.body}</p>
             </div>
           ))}
         </div>
-      </div>
 
-      <!-- Closing statement -->
-      <div class="rounded-2xl border border-brand-500/20 bg-brand-500/5 px-8 py-6 text-center" data-reveal>
-        <p class="text-lg text-foreground-muted leading-relaxed mb-2">
-          Everything I do today sits at that intersection —
-        </p>
-        <p class="font-display text-2xl font-bold text-foreground">
-          psychology, marketing, and systems.
-        </p>
-        <p class="mt-3 text-sm text-foreground-muted">
-          Time and time again, the only trifecta that works. The work below is what that looks like in practice.
-        </p>
+        <div class="flow-arrow flow-arrow--merge" aria-hidden="true">
+          <div class="flow-merge-line"></div>
+        </div>
+
+        <!-- Node 4: Trifecta -->
+        <div class="flow-node flow-node--highlight">
+          <p class="text-xs uppercase tracking-widest text-brand-500 mb-2 font-semibold">The trifecta</p>
+          <p class="font-display text-2xl font-bold text-foreground text-center">
+            Psychology × Marketing × Systems
+          </p>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true"></div>
+
+        <!-- Node 5: Outcome -->
+        <div class="flow-node flow-node--muted">
+          <p class="text-sm text-foreground-muted text-center leading-relaxed">
+            The work below is what that looks like in practice.
+          </p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -133,13 +144,10 @@ const featuredProjects = projectItems
   <!-- Brands -->
   <section class="relative z-10 py-12 bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-12">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Clients</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Across industries and markets
-          </h2>
-        </div>
+      <div class="flex items-center gap-4" data-reveal>
+        <div class="h-px flex-1 bg-border/50"></div>
+        <p class="text-xs font-medium uppercase tracking-widest text-foreground-muted">Across industries and markets</p>
+        <div class="h-px flex-1 bg-border/50"></div>
       </div>
 
       <div class="brand-marquee-track">
@@ -392,6 +400,200 @@ const featuredProjects = projectItems
     border-radius: 1rem;
     -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
     mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+  }
+
+  /* ---- Flowchart ---- */
+  .flow-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .flow-node {
+    width: 100%;
+    max-width: 36rem;
+    border-radius: 1rem;
+    padding: 1.25rem 1.75rem;
+    border: 1px solid;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-node--muted {
+    border-color: oklch(30% 0.02 344);
+    background: oklch(12% 0.015 344);
+  }
+
+  .flow-node--accent {
+    border-color: oklch(35% 0.04 344);
+    background: oklch(15% 0.025 344);
+  }
+
+  .flow-node--highlight {
+    border-color: oklch(50% 0.06 344 / 0.5);
+    background: oklch(18% 0.04 344);
+    text-align: center;
+    padding: 1.5rem 2rem;
+  }
+
+  .flow-arrow {
+    width: 2px;
+    height: 2rem;
+    background: linear-gradient(to bottom, oklch(40% 0.06 344 / 0.4), oklch(40% 0.06 344 / 0.4));
+    position: relative;
+    z-index: 0;
+  }
+
+  .flow-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid oklch(40% 0.06 344 / 0.5);
+  }
+
+  /* Branch: one line splits into three */
+  .flow-arrow--branch {
+    width: 100%;
+    max-width: 36rem;
+    height: 2.5rem;
+    background: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: relative;
+  }
+
+  .flow-arrow--branch::after { display: none; }
+
+  .flow-branch-line {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: oklch(40% 0.06 344 / 0.4);
+  }
+
+  .flow-branch-line::before,
+  .flow-branch-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background: oklch(40% 0.06 344 / 0.4);
+    width: calc(33.33% + 1rem);
+  }
+
+  .flow-branch-line::before { right: 0; }
+  .flow-branch-line::after  { left: 0; }
+
+  /* Three pillars row */
+  .flow-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-pillar {
+    border: 1px solid oklch(35% 0.05 344 / 0.5);
+    background: oklch(14% 0.025 344);
+    border-radius: 0.875rem;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.35rem;
+    position: relative;
+  }
+
+  .flow-pillar::before {
+    content: '';
+    position: absolute;
+    top: -1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 1.5rem;
+    background: oklch(40% 0.06 344 / 0.35);
+  }
+
+  .flow-pillar-num {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: oklch(81% 0.09 344 / 0.6);
+    margin-bottom: 0.15rem;
+  }
+
+  .flow-pillar-label {
+    font-family: var(--font-display, system-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin: 0;
+  }
+
+  .flow-pillar-body {
+    font-size: 0.75rem;
+    color: var(--color-foreground-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Merge: three lines converge into one */
+  .flow-arrow--merge {
+    width: 100%;
+    height: 2.5rem;
+    background: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+  }
+
+  .flow-arrow--merge::after { display: none; }
+
+  .flow-merge-line {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: oklch(40% 0.06 344 / 0.4);
+  }
+
+  .flow-merge-line::before,
+  .flow-merge-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 2px;
+    background: oklch(40% 0.06 344 / 0.4);
+    width: calc(33.33% + 1rem);
+  }
+
+  .flow-merge-line::before { right: 0; }
+  .flow-merge-line::after  { left: 0; }
+
+  @media (max-width: 640px) {
+    .flow-pillars { grid-template-columns: 1fr; }
+    .flow-arrow--branch,
+    .flow-arrow--merge { display: none; }
+    .flow-pillar::before { display: none; }
   }
 
   /* ---- Brand logo marquee ---- */
