@@ -23,7 +23,7 @@ const sizeClasses: Record<string, { box: string; text: string; radius: string; i
 const { box, text, radius, img } = sizeClasses[size] ?? sizeClasses.md;
 const letter = letterProp ?? siteConfig.name.charAt(0).toUpperCase();
 const imageUrl = siteConfig.branding.logo.imageUrl;
-const showImage = imageUrl && imageUrl !== '/favicon.svg';
+const showImage = !!imageUrl && !imageUrl.includes('favicon');
 ---
 
 {showImage ? (

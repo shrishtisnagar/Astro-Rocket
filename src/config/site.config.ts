@@ -88,7 +88,7 @@ const siteConfig: SiteConfig = {
   branding: {
     logo: {
       alt: 'The S Curve',
-      imageUrl: '/images/logo.svg',
+      imageUrl: '/images/logo.png',
     },
     favicon: {
       svg: '/favicon.svg',

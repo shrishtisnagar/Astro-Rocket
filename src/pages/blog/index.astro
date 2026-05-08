@@ -27,7 +27,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
     </p>
   </Hero>
 
-  <section class="bg-background py-[var(--space-section-md)]">
+  <section class="bg-background pt-8 pb-[var(--space-section-md)]">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
 
       {allTags.length > 0 && (
@@ -85,7 +85,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
 
       <div class="flex flex-col items-center gap-4 pt-4" data-reveal>
         <p class="text-sm font-medium text-foreground-muted">Get the newsletter in your inbox</p>
-        <div class="w-full max-w-xl rounded-2xl border border-border bg-background p-6">
+        <div class="w-full max-w-xl">
           <script is:inline async src="https://subscribe-forms.beehiiv.com/v3/loader.js" data-beehiiv-form="af39ba3e-7f0c-47a9-aa35-7662037a3c67"></script>
         </div>
       </div>
