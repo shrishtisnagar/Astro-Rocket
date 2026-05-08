@@ -18,9 +18,38 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  # Lint + type-check runs on every PR and push
+  ci:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Type check
+        run: pnpm run check
+
+  # Build + deploy only on pushes to main (and the weekly schedule)
+  build:
+    needs: ci
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,12 +72,6 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Type check
-        run: pnpm run check
-
       - name: Build
         run: pnpm run build
         env:
@@ -64,7 +87,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.event_name == 'schedule'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
