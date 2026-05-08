@@ -63,42 +63,69 @@ const featuredProjects = projectItems
   </Hero>
 
   <!-- Intro -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-3xl px-6" data-reveal>
-      <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-8">
-        Before you scroll
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background overflow-hidden">
+    <!-- Decorative background glow -->
+    <div class="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+      <div class="w-[40rem] h-[20rem] rounded-full bg-brand-500/5 blur-3xl"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-4xl px-6">
+      <!-- Top label -->
+      <div class="mb-10 flex items-center gap-3" data-reveal>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent to-brand-500/30"></div>
+        <Badge variant="brand" pill>The philosophy</Badge>
+        <div class="h-px flex-1 bg-gradient-to-l from-transparent to-brand-500/30"></div>
+      </div>
+
+      <!-- Headline -->
+      <h2 class="font-display text-4xl md:text-5xl font-bold text-foreground text-center mb-12 text-balance leading-tight" data-reveal>
+        Before you scroll <span class="text-brand-500">—</span><br />
+        <span class="text-2xl md:text-3xl font-semibold text-foreground-muted">a word on what actually works.</span>
       </h2>
-      <div class="space-y-5 text-lg text-foreground-muted leading-relaxed">
-        <p>
-          If you're here, you're probably trying to figure out if I'm worth your time.<br />
-          Perfectly fair.
+
+      <!-- Body text as two-column card on desktop -->
+      <div class="grid md:grid-cols-2 gap-8 mb-10" data-reveal>
+        <div class="space-y-4 text-base text-foreground-muted leading-relaxed">
+          <p>
+            As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
+          </p>
+          <p>
+            The ones that worked weren't the most creatively unique or the most sophisticated.
+          </p>
+          <p>
+            They got a few fundamentals right — consistently.
+          </p>
+        </div>
+
+        <!-- Three pillars -->
+        <div class="flex flex-col gap-4">
+          {[
+            { label: 'Clarity', body: 'Being clear on who they were speaking to and why it mattered' },
+            { label: 'Consistency', body: 'Staying visible long enough to build recognition and trust' },
+            { label: 'Conversion', body: 'Capturing attention to fuel actual business outcomes' },
+          ].map((item) => (
+            <div class="flex items-start gap-4 rounded-xl border border-brand-500/15 bg-brand-500/5 px-5 py-4">
+              <span class="mt-0.5 w-2 h-2 rounded-full bg-brand-500 shrink-0"></span>
+              <div>
+                <p class="text-sm font-semibold text-foreground mb-0.5">{item.label}</p>
+                <p class="text-sm text-foreground-muted leading-relaxed">{item.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Closing statement -->
+      <div class="rounded-2xl border border-brand-500/20 bg-brand-500/5 px-8 py-6 text-center" data-reveal>
+        <p class="text-lg text-foreground-muted leading-relaxed mb-2">
+          Everything I do today sits at that intersection —
         </p>
-        <p>
-          As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
+        <p class="font-display text-2xl font-bold text-foreground">
+          psychology, marketing, and systems.
         </p>
-        <p>
-          The ones that worked weren't the most creatively unique or the most sophisticated.
+        <p class="mt-3 text-sm text-foreground-muted">
+          Time and time again, the only trifecta that works. The work below is what that looks like in practice.
         </p>
-        <p>They got a few fundamentals right — consistently.</p>
-        <ul class="space-y-3 pl-0 list-none">
-          <li class="flex items-start gap-3">
-            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span>
-            <span>Being clear on who they were speaking to and why it mattered</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span>
-            <span>Staying visible long enough to build recognition and trust</span>
-          </li>
-          <li class="flex items-start gap-3">
-            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0"></span>
-            <span>Capturing attention to fuel actual business outcomes</span>
-          </li>
-        </ul>
-        <p>
-          Everything I do today sits at that intersection — psychology, marketing, and systems.<br />
-          Time and time again, the only trifecta that works.
-        </p>
-        <p class="text-foreground font-medium">The work below is what that looks like in practice.</p>
       </div>
     </div>
   </section>
