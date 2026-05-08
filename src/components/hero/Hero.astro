@@ -214,8 +214,8 @@ const gridClasses = cn(
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* Desaturate first, then hue-rotate gold → wine/burgundy range */
-    filter: saturate(120%) hue-rotate(110deg) brightness(0.80) contrast(1.05);
+    /* Desaturate first, then hue-rotate blue → wine/burgundy range */
+    filter: saturate(70%) hue-rotate(130deg) brightness(0.55) contrast(1.10);
   }
 
   /* Multiply overlay in deep wine to deepen and unify the color */
@@ -226,7 +226,7 @@ const gridClasses = cn(
       /* Bottom fade into the next section */
       linear-gradient(to bottom, transparent 60%, var(--color-background) 100%),
       /* Wine tint */
-      radial-gradient(ellipse at 30% 40%, oklch(30% 0.08 344 / 0.35) 0%, oklch(8% 0.03 344 / 0.55) 100%);
+      radial-gradient(ellipse at 30% 40%, oklch(28% 0.10 344 / 0.60) 0%, oklch(8% 0.04 344 / 0.80) 100%);
     mix-blend-mode: multiply;
   }
 
