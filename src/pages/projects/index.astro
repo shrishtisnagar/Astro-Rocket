@@ -3,7 +3,6 @@
  * Projects page
  * URL: /projects
  */
-import { Image } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
@@ -14,11 +13,21 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 import { getCollection } from 'astro:content';
 
 const items = await getCollection('projects', ({ data }) => !data.draft);
-const projects = items.sort((a, b) => a.data.order - b.data.order);
+const sorted = items.sort((a, b) => a.data.order - b.data.order);
+
+// Group by category
+const grouped = sorted.reduce<Record<string, typeof sorted>>((acc, project) => {
+  const cat = project.data.category;
+  if (!acc[cat]) acc[cat] = [];
+  acc[cat].push(project);
+  return acc;
+}, {});
+
+const categories = Object.keys(grouped);
 ---
 
 <PageLayout
-  title="Projects — Shrishti S Nagar"
+  title="Projects — The S Curve"
   description="Selected work — marketing strategy, content, and growth engagements."
   eagerReveal
 >
@@ -35,63 +44,48 @@ const projects = items.sort((a, b) => a.data.order - b.data.order);
     </p>
   </Hero>
 
-  <!-- All projects -->
-  {projects.length > 0 && (
+  <!-- Projects by category -->
+  {categories.map((category) => (
     <section class="py-[var(--space-section-md)] bg-background">
       <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
 
+        <div data-reveal>
+          <Badge variant="brand" pill class="mb-4">{category}</Badge>
+        </div>
+
         <div class="grid gap-6 md:grid-cols-2">
-          {projects.map((project) => (
-            <Card variant="elevated" hover padding="none" href={`/projects/${project.id.replace(/\.mdx?$/, '')}`} class:list={['group overflow-hidden flex flex-col', project.data.featured && 'md:col-span-2 md:grid md:grid-cols-2 md:flex-row']} data-reveal>
-              {project.data.image && (
-                <div class="overflow-hidden">
-                  <Image
-                    src={project.data.image}
-                    alt={project.data.imageAlt || project.data.title}
-                    widths={[640, 960]}
-                    sizes={project.data.featured ? '(max-width: 768px) 640px, 480px' : '(max-width: 768px) 640px, 960px'}
-                    class:list={[
-                      'w-full object-cover transition-transform duration-300 group-hover:scale-105',
-                      project.data.featured ? 'aspect-video md:aspect-auto md:h-full' : 'aspect-video'
-                    ]}
-                    loading="lazy"
-                  />
+          {grouped[category].map((project) => (
+            <a
+              href={project.data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group block"
+              data-reveal
+            >
+              <Card variant="elevated" hover padding="none" class="overflow-hidden flex flex-col h-full">
+                <!-- Thumbnail -->
+                <div class="project-thumb" aria-hidden="true">
+                  <div class="project-thumb-icon">
+                    <Icon name="layers" size="md" />
+                  </div>
                 </div>
-              )}
-              <div class="flex flex-1 flex-col p-6">
-                <!-- Header -->
-                <div class="mb-3 flex items-start justify-between gap-4">
-                  {!project.data.image && (
+                <div class="flex flex-1 flex-col p-6">
+                  <div class="mb-3 flex items-start justify-between gap-4">
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
                       <Icon name="layers" size="sm" />
                     </div>
-                  )}
-                  <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0 ml-auto" />
+                    <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
+                  </div>
+                  <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
+                  <p class="text-sm text-foreground-muted leading-relaxed flex-1">{project.data.description}</p>
                 </div>
-
-                <!-- Title + year -->
-                <div class="mb-2 flex items-baseline gap-2">
-                  <h3 class="font-display text-lg font-bold text-foreground">{project.data.title}</h3>
-                  {project.data.year && (
-                    <span class="text-xs text-foreground-muted">{project.data.year}</span>
-                  )}
-                </div>
-
-                <p class="text-sm text-foreground-muted leading-relaxed mb-4 flex-1">{project.data.description}</p>
-
-                <!-- Tags -->
-                <div class="flex flex-wrap gap-1.5">
-                  {project.data.tags.map((tag) => (
-                    <Badge variant="brand">{tag}</Badge>
-                  ))}
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </a>
           ))}
         </div>
       </div>
     </section>
-  )}
+  ))}
 
  <!-- CTA -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
@@ -137,3 +131,36 @@ const projects = items.sort((a, b) => a.data.order - b.data.order);
     </LetterGlitchBand>
   </section>
 </PageLayout>
+
+<style>
+  .project-thumb {
+    position: relative;
+    height: 9rem;
+    background: linear-gradient(
+      135deg,
+      oklch(18% 0.04 344) 0%,
+      oklch(14% 0.03 344) 100%
+    );
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .project-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 70% 70% at 30% 40%,
+      oklch(40% 0.08 344 / 0.35) 0%,
+      transparent 70%
+    );
+  }
+
+  .project-thumb-icon {
+    position: relative;
+    z-index: 1;
+    color: oklch(81% 0.09 344 / 0.5);
+  }
+</style>
