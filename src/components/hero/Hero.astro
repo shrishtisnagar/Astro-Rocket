@@ -67,12 +67,7 @@ const gridClasses = cn(
     <div class="aurora-layer" aria-hidden="true">
       <div class="aurora-blob aurora-blob-1"></div>
       <div class="aurora-blob aurora-blob-2"></div>
-      <div class="aurora-blob aurora-blob-3"></div>
-      <div id="aurora-mouse" class="aurora-blob aurora-mouse"></div>
-      <!-- Satin shimmer sweep -->
-      <div class="satin-sheen"></div>
-      <!-- Grain texture overlay -->
-      <div class="satin-grain"></div>
+      <div class="aurora-grain"></div>
     </div>
   )}
 
@@ -180,7 +175,7 @@ const gridClasses = cn(
 </section>
 
 <style>
-  /* ── Aurora + satin background ──────────────────────────── */
+  /* ── Breathing gradient background ──────────────────────── */
   .aurora-layer {
     position: absolute;
     inset: 0;
@@ -192,124 +187,63 @@ const gridClasses = cn(
   .aurora-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(70px);
+    filter: blur(90px);
     opacity: 0;
-    will-change: transform;
-    transition: opacity 1.2s ease;
+    will-change: transform, opacity;
+    transition: opacity 1.5s ease;
   }
 
-  :global(.dark) .aurora-blob {
-    opacity: 1;
-  }
+  :global(.dark) .aurora-blob { opacity: 1; }
 
-  /* Blob 1: rich burgundy, sweeps wide arc top → bottom-right */
+  /* Wine glow — top-left, slow inhale/exhale */
   .aurora-blob-1 {
+    width: 70vw; height: 70vw;
+    max-width: 900px; max-height: 900px;
+    top: -30%; left: -20%;
+    background: radial-gradient(ellipse at 40% 40%,
+      oklch(55% 0.20 344 / 0.55) 0%,
+      oklch(35% 0.12 344 / 0.20) 45%,
+      transparent 70%);
+    animation: breathe-1 18s ease-in-out infinite;
+  }
+
+  /* Plum glow — bottom-right, offset phase */
+  .aurora-blob-2 {
     width: 65vw; height: 65vw;
     max-width: 820px; max-height: 820px;
-    top: -25%; left: -20%;
-    background: radial-gradient(ellipse at center, oklch(60% 0.22 344 / 0.50) 0%, transparent 58%);
-    animation: aurora-1 8s ease-in-out infinite;
+    bottom: -25%; right: -15%;
+    background: radial-gradient(ellipse at 60% 60%,
+      oklch(48% 0.16 320 / 0.50) 0%,
+      oklch(30% 0.10 330 / 0.18) 45%,
+      transparent 70%);
+    animation: breathe-2 22s ease-in-out infinite;
   }
 
-  /* Blob 2: deep wine, sweeps bottom-right → top-left */
-  .aurora-blob-2 {
-    width: 60vw; height: 60vw;
-    max-width: 750px; max-height: 750px;
-    bottom: -20%; right: -15%;
-    background: radial-gradient(ellipse at center, oklch(50% 0.18 338 / 0.55) 0%, transparent 58%);
-    animation: aurora-2 11s ease-in-out infinite;
-  }
-
-  /* Blob 3: plum, drifts across center */
-  .aurora-blob-3 {
-    width: 50vw; height: 50vw;
-    max-width: 620px; max-height: 620px;
-    top: 15%; left: 15%;
-    background: radial-gradient(ellipse at center, oklch(55% 0.19 355 / 0.38) 0%, transparent 58%);
-    animation: aurora-3 7s ease-in-out infinite;
-  }
-
-  /* Mouse-follow blob */
-  .aurora-mouse {
-    width: 45vw; height: 45vw;
-    max-width: 560px; max-height: 560px;
-    top: 0; left: 0;
-    background: radial-gradient(ellipse at center, oklch(58% 0.20 344 / 0.28) 0%, transparent 58%);
-    transform: translate(-50%, -50%);
-    transition: left 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                top  0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 1.2s ease;
-    pointer-events: none;
-  }
-
-  /* Satin shimmer — diagonal band of light that sweeps slowly */
-  .satin-sheen {
-    position: absolute;
-    inset: -100%;
-    opacity: 0;
-    background: linear-gradient(
-      115deg,
-      transparent 30%,
-      oklch(90% 0.05 344 / 0.04) 45%,
-      oklch(95% 0.02 344 / 0.07) 50%,
-      oklch(90% 0.05 344 / 0.04) 55%,
-      transparent 70%
-    );
-    animation: satin-sweep 6s ease-in-out infinite;
-    will-change: transform;
-  }
-
-  :global(.dark) .satin-sheen {
-    opacity: 1;
-  }
-
-  /* Grain texture — SVG noise rendered via data URI */
-  .satin-grain {
+  /* Fine grain — static, gives the dark background texture depth */
+  .aurora-grain {
     position: absolute;
     inset: 0;
     opacity: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
-    background-size: 200px 200px;
-    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+    mix-blend-mode: soft-light;
   }
 
-  :global(.dark) .satin-grain {
-    opacity: 1;
+  :global(.dark) .aurora-grain { opacity: 1; }
+
+  /* Breathe: gentle scale + opacity pulse, no translation */
+  @keyframes breathe-1 {
+    0%, 100% { transform: scale(1);    opacity: 0.85; }
+    50%       { transform: scale(1.15); opacity: 1; }
   }
 
-  @keyframes aurora-1 {
-    0%   { transform: translate(0, 0) scale(1); }
-    25%  { transform: translate(35%, 25%) scale(1.18); }
-    50%  { transform: translate(18%, 45%) scale(0.88); }
-    75%  { transform: translate(-12%, 20%) scale(1.12); }
-    100% { transform: translate(0, 0) scale(1); }
-  }
-
-  @keyframes aurora-2 {
-    0%   { transform: translate(0, 0) scale(1); }
-    30%  { transform: translate(-28%, -30%) scale(1.20); }
-    60%  { transform: translate(-40%, -12%) scale(0.85); }
-    80%  { transform: translate(-15%, -22%) scale(1.08); }
-    100% { transform: translate(0, 0) scale(1); }
-  }
-
-  @keyframes aurora-3 {
-    0%   { transform: translate(0, 0) scale(1); }
-    20%  { transform: translate(30%, -22%) scale(1.14); }
-    50%  { transform: translate(45%, 28%) scale(0.84); }
-    75%  { transform: translate(12%, 35%) scale(1.10); }
-    100% { transform: translate(0, 0) scale(1); }
-  }
-
-  @keyframes satin-sweep {
-    0%   { transform: translateX(-60%) skewX(-5deg); }
-    50%  { transform: translateX(60%) skewX(-5deg); }
-    100% { transform: translateX(-60%) skewX(-5deg); }
+  @keyframes breathe-2 {
+    0%, 100% { transform: scale(1.1);  opacity: 1; }
+    50%       { transform: scale(0.92); opacity: 0.75; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .aurora-blob, .satin-sheen { animation: none; }
-    .aurora-mouse { transition: none; }
+    .aurora-blob { animation: none; }
   }
 
   /* ── Desktop only: hide on landscape mobile ─────────────── */
@@ -388,36 +322,4 @@ const gridClasses = cn(
   }
 
   initScrollIndicator();
-
-  // Aurora mouse-follow blob
-  (function () {
-    const blob = document.getElementById('aurora-mouse') as HTMLElement | null;
-    if (!blob) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const section = blob.closest('section') as HTMLElement | null;
-    if (!section) return;
-
-    const blobEl = blob;
-    const sectionEl = section;
-    let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
-    let cx = tx, cy = ty;
-    const LERP = 0.055;
-
-    function onMove(e: MouseEvent) {
-      const r = sectionEl.getBoundingClientRect();
-      tx = e.clientX - r.left;
-      ty = e.clientY - r.top;
-    }
-
-    function tick() {
-      cx += (tx - cx) * LERP;
-      cy += (ty - cy) * LERP;
-      blobEl.style.left = cx + 'px';
-      blobEl.style.top  = cy + 'px';
-      requestAnimationFrame(tick);
-    }
-
-    sectionEl.addEventListener('mousemove', onMove);
-    requestAnimationFrame(tick);
-  })();
 </script>
