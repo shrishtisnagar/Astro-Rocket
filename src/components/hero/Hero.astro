@@ -22,6 +22,8 @@ interface Props extends HTMLAttributes<'section'> {
   showScrollIndicator?: boolean;
   /** Show animated aurora blob background (premium dark-mode effect) */
   showAurora?: boolean;
+  /** Path to a looping background video (e.g. "/videos/hero-bg.mp4") */
+  videoBg?: string;
 }
 
 const {
@@ -34,6 +36,7 @@ const {
   bottomFade = false,
   showScrollIndicator = false,
   showAurora = false,
+  videoBg,
   class: className,
   ...attrs
 } = Astro.props;
@@ -63,7 +66,23 @@ const gridClasses = cn(
 ---
 
 <section class={sectionClasses} {...attrs}>
-  {showAurora && (
+  {videoBg && (
+    <div class="video-bg-wrap" aria-hidden="true">
+      <video
+        class="video-bg"
+        src={videoBg}
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      />
+      {/* Wine/burgundy color overlay — shifts the gold particles to brand hue */}
+      <div class="video-overlay"></div>
+    </div>
+  )}
+
+  {!videoBg && showAurora && (
     <div class="aurora-layer" aria-hidden="true">
       <div class="aurora-blob aurora-blob-1"></div>
       <div class="aurora-blob aurora-blob-2"></div>
@@ -175,6 +194,38 @@ const gridClasses = cn(
 </section>
 
 <style>
+  /* ── Video background ───────────────────────────────────── */
+  .video-bg-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* Desaturate first, then hue-rotate gold → wine/burgundy range */
+    filter: saturate(140%) hue-rotate(270deg) brightness(0.55) contrast(1.1);
+  }
+
+  /* Multiply overlay in deep wine to deepen and unify the color */
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      /* Bottom fade into the next section */
+      linear-gradient(to bottom, transparent 60%, var(--color-background) 100%),
+      /* Wine tint */
+      radial-gradient(ellipse at 30% 40%, oklch(25% 0.08 344 / 0.7) 0%, oklch(10% 0.04 344 / 0.85) 100%);
+    mix-blend-mode: multiply;
+  }
+
   /* ── Breathing gradient background ──────────────────────── */
   .aurora-layer {
     position: absolute;
