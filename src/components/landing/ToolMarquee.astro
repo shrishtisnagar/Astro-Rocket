@@ -1,0 +1,129 @@
+---
+interface Props {
+  badge?: string;
+  title?: string;
+  description?: string;
+  background?: 'primary' | 'secondary';
+}
+
+const { badge, title, description, background = 'secondary' } = Astro.props;
+
+const bgClass = background === 'primary' ? 'bg-background' : 'bg-background-secondary';
+
+const row1 = [
+  'HubSpot', 'Notion', 'LinkedIn', 'Google Analytics', 'Canva',
+  'Mailchimp', 'Figma', 'Webflow', 'Zapier', 'Typeform',
+];
+
+const row2 = [
+  'Ahrefs', 'SEMrush', 'Buffer', 'Apollo', 'Klaviyo',
+  'Slack', 'Loom', 'Hotjar', 'Clay', 'Beehiiv',
+];
+---
+
+<section class={`border-y border-border ${bgClass} py-[var(--space-section-md)] overflow-hidden`}>
+  <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+    {(badge || title || description) && (
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        {(badge || title) && (
+          <div class="flex flex-col items-center gap-6">
+            {badge && (
+              <span class="inline-flex items-center rounded-full border border-brand-500/30 bg-brand-500/10 px-3 py-1 text-sm font-medium text-brand-500">
+                {badge}
+              </span>
+            )}
+            {title && (
+              <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">{title}</h2>
+            )}
+          </div>
+        )}
+        {description && (
+          <p class="text-lg text-foreground-muted max-w-2xl mx-auto">{description}</p>
+        )}
+      </div>
+    )}
+
+    <div class="flex flex-col gap-4 select-none">
+      <!-- Row 1: scrolls left -->
+      <div class="marquee-track">
+        <div class="marquee-inner marquee-left">
+          {[...row1, ...row1].map((tool) => (
+            <span class="marquee-pill">{tool}</span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Row 2: scrolls right -->
+      <div class="marquee-track">
+        <div class="marquee-inner marquee-right">
+          {[...row2, ...row2].map((tool) => (
+            <span class="marquee-pill">{tool}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee-track {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  }
+
+  .marquee-inner {
+    display: flex;
+    gap: 0.75rem;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .marquee-left {
+    animation: scroll-left 28s linear infinite;
+  }
+
+  .marquee-right {
+    animation: scroll-right 32s linear infinite;
+  }
+
+  .marquee-pill {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-brand-500, #2b1422);
+    border-opacity: 0.3;
+    background: color-mix(in srgb, var(--color-brand-500, #2b1422) 8%, transparent);
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+
+  .marquee-track:hover .marquee-left {
+    animation-play-state: paused;
+  }
+
+  .marquee-track:hover .marquee-right {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @keyframes scroll-right {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-left,
+    .marquee-right {
+      animation: none;
+    }
+  }
+</style>
