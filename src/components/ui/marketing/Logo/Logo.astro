@@ -42,11 +42,12 @@ const letter = letterProp ?? siteConfig.name.charAt(0).toUpperCase();
 <span
   class={cn(
     'inline-flex items-center justify-center shrink-0',
-    'bg-brand-500 text-white',
+    'text-white',
     'font-display font-bold leading-none select-none',
     box, text, radius,
     className
   )}
+  style="background-color: var(--brand-500)"
   aria-label={siteConfig.branding.logo.alt}
   role="img"
 >
