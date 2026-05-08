@@ -83,8 +83,8 @@ const featuredProjects = projectItems
         <span class="text-2xl md:text-3xl font-semibold text-foreground-muted">a word on what actually works.</span>
       </h2>
 
-      <!-- Body text as two-column card on desktop -->
-      <div class="grid md:grid-cols-2 gap-8 mb-10" data-reveal>
+      <!-- Body text + sketch side by side -->
+      <div class="grid md:grid-cols-2 gap-10 items-center mb-10" data-reveal>
         <div class="space-y-4 text-base text-foreground-muted leading-relaxed">
           <p>
             As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
@@ -97,22 +97,32 @@ const featuredProjects = projectItems
           </p>
         </div>
 
-        <!-- Three pillars -->
-        <div class="flex flex-col gap-4">
-          {[
-            { label: 'Clarity', body: 'Being clear on who they were speaking to and why it mattered' },
-            { label: 'Consistency', body: 'Staying visible long enough to build recognition and trust' },
-            { label: 'Conversion', body: 'Capturing attention to fuel actual business outcomes' },
-          ].map((item) => (
-            <div class="flex items-start gap-4 rounded-xl border border-brand-500/15 bg-brand-500/5 px-5 py-4">
-              <span class="mt-0.5 w-2 h-2 rounded-full bg-brand-500 shrink-0"></span>
-              <div>
-                <p class="text-sm font-semibold text-foreground mb-0.5">{item.label}</p>
-                <p class="text-sm text-foreground-muted leading-relaxed">{item.body}</p>
-              </div>
-            </div>
-          ))}
+        <!-- Sketch image -->
+        <div class="flex items-center justify-center">
+          <img
+            src={url('/images/sketch.png')}
+            alt="Handmade sketch"
+            class="w-full max-w-sm rounded-xl object-contain"
+            loading="lazy"
+          />
         </div>
+      </div>
+
+      <!-- Three pillars -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-10" data-reveal>
+        {[
+          { label: 'Clarity', body: 'Being clear on who they were speaking to and why it mattered' },
+          { label: 'Consistency', body: 'Staying visible long enough to build recognition and trust' },
+          { label: 'Conversion', body: 'Capturing attention to fuel actual business outcomes' },
+        ].map((item) => (
+          <div class="flex items-start gap-4 rounded-xl border border-brand-500/15 bg-brand-500/5 px-5 py-4">
+            <span class="mt-0.5 w-2 h-2 rounded-full bg-brand-500 shrink-0"></span>
+            <div>
+              <p class="text-sm font-semibold text-foreground mb-0.5">{item.label}</p>
+              <p class="text-sm text-foreground-muted leading-relaxed">{item.body}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       <!-- Closing statement -->
