@@ -11,7 +11,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
 ---
 
 <PageLayout title="Blog — The S Curve" description="Newsletter on growth, strategy and business by The S Curve." showScrollProgress eagerReveal>
-  <Hero layout="centered" size="sm">
+  <Hero layout="centered" size="sm" class="!pb-6">
     <Badge slot="badge" variant="brand" pill>
       <Icon name="book" size="sm" />
       Newsletter
@@ -27,7 +27,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
     </p>
   </Hero>
 
-  <section class="bg-background pt-8 pb-[var(--space-section-md)]">
+  <section class="bg-background pt-4 pb-[var(--space-section-md)]">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
 
       {allTags.length > 0 && (
