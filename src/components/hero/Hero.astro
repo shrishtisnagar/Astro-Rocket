@@ -55,7 +55,7 @@ const contentClasses = cn(
 
 const gridClasses = cn(
   'mx-auto grid max-w-6xl grid-cols-1 items-center gap-[var(--space-section-gap)] px-6',
-  layout === 'split' && 'lg:grid-cols-2 lg:gap-[var(--space-section-gap)]'
+  layout === 'split' && 'lg:grid-cols-[3fr_2fr] lg:gap-[var(--space-section-gap)]'
 );
 ---
 
@@ -110,7 +110,7 @@ const gridClasses = cn(
 
   <div class={gridClasses}>
     {/* Content Column */}
-    <div class={cn(contentClasses, 'order-1 lg:order-none animate-hero-stagger')}>
+    <div class={cn(contentClasses, 'order-2 lg:order-1 animate-hero-stagger')}>
       {/* Badge Slot */}
       {hasBadgeSlot && (
         <div class="mb-[var(--space-heading-gap)]">
@@ -156,7 +156,7 @@ const gridClasses = cn(
 
     {/* Aside Column (for split layout) */}
     {layout === 'split' && hasAsideSlot && (
-      <div class="relative z-10 w-full order-2 lg:order-none">
+      <div class="relative z-10 w-full order-1 lg:order-2">
         <slot name="aside" />
       </div>
     )}
