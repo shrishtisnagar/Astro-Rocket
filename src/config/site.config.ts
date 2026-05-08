@@ -58,7 +58,7 @@ export interface SiteConfig {
 }
 
 const siteConfig: SiteConfig = {
-  name: 'Shrishti S Nagar',
+  name: 'The S Curve',
   description: 'Marketing Strategist for B2B leaders — strategy, positioning, and growth systems that actually work.',
   url: SITE_URL || 'https://shrishtisnagar.github.io/Astro-Rocket',
   ogImage: '/og-default.svg',
@@ -88,7 +88,7 @@ const siteConfig: SiteConfig = {
   branding: {
     logo: {
       alt: 'The S Curve',
-      imageUrl: '/favicon.svg',
+      imageUrl: '/images/logo.svg',
     },
     favicon: {
       svg: '/favicon.svg',
