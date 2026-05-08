@@ -52,7 +52,7 @@ const hasAsideSlot = Astro.slots.has('aside');
 const alignment = layout === 'centered' ? 'text-center items-center' : 'text-left items-start';
 
 // Compute classes
-const sectionClasses = cn(heroSectionVariants({ size }), className);
+const sectionClasses = cn(heroSectionVariants({ size }), videoBg ? '!bg-transparent' : '', className);
 
 const contentClasses = cn(
   'z-10 flex flex-col',
@@ -67,7 +67,7 @@ const gridClasses = cn(
 
 <section class={sectionClasses} {...attrs}>
   {videoBg && (
-    <div class="video-bg-wrap" aria-hidden="true">
+    <div class="video-bg-wrap" style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;" aria-hidden="true">
       <video
         class="video-bg"
         src={videoBg}
@@ -76,9 +76,9 @@ const gridClasses = cn(
         muted
         playsinline
         preload="auto"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
       />
-      {/* Wine/burgundy color overlay — shifts the gold particles to brand hue */}
-      <div class="video-overlay"></div>
+      <div class="video-overlay" style="position:absolute;inset:0;"></div>
     </div>
   )}
 
