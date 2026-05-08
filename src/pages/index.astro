@@ -54,14 +54,14 @@ const posts = allRSSPosts.slice(0, 3);
     </Fragment>
 
     <div slot="aside" class="flex items-center justify-center lg:justify-end">
-      <div class="relative">
-        <div class="absolute inset-0 rounded-full bg-brand-500/20 blur-3xl" aria-hidden="true"></div>
+      <div class="hero-photo-wrap">
+        <div class="absolute inset-0 rounded-2xl bg-brand-500/15 blur-3xl scale-90" aria-hidden="true"></div>
         <img
           src={url("/images/photo.png")}
           alt="Shrishti S Nagar"
           width="400"
           height="400"
-          class="relative rounded-full w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-cover ring-4 ring-brand-500/30"
+          class="hero-photo"
         />
       </div>
     </div>
@@ -381,6 +381,39 @@ const posts = allRSSPosts.slice(0, 3);
       </div>
     </LetterGlitchBand>
   </section>
+
+<style>
+  .hero-photo-wrap {
+    position: relative;
+    width: 16rem;
+    height: 16rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-photo-wrap {
+      width: 20rem;
+      height: 20rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-photo-wrap {
+      width: 24rem;
+      height: 24rem;
+    }
+  }
+
+  .hero-photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    /* Fade all edges into the background — no hard border */
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+  }
+</style>
 
 <script>
   function initCountup() {
