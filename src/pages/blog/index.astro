@@ -5,7 +5,6 @@ import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { Hero } from '@/components/hero';
 import { fetchRSSPosts } from '@/lib/rss';
-import { url } from '@/lib/url';
 
 const posts = await fetchRSSPosts();
 const allTags = [...new Set(posts.flatMap((p) => p.tags))].sort();
