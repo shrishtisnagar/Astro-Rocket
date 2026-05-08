@@ -344,18 +344,20 @@ const gridClasses = cn(
 
   // Aurora mouse-follow blob
   (function () {
-    const blob = document.getElementById('aurora-mouse');
+    const blob = document.getElementById('aurora-mouse') as HTMLElement | null;
     if (!blob) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const section = blob.closest('section');
+    const section = blob.closest('section') as HTMLElement | null;
     if (!section) return;
 
+    const blobEl = blob;
+    const sectionEl = section;
     let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
     let cx = tx, cy = ty;
     const LERP = 0.055;
 
-    function onMove(e) {
-      const r = section.getBoundingClientRect();
+    function onMove(e: MouseEvent) {
+      const r = sectionEl.getBoundingClientRect();
       tx = e.clientX - r.left;
       ty = e.clientY - r.top;
     }
@@ -363,12 +365,12 @@ const gridClasses = cn(
     function tick() {
       cx += (tx - cx) * LERP;
       cy += (ty - cy) * LERP;
-      blob.style.left = cx + 'px';
-      blob.style.top  = cy + 'px';
+      blobEl.style.left = cx + 'px';
+      blobEl.style.top  = cy + 'px';
       requestAnimationFrame(tick);
     }
 
-    section.addEventListener('mousemove', onMove);
+    sectionEl.addEventListener('mousemove', onMove);
     requestAnimationFrame(tick);
   })();
 </script>
