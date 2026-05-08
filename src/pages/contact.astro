@@ -16,10 +16,18 @@ const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
 
 const channels = [
   {
+    icon: 'calendar',
+    label: 'Book a call',
+    value: 'calendly.com/shrishtisnagar',
+    note: '1:1 clarity call',
+    href: 'https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti',
+    external: true,
+  },
+  {
     icon: 'mail',
     label: 'Email',
     value: siteConfig.email,
-    note: 'Drop us a line',
+    note: 'Drop me a line',
     href: `mailto:${siteConfig.email}`,
     external: false,
   },
@@ -35,8 +43,8 @@ const channels = [
 ---
 
 <PageLayout
-  title="Contact — Astro Rocket"
-  description="Get in touch"
+  title="Contact — The S Curve"
+  description="Get in touch with Shrishti S Nagar — book a call or send a message."
   eagerReveal
 >
   <Hero layout="centered" size="sm">
@@ -55,7 +63,7 @@ const channels = [
   </Hero>
 
   <!-- Contact Section -->
-  <section class="py-[var(--space-section-md)] bg-background">
+  <section class="pt-8 pb-[var(--space-section-md)] bg-background">
     <div class="mx-auto max-w-5xl px-6">
       <div class="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-stretch">
 
