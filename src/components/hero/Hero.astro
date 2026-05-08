@@ -55,7 +55,8 @@ const hasAsideSlot = Astro.slots.has('aside');
 const alignment = layout === 'centered' ? 'text-center items-center' : 'text-left items-start';
 
 // Compute classes
-const sectionClasses = cn(heroSectionVariants({ size }), videoBg ? '!bg-transparent' : '', className);
+// video-has-bg: CSS will make it transparent only in dark mode
+const sectionClasses = cn(heroSectionVariants({ size }), videoBg ? 'video-has-bg' : '', className);
 
 const contentClasses = cn(
   'z-10 flex flex-col',
@@ -198,6 +199,11 @@ const gridClasses = cn(
 </section>
 
 <style>
+  /* In dark mode, make section transparent so video shows through */
+  :global(.dark) .video-has-bg {
+    background: transparent !important;
+  }
+
   /* ── Video background ───────────────────────────────────── */
   .video-bg-wrap {
     position: absolute;
@@ -205,6 +211,12 @@ const gridClasses = cn(
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+    /* Hide video in light mode — let the white page background show */
+    display: none;
+  }
+
+  :global(.dark) .video-bg-wrap {
+    display: block;
   }
 
   .video-bg {
@@ -217,16 +229,10 @@ const gridClasses = cn(
     /* Start hidden; JS fades it in on canplay so there's no blank flash */
     opacity: 0;
     transition: opacity 1s ease;
-    /* Light mode: clean greyscale */
-    filter: grayscale(100%) brightness(1.05) contrast(1.05);
+    filter: saturate(70%) hue-rotate(130deg) brightness(0.55) contrast(1.10);
   }
 
   .video-bg.is-loaded { opacity: 1; }
-
-  /* Dark mode: wine/burgundy tint */
-  :global(.dark) .video-bg {
-    filter: saturate(70%) hue-rotate(130deg) brightness(0.55) contrast(1.10);
-  }
 
   /* Multiply overlay in deep wine to deepen and unify the color */
   .video-overlay {
