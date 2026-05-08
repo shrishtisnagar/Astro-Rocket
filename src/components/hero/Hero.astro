@@ -20,6 +20,8 @@ interface Props extends HTMLAttributes<'section'> {
   bottomFade?: boolean;
   /** Show an animated scroll indicator at the bottom (desktop only, hides on scroll) */
   showScrollIndicator?: boolean;
+  /** Show animated aurora blob background (premium dark-mode effect) */
+  showAurora?: boolean;
 }
 
 const {
@@ -31,6 +33,7 @@ const {
   showGlow = false,
   bottomFade = false,
   showScrollIndicator = false,
+  showAurora = false,
   class: className,
   ...attrs
 } = Astro.props;
@@ -60,6 +63,15 @@ const gridClasses = cn(
 ---
 
 <section class={sectionClasses} {...attrs}>
+  {showAurora && (
+    <div class="aurora-layer" aria-hidden="true">
+      <div class="aurora-blob aurora-blob-1"></div>
+      <div class="aurora-blob aurora-blob-2"></div>
+      <div class="aurora-blob aurora-blob-3"></div>
+      <div class="aurora-blob aurora-blob-4"></div>
+    </div>
+  )}
+
   {showGrid && (
     <div
       class="bg-grid-pattern pointer-events-none absolute inset-x-0 -inset-y-[20%] opacity-30 hidden md:dark:block"
@@ -108,7 +120,7 @@ const gridClasses = cn(
     </div>
   )}
 
-  <div class={gridClasses}>
+  <div class={cn(gridClasses, 'relative z-10')}>
     {/* Content Column */}
     <div class={cn(contentClasses, 'order-2 lg:order-2 animate-hero-stagger')}>
       {/* Badge Slot */}
@@ -164,7 +176,101 @@ const gridClasses = cn(
 </section>
 
 <style>
-  /* Desktop only: hide on landscape mobile (phones max out ~430px tall) */
+  /* ── Aurora background ───────────────────────────────────── */
+  .aurora-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .aurora-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  /* Only show aurora in dark mode */
+  :global(.dark) .aurora-blob {
+    opacity: 1;
+  }
+
+  .aurora-blob-1 {
+    width: 55vw;
+    height: 55vw;
+    max-width: 700px;
+    max-height: 700px;
+    top: -15%;
+    left: -10%;
+    background: radial-gradient(ellipse at center, oklch(32% 0.09 344 / 0.45) 0%, transparent 70%);
+    animation: aurora-drift-1 38s ease-in-out infinite;
+  }
+
+  .aurora-blob-2 {
+    width: 45vw;
+    height: 45vw;
+    max-width: 580px;
+    max-height: 580px;
+    bottom: -10%;
+    right: -5%;
+    background: radial-gradient(ellipse at center, oklch(20% 0.06 340 / 0.5) 0%, transparent 70%);
+    animation: aurora-drift-2 45s ease-in-out infinite;
+  }
+
+  .aurora-blob-3 {
+    width: 35vw;
+    height: 35vw;
+    max-width: 450px;
+    max-height: 450px;
+    top: 30%;
+    left: 35%;
+    background: radial-gradient(ellipse at center, oklch(28% 0.07 355 / 0.3) 0%, transparent 70%);
+    animation: aurora-drift-3 52s ease-in-out infinite;
+  }
+
+  .aurora-blob-4 {
+    width: 30vw;
+    height: 30vw;
+    max-width: 380px;
+    max-height: 380px;
+    top: 10%;
+    right: 15%;
+    background: radial-gradient(ellipse at center, oklch(15% 0.04 320 / 0.4) 0%, transparent 70%);
+    animation: aurora-drift-4 42s ease-in-out infinite;
+  }
+
+  @keyframes aurora-drift-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%       { transform: translate(6%, 8%) scale(1.08); }
+    66%       { transform: translate(-4%, 5%) scale(0.95); }
+  }
+
+  @keyframes aurora-drift-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    40%       { transform: translate(-8%, -6%) scale(1.1); }
+    70%       { transform: translate(5%, -3%) scale(0.97); }
+  }
+
+  @keyframes aurora-drift-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    30%       { transform: translate(-6%, 7%) scale(1.05); }
+    60%       { transform: translate(8%, -5%) scale(1.12); }
+  }
+
+  @keyframes aurora-drift-4 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    45%       { transform: translate(7%, 9%) scale(0.93); }
+    80%       { transform: translate(-5%, 4%) scale(1.06); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aurora-blob { animation: none; }
+  }
+
+  /* ── Desktop only: hide on landscape mobile ─────────────── */
   .scroll-indicator-wrapper {
     display: none;
   }
