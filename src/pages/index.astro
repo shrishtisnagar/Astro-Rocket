@@ -33,8 +33,8 @@ const posts = allRSSPosts.slice(0, 3);
     <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-200">Available for consulting &amp; projects</Badge>
 
     <h1 slot="title">
-      <span class="text-brand-500 dark:text-foreground [-webkit-text-fill-color:currentColor]">Shrishti S Nagar —</span><br />
-      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Marketing</span><span class="text-foreground [-webkit-text-fill-color:currentColor]"> Strategist</span>
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">I'm Shrishti,</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">Marketer + Business Strategist</span>
     </h1>
 
     <p slot="description">
@@ -72,13 +72,12 @@ const posts = allRSSPosts.slice(0, 3);
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>What I do</Badge>
           <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Marketing that actually moves things
+            Engineering narrative that makes you the obvious choice
           </h2>
         </div>
         <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
-          I work with founders and teams who are tired of generic playbooks and want marketing built around how their business actually works.
+          I work with leaders and teams who are sick and tired of AI slop and want to solve their business problems by going deeper.
         </p>
       </div>
 
@@ -92,7 +91,7 @@ const posts = allRSSPosts.slice(0, 3);
             <div class="flex-1 min-w-0">
               <h3 class="text-base font-semibold text-foreground">Marketing Strategy</h3>
               <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Clarity on what to say, who to target, and how to grow. Strategy that connects your offer to the right people — without the fluff.
+                Clarity on what to say, who to target, and how to grow. All of this based on real market data and projections.
               </p>
             </div>
           </div>
@@ -107,7 +106,7 @@ const posts = allRSSPosts.slice(0, 3);
             <div class="flex-1 min-w-0">
               <h3 class="text-base font-semibold text-foreground">Content &amp; Positioning</h3>
               <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Turning data into non-AI, human messaging that builds trust. Positioning that makes you the obvious choice rather than one of many.
+                Turning data into non-AI, HUMAN messaging that builds trust. Positioning that makes you the obvious choice rather than one of many.
               </p>
             </div>
           </div>
@@ -138,12 +137,9 @@ const posts = allRSSPosts.slice(0, 3);
         <div class="flex flex-col items-center gap-6">
           <Badge variant="brand" pill>Selected work</Badge>
           <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Projects I've worked on
+            Projects I'm proud of
           </h2>
         </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
-          A selection of engagements across strategy, content, and growth.
-        </p>
       </div>
 
       <div class="grid gap-6 md:grid-cols-2">
@@ -185,9 +181,6 @@ const posts = allRSSPosts.slice(0, 3);
             What clients say
           </h2>
         </div>
-        <p class="text-lg text-foreground-muted">
-          Real feedback from people I've worked with.
-        </p>
       </div>
 
       <div class="grid gap-6 md:grid-cols-2">
@@ -248,7 +241,6 @@ const posts = allRSSPosts.slice(0, 3);
   <ToolMarquee
     badge="My Toolstack"
     title="Tools I work with"
-    description="The platforms and tools I use across strategy, content, and growth — update these to your own stack."
     background="primary"
   />
 
@@ -264,11 +256,8 @@ const posts = allRSSPosts.slice(0, 3);
               <span class="text-brand-500">and Psychology.</span>
             </h2>
           </div>
-          <p class="text-lg text-foreground-muted leading-relaxed mb-4">
-            8 years of hands-on marketing experience, based in India and working with clients worldwide. I combine strategy with systems thinking — so your marketing runs even when you're not watching it.
-          </p>
           <p class="text-lg text-foreground-muted leading-relaxed mb-8">
-            On the blog, I write about growth, positioning, and the business ideas worth thinking about.
+            8 years of marketing experience has taught me one thing — people don't remember you or your product but they do remember how you made them feel. And it's that feeling that I deliver to audiences. I'm an empath, a feeler, blessed with a logical mind — and that's a dangerous combination for reverse engineering and delivering what people want.
           </p>
           <Button variant="outline" href={url("/about")} class="self-start">
             More about me
@@ -347,15 +336,15 @@ const posts = allRSSPosts.slice(0, 3);
         Have a project in mind?
       </h2>
       <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Whether it's a new strategy, a positioning refresh, or building out a growth system — I'd love to hear about it.
+        Let's talk. Book a direct call with me or connect via other channels.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href={url("/contact")} class="cta-btn-brand">
-          Start a project
+        <Button size="lg" href="https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti" target="_blank" rel="noopener noreferrer" class="cta-btn-brand">
+          Book a call
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href={url("/about")}>
-          More about me
+        <Button size="lg" variant="outline" href={url("/contact")}>
+          Contact
           <Icon name="arrow-right" size="sm" />
         </Button>
       </div>
@@ -367,15 +356,15 @@ const posts = allRSSPosts.slice(0, 3);
         Have a project in mind?
       </h2>
       <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Whether it's a new strategy, a positioning refresh, or building out a growth system — I'd love to hear about it.
+        Let's talk. Book a direct call with me or connect via other channels.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href={url("/contact")} class="hero-btn-brand">
-          Start a project
+        <Button size="lg" href="https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti" target="_blank" rel="noopener noreferrer" class="hero-btn-brand">
+          Book a call
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href={url("/about")}>
-          More about me
+        <Button size="lg" variant="outline" href={url("/contact")}>
+          Contact
           <Icon name="arrow-right" size="sm" />
         </Button>
       </div>

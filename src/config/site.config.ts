@@ -58,47 +58,44 @@ export interface SiteConfig {
 }
 
 const siteConfig: SiteConfig = {
-  name: 'Astro Rocket',
-  description:
-    'Astro Rocket — A production-ready Astro 6 starter with 12 beautiful themes, 57+ components, built-in i18n, dark mode and a fast, modern foundation to build anything on.',
-  url: SITE_URL || 'https://astrorocket.dev',
+  name: 'Shrishti S Nagar',
+  description: 'Marketing Strategist for B2B leaders — strategy, positioning, and growth systems that actually work.',
+  url: SITE_URL || 'https://shrishtisnagar.github.io/Astro-Rocket',
   ogImage: '/og-default.svg',
-  author: 'Hans Martens',
-  email: 'hello@hansmartens.dev',
+  author: 'Shrishti S Nagar',
+  email: 'shrishtisnagar@gmail.com',
   address: {
     street: '',
-    city: 'Veghel',
-    state: '',
+    city: 'New Delhi',
+    state: 'Delhi',
     zip: '',
-    country: 'the Netherlands',
+    country: 'India',
   },
   socialLinks: [
-    'https://github.com/hansmartens68/Astro-Rocket',
-    'https://x.com/hansmartens_dev',
-    'https://www.linkedin.com',
-    'https://bsky.app/profile/hansmartens-online.bsky.social',
+    'https://x.com/shrishtisnagar',
+    'https://www.linkedin.com/in/shrishtisnagar',
   ],
   twitter: {
-    site: 'https://x.com/hansmartens_dev',
-    creator: '@hansmartens_dev',
+    site: 'https://x.com/shrishtisnagar',
+    creator: '@shrishtisnagar',
   },
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
-  authorImage: '/avatar.svg',
+  authorImage: '/images/photo.png',
   blogImageOverlay: true,
   branding: {
     logo: {
-      alt: 'Astro Rocket',
+      alt: 'The S Curve',
       imageUrl: '/favicon.svg',
     },
     favicon: {
       svg: '/favicon.svg',
     },
     colors: {
-      themeColor: '#3b82f6',
-      backgroundColor: '#ffffff',
+      themeColor: '#2b1422',
+      backgroundColor: '#0a0408',
     },
   },
 };
