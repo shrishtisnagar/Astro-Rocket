@@ -3,7 +3,7 @@
  * Projects page
  * URL: /projects
  */
-import PageLayout from '@/layouts/PageLayout.astro';
+import LandingLayout from '@/layouts/LandingLayout.astro';
 import { Hero } from '@/components/hero';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
@@ -20,18 +20,46 @@ const featuredProjects = projectItems
   .slice(0, 4);
 ---
 
-<PageLayout
+<LandingLayout
   title="Projects — The S Curve"
   description="Selected work — marketing strategy, content, and growth engagements."
-  eagerReveal
 >
-  <Hero layout="centered" size="sm">
-    <Badge slot="badge" variant="brand" pill>
-      <Icon name="layers" size="sm" />
-      Selected work
-    </Badge>
-    <h1 slot="title">Projects</h1>
-    <p slot="description">Work I'm most proud of.</p>
+  <Hero layout="split" size="xl" class="hero-dark-gradient" showScrollIndicator showAurora videoBg={url("/videos/hero-bg.mp4")}>
+    <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-300">Available for consulting &amp; projects</Badge>
+
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">I'm Shrishti,</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] !text-2xl md:!text-3xl lg:!text-3xl !font-semibold !leading-snug">Marketer + Business Strategist</span>
+    </h1>
+
+    <p slot="description">
+      I solve messy marketing problems across systems, positioning, and growth.
+    </p>
+
+    <Fragment slot="actions">
+      <Button size="lg" href="https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti" target="_blank" rel="noopener noreferrer">
+        Book a call
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+      <Button size="lg" variant="outline" href={url("/contact")}>
+        <Icon name="mail" size="sm" />
+        Contact me
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </Fragment>
+
+    <div slot="aside" class="flex items-center justify-center lg:justify-end">
+      <div class="hero-photo-wrap">
+        <div class="absolute inset-0 rounded-2xl bg-brand-500/15 blur-3xl scale-90" aria-hidden="true"></div>
+        <img
+          src={url("/images/photo.png")}
+          alt="Shrishti S Nagar"
+          width="400"
+          height="400"
+          class="hero-photo"
+        />
+      </div>
+    </div>
   </Hero>
 
   <!-- Brands Section -->
@@ -78,15 +106,6 @@ const featuredProjects = projectItems
   <!-- Portfolio -->
   <section id="work" class="relative z-10 py-[var(--space-section-md)] bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Selected work</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Projects I'm proud of
-          </h2>
-        </div>
-      </div>
-
       <div class="grid gap-6 md:grid-cols-2">
         {featuredProjects.map((project) => (
           <a
@@ -312,9 +331,29 @@ const featuredProjects = projectItems
       </div>
     </LetterGlitchBand>
   </section>
-</PageLayout>
+</LandingLayout>
 
 <style>
+  /* ---- Hero photo ---- */
+  .hero-photo-wrap {
+    position: relative;
+    width: 16rem;
+    height: 16rem;
+  }
+
+  @media (min-width: 768px) { .hero-photo-wrap { width: 20rem; height: 20rem; } }
+  @media (min-width: 1024px) { .hero-photo-wrap { width: 24rem; height: 24rem; } }
+
+  .hero-photo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+  }
+
   /* ---- Brand logo marquee ---- */
   .brand-marquee-track {
     overflow: hidden;
