@@ -188,9 +188,10 @@ const gridClasses = cn(
   .aurora-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
+    filter: blur(80px);
     opacity: 0;
     will-change: transform, opacity;
+    transition: opacity 1s ease;
   }
 
   /* Only show aurora in dark mode */
@@ -198,47 +199,51 @@ const gridClasses = cn(
     opacity: 1;
   }
 
+  /* Blob 1: rich burgundy-rose, top-left anchor */
   .aurora-blob-1 {
     width: 55vw;
     height: 55vw;
     max-width: 700px;
     max-height: 700px;
-    top: -15%;
-    left: -10%;
-    background: radial-gradient(ellipse at center, oklch(32% 0.09 344 / 0.45) 0%, transparent 70%);
+    top: -10%;
+    left: -5%;
+    background: radial-gradient(ellipse at center, oklch(55% 0.18 344 / 0.35) 0%, transparent 65%);
     animation: aurora-drift-1 38s ease-in-out infinite;
   }
 
+  /* Blob 2: deep wine, bottom-right anchor */
   .aurora-blob-2 {
-    width: 45vw;
-    height: 45vw;
-    max-width: 580px;
-    max-height: 580px;
-    bottom: -10%;
-    right: -5%;
-    background: radial-gradient(ellipse at center, oklch(20% 0.06 340 / 0.5) 0%, transparent 70%);
+    width: 50vw;
+    height: 50vw;
+    max-width: 620px;
+    max-height: 620px;
+    bottom: -5%;
+    right: 0%;
+    background: radial-gradient(ellipse at center, oklch(45% 0.14 338 / 0.4) 0%, transparent 65%);
     animation: aurora-drift-2 45s ease-in-out infinite;
   }
 
+  /* Blob 3: warm plum-rose, center */
   .aurora-blob-3 {
-    width: 35vw;
-    height: 35vw;
-    max-width: 450px;
-    max-height: 450px;
-    top: 30%;
-    left: 35%;
-    background: radial-gradient(ellipse at center, oklch(28% 0.07 355 / 0.3) 0%, transparent 70%);
+    width: 40vw;
+    height: 40vw;
+    max-width: 500px;
+    max-height: 500px;
+    top: 25%;
+    left: 30%;
+    background: radial-gradient(ellipse at center, oklch(50% 0.16 355 / 0.28) 0%, transparent 65%);
     animation: aurora-drift-3 52s ease-in-out infinite;
   }
 
+  /* Blob 4: cool dark plum, top-right */
   .aurora-blob-4 {
-    width: 30vw;
-    height: 30vw;
-    max-width: 380px;
-    max-height: 380px;
-    top: 10%;
-    right: 15%;
-    background: radial-gradient(ellipse at center, oklch(15% 0.04 320 / 0.4) 0%, transparent 70%);
+    width: 35vw;
+    height: 35vw;
+    max-width: 440px;
+    max-height: 440px;
+    top: 5%;
+    right: 10%;
+    background: radial-gradient(ellipse at center, oklch(42% 0.12 320 / 0.32) 0%, transparent 65%);
     animation: aurora-drift-4 42s ease-in-out infinite;
   }
 
