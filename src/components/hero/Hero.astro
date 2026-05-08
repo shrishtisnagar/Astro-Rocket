@@ -69,6 +69,10 @@ const gridClasses = cn(
       <div class="aurora-blob aurora-blob-2"></div>
       <div class="aurora-blob aurora-blob-3"></div>
       <div id="aurora-mouse" class="aurora-blob aurora-mouse"></div>
+      <!-- Satin shimmer sweep -->
+      <div class="satin-sheen"></div>
+      <!-- Grain texture overlay -->
+      <div class="satin-grain"></div>
     </div>
   )}
 
@@ -176,7 +180,7 @@ const gridClasses = cn(
 </section>
 
 <style>
-  /* ── Aurora background ───────────────────────────────────── */
+  /* ── Aurora + satin background ──────────────────────────── */
   .aurora-layer {
     position: absolute;
     inset: 0;
@@ -188,9 +192,9 @@ const gridClasses = cn(
   .aurora-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(70px);
     opacity: 0;
-    will-change: transform, opacity;
+    will-change: transform;
     transition: opacity 1.2s ease;
   }
 
@@ -198,70 +202,113 @@ const gridClasses = cn(
     opacity: 1;
   }
 
-  /* Blob 1: burgundy-rose — sweeps across large arc */
+  /* Blob 1: rich burgundy, sweeps wide arc top → bottom-right */
   .aurora-blob-1 {
+    width: 65vw; height: 65vw;
+    max-width: 820px; max-height: 820px;
+    top: -25%; left: -20%;
+    background: radial-gradient(ellipse at center, oklch(60% 0.22 344 / 0.50) 0%, transparent 58%);
+    animation: aurora-1 8s ease-in-out infinite;
+  }
+
+  /* Blob 2: deep wine, sweeps bottom-right → top-left */
+  .aurora-blob-2 {
     width: 60vw; height: 60vw;
     max-width: 750px; max-height: 750px;
-    top: -20%; left: -15%;
-    background: radial-gradient(ellipse at center, oklch(58% 0.20 344 / 0.40) 0%, transparent 62%);
-    animation: aurora-1 12s ease-in-out infinite;
+    bottom: -20%; right: -15%;
+    background: radial-gradient(ellipse at center, oklch(50% 0.18 338 / 0.55) 0%, transparent 58%);
+    animation: aurora-2 11s ease-in-out infinite;
   }
 
-  /* Blob 2: deep wine — sweeps diagonally from bottom-right */
-  .aurora-blob-2 {
-    width: 55vw; height: 55vw;
-    max-width: 680px; max-height: 680px;
-    bottom: -15%; right: -10%;
-    background: radial-gradient(ellipse at center, oklch(48% 0.16 338 / 0.45) 0%, transparent 62%);
-    animation: aurora-2 15s ease-in-out infinite;
-  }
-
-  /* Blob 3: plum-rose — crosses the center */
+  /* Blob 3: plum, drifts across center */
   .aurora-blob-3 {
+    width: 50vw; height: 50vw;
+    max-width: 620px; max-height: 620px;
+    top: 15%; left: 15%;
+    background: radial-gradient(ellipse at center, oklch(55% 0.19 355 / 0.38) 0%, transparent 58%);
+    animation: aurora-3 7s ease-in-out infinite;
+  }
+
+  /* Mouse-follow blob */
+  .aurora-mouse {
     width: 45vw; height: 45vw;
     max-width: 560px; max-height: 560px;
-    top: 20%; left: 20%;
-    background: radial-gradient(ellipse at center, oklch(52% 0.17 355 / 0.32) 0%, transparent 62%);
-    animation: aurora-3 10s ease-in-out infinite;
+    top: 0; left: 0;
+    background: radial-gradient(ellipse at center, oklch(58% 0.20 344 / 0.28) 0%, transparent 58%);
+    transform: translate(-50%, -50%);
+    transition: left 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                top  0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 1.2s ease;
+    pointer-events: none;
   }
 
-  /* Mouse-follow blob — positioned via JS */
-  .aurora-mouse {
-    width: 40vw; height: 40vw;
-    max-width: 500px; max-height: 500px;
-    top: 0; left: 0;
-    background: radial-gradient(ellipse at center, oklch(55% 0.18 344 / 0.22) 0%, transparent 60%);
-    transform: translate(-50%, -50%);
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.2s ease;
-    pointer-events: none;
+  /* Satin shimmer — diagonal band of light that sweeps slowly */
+  .satin-sheen {
+    position: absolute;
+    inset: -100%;
+    opacity: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      oklch(90% 0.05 344 / 0.04) 45%,
+      oklch(95% 0.02 344 / 0.07) 50%,
+      oklch(90% 0.05 344 / 0.04) 55%,
+      transparent 70%
+    );
+    animation: satin-sweep 6s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  :global(.dark) .satin-sheen {
+    opacity: 1;
+  }
+
+  /* Grain texture — SVG noise rendered via data URI */
+  .satin-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    mix-blend-mode: overlay;
+  }
+
+  :global(.dark) .satin-grain {
+    opacity: 1;
   }
 
   @keyframes aurora-1 {
     0%   { transform: translate(0, 0) scale(1); }
-    25%  { transform: translate(22%, 18%) scale(1.12); }
-    50%  { transform: translate(10%, 30%) scale(0.92); }
-    75%  { transform: translate(-8%, 14%) scale(1.08); }
+    25%  { transform: translate(35%, 25%) scale(1.18); }
+    50%  { transform: translate(18%, 45%) scale(0.88); }
+    75%  { transform: translate(-12%, 20%) scale(1.12); }
     100% { transform: translate(0, 0) scale(1); }
   }
 
   @keyframes aurora-2 {
     0%   { transform: translate(0, 0) scale(1); }
-    30%  { transform: translate(-18%, -20%) scale(1.15); }
-    60%  { transform: translate(-28%, -8%) scale(0.90); }
-    80%  { transform: translate(-10%, -15%) scale(1.05); }
+    30%  { transform: translate(-28%, -30%) scale(1.20); }
+    60%  { transform: translate(-40%, -12%) scale(0.85); }
+    80%  { transform: translate(-15%, -22%) scale(1.08); }
     100% { transform: translate(0, 0) scale(1); }
   }
 
   @keyframes aurora-3 {
     0%   { transform: translate(0, 0) scale(1); }
-    20%  { transform: translate(20%, -15%) scale(1.10); }
-    50%  { transform: translate(30%, 20%) scale(0.88); }
-    75%  { transform: translate(8%, 25%) scale(1.06); }
+    20%  { transform: translate(30%, -22%) scale(1.14); }
+    50%  { transform: translate(45%, 28%) scale(0.84); }
+    75%  { transform: translate(12%, 35%) scale(1.10); }
     100% { transform: translate(0, 0) scale(1); }
   }
 
+  @keyframes satin-sweep {
+    0%   { transform: translateX(-60%) skewX(-5deg); }
+    50%  { transform: translateX(60%) skewX(-5deg); }
+    100% { transform: translateX(-60%) skewX(-5deg); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .aurora-blob { animation: none; }
+    .aurora-blob, .satin-sheen { animation: none; }
     .aurora-mouse { transition: none; }
   }
 
