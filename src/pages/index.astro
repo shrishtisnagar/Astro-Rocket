@@ -34,7 +34,7 @@ const posts = allRSSPosts.slice(0, 3);
 
     <h1 slot="title">
       <span class="text-foreground [-webkit-text-fill-color:currentColor]">I'm Shrishti,</span><br />
-      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] text-4xl md:text-5xl lg:text-5xl">Marketer + Business Strategist</span>
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] !text-2xl md:!text-3xl lg:!text-3xl !font-semibold !leading-snug">Marketer + Business Strategist</span>
     </h1>
 
     <p slot="description">
@@ -67,46 +67,23 @@ const posts = allRSSPosts.slice(0, 3);
     </div>
   </Hero>
 
-  <!-- Companies Section -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background overflow-hidden">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-10">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          Some companies I've had the<br class="hidden sm:block" /> pleasure to work with
-        </h2>
-      </div>
+  <!-- Brands Section -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-10">
+      <p class="text-center text-sm font-medium text-foreground-muted uppercase tracking-widest" data-reveal>
+        Brands I've worked with
+      </p>
 
-      <!-- Logo marquee -->
-      <div class="company-marquee-track">
-        <div class="company-marquee-inner">
-          {[
-            'Koerting US Corporation',
-            'DustAct',
-            'Client Co.',
-            'Acme Inc.',
-            'Brand House',
-            'Venture Labs',
-            'Growth Co.',
-            'Scale Studio',
-          ].concat([
-            'Koerting US Corporation',
-            'DustAct',
-            'Client Co.',
-            'Acme Inc.',
-            'Brand House',
-            'Venture Labs',
-            'Growth Co.',
-            'Scale Studio',
-          ]).map((name) => (
-            <div class="company-logo-pill">
-              <svg class="company-logo-placeholder" viewBox="0 0 80 32" aria-hidden="true">
-                <rect width="80" height="32" rx="4" fill="currentColor" opacity="0.12"/>
-                <text x="40" y="21" text-anchor="middle" font-family="system-ui" font-size="10" fill="currentColor" opacity="0.5">LOGO</text>
-              </svg>
-              <span>{name}</span>
-            </div>
-          ))}
-        </div>
+      <!-- Logo grid — replace each svg with your actual brand logo -->
+      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 items-center" data-reveal>
+        {[1,2,3,4,5,6].map((n) => (
+          <div class="brand-logo-slot" title={`Brand ${n}`}>
+            <svg viewBox="0 0 120 48" xmlns="http://www.w3.org/2000/svg" aria-label={`Brand ${n} logo placeholder`}>
+              <rect width="120" height="48" rx="6" fill="currentColor" opacity="0.08"/>
+              <text x="60" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="currentColor" opacity="0.35">LOGO {n}</text>
+            </svg>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -405,48 +382,24 @@ const posts = allRSSPosts.slice(0, 3);
     mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
   }
 
-  /* ---- Companies marquee ---- */
-  .company-marquee-track {
-    overflow: hidden;
-    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-  }
-
-  .company-marquee-inner {
+  /* ---- Brand logo grid ---- */
+  .brand-logo-slot {
     display: flex;
-    gap: 1.5rem;
-    width: max-content;
-    animation: company-scroll 40s linear infinite;
-  }
-
-  .company-marquee-track:hover .company-marquee-inner {
-    animation-play-state: paused;
-  }
-
-  @keyframes company-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  .company-logo-pill {
-    display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.625rem 1.25rem;
-    border-radius: 9999px;
-    border: 1px solid color-mix(in srgb, var(--color-brand-500, #f7b5dd) 25%, transparent);
-    background: color-mix(in srgb, var(--color-brand-500, #f7b5dd) 6%, transparent);
-    color: var(--color-foreground);
-    font-size: 0.875rem;
-    font-weight: 500;
-    white-space: nowrap;
+    justify-content: center;
+    color: var(--foreground-muted);
+    opacity: 0.6;
+    transition: opacity 0.2s;
   }
 
-  .company-logo-placeholder {
-    width: 2.5rem;
-    height: 1rem;
-    color: var(--color-brand-500, #f7b5dd);
-    flex-shrink: 0;
+  .brand-logo-slot:hover {
+    opacity: 1;
+  }
+
+  .brand-logo-slot svg {
+    width: 100%;
+    height: auto;
+    max-height: 3rem;
   }
 
   /* ---- Project thumbnail ---- */
@@ -556,7 +509,6 @@ const posts = allRSSPosts.slice(0, 3);
 
   @media (prefers-reduced-motion: reduce) {
     .testimonial-slide { transition: none; }
-    .company-marquee-inner { animation: none; }
   }
 </style>
 
