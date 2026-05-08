@@ -70,17 +70,12 @@ const projects = defineCollection({
     z.object({
       title: z.string(),
       description: z.string(),
+      category: z.string().default('General'),
       url: z.string().url().optional(),
-      repo: z.string().url().optional(),
       image: image().optional(),
       imageAlt: z.string().optional(),
-      tags: z.array(z.string()).default([]),
       featured: z.boolean().default(false),
       order: z.number().default(99),
-      year: z.number().optional(),
-      client: z.string().optional(),
-      role: z.string().optional(),
-      services: z.array(z.string()).default([]),
       draft: z.boolean().default(false),
     }),
 });
