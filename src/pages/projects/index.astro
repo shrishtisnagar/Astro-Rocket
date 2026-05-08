@@ -17,7 +17,7 @@ import { url } from '@/lib/url';
 const projectItems = await getCollection('projects', ({ data }) => !data.draft && data.featured);
 const featuredProjects = projectItems
   .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 4);
+  .slice(0, 3);
 ---
 
 <LandingLayout
@@ -103,14 +103,14 @@ const featuredProjects = projectItems
     </div>
   </section>
 
-  <!-- Brands Section -->
+  <!-- Brands -->
   <section class="relative z-10 py-12 bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-12">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
           <Badge variant="brand" pill>Clients</Badge>
           <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Brands I've worked with
+            Across industries and markets
           </h2>
         </div>
       </div>
@@ -144,10 +144,16 @@ const featuredProjects = projectItems
     </div>
   </section>
 
-  <!-- Portfolio -->
-  <section id="work" class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="grid gap-6 md:grid-cols-2">
+  <!-- Featured Projects -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-3xl px-6 flex flex-col gap-8">
+      <div data-reveal>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Projects I'm Proud of
+        </h2>
+      </div>
+
+      <div class="flex flex-col gap-6">
         {featuredProjects.map((project) => (
           <a
             href={project.data.url}
@@ -156,7 +162,7 @@ const featuredProjects = projectItems
             class="group block"
             data-reveal
           >
-            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
+            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden">
               <div class="project-thumb" aria-hidden="true">
                 <div class="project-thumb-icon">
                   <Icon name="layers" size="md" />
@@ -170,7 +176,7 @@ const featuredProjects = projectItems
                   <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
                 </div>
                 <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
-                <p class="text-sm text-foreground-muted leading-relaxed flex-1">{project.data.description}</p>
+                <p class="text-sm text-foreground-muted leading-relaxed">{project.data.description}</p>
               </div>
             </Card>
           </a>
@@ -178,6 +184,23 @@ const featuredProjects = projectItems
       </div>
     </div>
   </section>
+
+  <!-- Explore complete works -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-3xl px-6" data-reveal>
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+        Explore my complete works
+      </h2>
+      <p class="text-lg text-foreground-muted">More case studies coming soon.</p>
+    </div>
+  </section>
+
+  <!-- Tool Marquee -->
+  <ToolMarquee
+    badge="My Toolstack"
+    title="Tools I work with"
+    background="primary"
+  />
 
   <!-- Testimonials -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
@@ -277,57 +300,6 @@ const featuredProjects = projectItems
           </div>
         );
       })()}
-    </div>
-  </section>
-
-  <!-- Tool Marquee -->
-  <ToolMarquee
-    badge="My Toolstack"
-    title="Tools I work with"
-    background="primary"
-  />
-
-  <!-- About Teaser -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-6xl px-6">
-      <div class="grid gap-12 lg:grid-cols-2">
-        <div class="flex flex-col justify-center" data-reveal="right">
-          <div class="flex flex-col gap-6 mb-6">
-            <Badge variant="brand" pill class="self-start">About Shrishti</Badge>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-              Marketing, Systems<br />
-              <span class="text-brand-500">and Psychology.</span>
-            </h2>
-          </div>
-          <p class="text-lg text-foreground-muted leading-relaxed mb-8">
-            8 years of marketing experience has taught me one thing — people don't remember you or your product but they do remember how you made them feel. And it's that feeling that I deliver to audiences. I'm an empath, a feeler, blessed with a logical mind — and that's a dangerous combination for reverse engineering and delivering what people want.
-          </p>
-          <Button variant="outline" href={url("/about")} class="self-start">
-            More about me
-          </Button>
-        </div>
-        <Card variant="elevated" padding="lg" class="h-full flex flex-col" data-reveal="left" data-reveal-delay="1">
-          <p class="text-sm text-foreground mb-5 text-center">A few things about me.</p>
-          <div class="grid grid-cols-2 gap-3 flex-1 auto-rows-fr">
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="history" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">8 Years Experience</p>
-            </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="briefcase" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">100+ Projects</p>
-            </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="globe" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">Working worldwide</p>
-            </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="map-pin" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">Based in India</p>
-            </div>
-          </div>
-        </Card>
-      </div>
     </div>
   </section>
 
