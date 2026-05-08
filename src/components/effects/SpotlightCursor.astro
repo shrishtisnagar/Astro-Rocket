@@ -1,0 +1,115 @@
+---
+/**
+ * SpotlightCursor
+ * A soft radial glow that follows the mouse with elastic lag.
+ * On hover over interactive elements it intensifies and grows.
+ * Desktop + fine pointer only. Respects prefers-reduced-motion.
+ */
+---
+
+<div id="cursor-spotlight" aria-hidden="true"></div>
+
+<style>
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    #cursor-spotlight { display: none !important; }
+  }
+
+  #cursor-spotlight {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0;
+    will-change: transform, opacity, width, height;
+    background: radial-gradient(
+      circle,
+      oklch(55% 0.18 344 / 0.12) 0%,
+      oklch(45% 0.14 338 / 0.06) 40%,
+      transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    transition:
+      opacity 0.6s ease,
+      width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.3s ease;
+  }
+
+  #cursor-spotlight.is-visible {
+    opacity: 1;
+  }
+
+  #cursor-spotlight.is-hovering {
+    width: 580px;
+    height: 580px;
+    background: radial-gradient(
+      circle,
+      oklch(60% 0.20 344 / 0.18) 0%,
+      oklch(50% 0.16 338 / 0.10) 40%,
+      transparent 70%
+    );
+  }
+
+  /* Hide native cursor sitewide on desktop */
+  @media (hover: hover) and (pointer: fine) {
+    :global(body) { cursor: none; }
+    :global(a), :global(button), :global([role="button"]), :global(input), :global(textarea), :global(select), :global(summary), :global(label[for]) {
+      cursor: none;
+    }
+  }
+</style>
+
+<script is:inline>
+(function () {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const el = document.getElementById('cursor-spotlight');
+  if (!el) return;
+
+  const INTERACTIVE = 'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for]';
+
+  let targetX = window.innerWidth / 2;
+  let targetY = window.innerHeight / 2;
+  let currentX = targetX;
+  let currentY = targetY;
+  const LERP = 0.1; // lower = more lag (feels more organic)
+
+  function onMove(e) {
+    targetX = e.clientX;
+    targetY = e.clientY;
+    if (!el.classList.contains('is-visible')) {
+      el.classList.add('is-visible');
+    }
+  }
+
+  function onLeave() {
+    el.classList.remove('is-visible');
+  }
+
+  function syncHover(e) {
+    const over = e.type === 'mouseover';
+    if (over) {
+      const target = e.target && e.target.closest ? e.target.closest(INTERACTIVE) : null;
+      el.classList.toggle('is-hovering', !!target);
+    }
+  }
+
+  function tick() {
+    currentX += (targetX - currentX) * LERP;
+    currentY += (targetY - currentY) * LERP;
+    el.style.left = currentX + 'px';
+    el.style.top  = currentY + 'px';
+    requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseleave', onLeave);
+  document.addEventListener('mouseover', syncHover);
+  requestAnimationFrame(tick);
+})();
+</script>

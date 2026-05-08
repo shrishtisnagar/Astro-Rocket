@@ -68,7 +68,7 @@ const gridClasses = cn(
       <div class="aurora-blob aurora-blob-1"></div>
       <div class="aurora-blob aurora-blob-2"></div>
       <div class="aurora-blob aurora-blob-3"></div>
-      <div class="aurora-blob aurora-blob-4"></div>
+      <div id="aurora-mouse" class="aurora-blob aurora-mouse"></div>
     </div>
   )}
 
@@ -191,88 +191,78 @@ const gridClasses = cn(
     filter: blur(80px);
     opacity: 0;
     will-change: transform, opacity;
-    transition: opacity 1s ease;
+    transition: opacity 1.2s ease;
   }
 
-  /* Only show aurora in dark mode */
   :global(.dark) .aurora-blob {
     opacity: 1;
   }
 
-  /* Blob 1: rich burgundy-rose, top-left anchor */
+  /* Blob 1: burgundy-rose — sweeps across large arc */
   .aurora-blob-1 {
-    width: 55vw;
-    height: 55vw;
-    max-width: 700px;
-    max-height: 700px;
-    top: -10%;
-    left: -5%;
-    background: radial-gradient(ellipse at center, oklch(55% 0.18 344 / 0.35) 0%, transparent 65%);
-    animation: aurora-drift-1 38s ease-in-out infinite;
+    width: 60vw; height: 60vw;
+    max-width: 750px; max-height: 750px;
+    top: -20%; left: -15%;
+    background: radial-gradient(ellipse at center, oklch(58% 0.20 344 / 0.40) 0%, transparent 62%);
+    animation: aurora-1 12s ease-in-out infinite;
   }
 
-  /* Blob 2: deep wine, bottom-right anchor */
+  /* Blob 2: deep wine — sweeps diagonally from bottom-right */
   .aurora-blob-2 {
-    width: 50vw;
-    height: 50vw;
-    max-width: 620px;
-    max-height: 620px;
-    bottom: -5%;
-    right: 0%;
-    background: radial-gradient(ellipse at center, oklch(45% 0.14 338 / 0.4) 0%, transparent 65%);
-    animation: aurora-drift-2 45s ease-in-out infinite;
+    width: 55vw; height: 55vw;
+    max-width: 680px; max-height: 680px;
+    bottom: -15%; right: -10%;
+    background: radial-gradient(ellipse at center, oklch(48% 0.16 338 / 0.45) 0%, transparent 62%);
+    animation: aurora-2 15s ease-in-out infinite;
   }
 
-  /* Blob 3: warm plum-rose, center */
+  /* Blob 3: plum-rose — crosses the center */
   .aurora-blob-3 {
-    width: 40vw;
-    height: 40vw;
-    max-width: 500px;
-    max-height: 500px;
-    top: 25%;
-    left: 30%;
-    background: radial-gradient(ellipse at center, oklch(50% 0.16 355 / 0.28) 0%, transparent 65%);
-    animation: aurora-drift-3 52s ease-in-out infinite;
+    width: 45vw; height: 45vw;
+    max-width: 560px; max-height: 560px;
+    top: 20%; left: 20%;
+    background: radial-gradient(ellipse at center, oklch(52% 0.17 355 / 0.32) 0%, transparent 62%);
+    animation: aurora-3 10s ease-in-out infinite;
   }
 
-  /* Blob 4: cool dark plum, top-right */
-  .aurora-blob-4 {
-    width: 35vw;
-    height: 35vw;
-    max-width: 440px;
-    max-height: 440px;
-    top: 5%;
-    right: 10%;
-    background: radial-gradient(ellipse at center, oklch(42% 0.12 320 / 0.32) 0%, transparent 65%);
-    animation: aurora-drift-4 42s ease-in-out infinite;
+  /* Mouse-follow blob — positioned via JS */
+  .aurora-mouse {
+    width: 40vw; height: 40vw;
+    max-width: 500px; max-height: 500px;
+    top: 0; left: 0;
+    background: radial-gradient(ellipse at center, oklch(55% 0.18 344 / 0.22) 0%, transparent 60%);
+    transform: translate(-50%, -50%);
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.2s ease;
+    pointer-events: none;
   }
 
-  @keyframes aurora-drift-1 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33%       { transform: translate(6%, 8%) scale(1.08); }
-    66%       { transform: translate(-4%, 5%) scale(0.95); }
+  @keyframes aurora-1 {
+    0%   { transform: translate(0, 0) scale(1); }
+    25%  { transform: translate(22%, 18%) scale(1.12); }
+    50%  { transform: translate(10%, 30%) scale(0.92); }
+    75%  { transform: translate(-8%, 14%) scale(1.08); }
+    100% { transform: translate(0, 0) scale(1); }
   }
 
-  @keyframes aurora-drift-2 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    40%       { transform: translate(-8%, -6%) scale(1.1); }
-    70%       { transform: translate(5%, -3%) scale(0.97); }
+  @keyframes aurora-2 {
+    0%   { transform: translate(0, 0) scale(1); }
+    30%  { transform: translate(-18%, -20%) scale(1.15); }
+    60%  { transform: translate(-28%, -8%) scale(0.90); }
+    80%  { transform: translate(-10%, -15%) scale(1.05); }
+    100% { transform: translate(0, 0) scale(1); }
   }
 
-  @keyframes aurora-drift-3 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    30%       { transform: translate(-6%, 7%) scale(1.05); }
-    60%       { transform: translate(8%, -5%) scale(1.12); }
-  }
-
-  @keyframes aurora-drift-4 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    45%       { transform: translate(7%, 9%) scale(0.93); }
-    80%       { transform: translate(-5%, 4%) scale(1.06); }
+  @keyframes aurora-3 {
+    0%   { transform: translate(0, 0) scale(1); }
+    20%  { transform: translate(20%, -15%) scale(1.10); }
+    50%  { transform: translate(30%, 20%) scale(0.88); }
+    75%  { transform: translate(8%, 25%) scale(1.06); }
+    100% { transform: translate(0, 0) scale(1); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .aurora-blob { animation: none; }
+    .aurora-mouse { transition: none; }
   }
 
   /* ── Desktop only: hide on landscape mobile ─────────────── */
@@ -351,4 +341,34 @@ const gridClasses = cn(
   }
 
   initScrollIndicator();
+
+  // Aurora mouse-follow blob
+  (function () {
+    const blob = document.getElementById('aurora-mouse');
+    if (!blob) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const section = blob.closest('section');
+    if (!section) return;
+
+    let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+    let cx = tx, cy = ty;
+    const LERP = 0.055;
+
+    function onMove(e) {
+      const r = section.getBoundingClientRect();
+      tx = e.clientX - r.left;
+      ty = e.clientY - r.top;
+    }
+
+    function tick() {
+      cx += (tx - cx) * LERP;
+      cy += (ty - cy) * LERP;
+      blob.style.left = cx + 'px';
+      blob.style.top  = cy + 'px';
+      requestAnimationFrame(tick);
+    }
+
+    section.addEventListener('mousemove', onMove);
+    requestAnimationFrame(tick);
+  })();
 </script>
