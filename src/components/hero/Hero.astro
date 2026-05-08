@@ -24,6 +24,8 @@ interface Props extends HTMLAttributes<'section'> {
   showAurora?: boolean;
   /** Path to a looping background video (e.g. "/videos/hero-bg.mp4") */
   videoBg?: string;
+  /** Playback rate for the background video (default 0.75; 0.5 = half speed, 1 = normal) */
+  videoSpeed?: number;
 }
 
 const {
@@ -37,6 +39,7 @@ const {
   showScrollIndicator = false,
   showAurora = false,
   videoBg,
+  videoSpeed = 0.75,
   class: className,
   ...attrs
 } = Astro.props;
@@ -76,6 +79,7 @@ const gridClasses = cn(
         muted
         playsinline
         preload="auto"
+        data-speed={videoSpeed}
         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
       />
       <div class="video-overlay" style="position:absolute;inset:0;"></div>
@@ -211,7 +215,7 @@ const gridClasses = cn(
     object-fit: cover;
     object-position: center;
     /* Desaturate first, then hue-rotate gold → wine/burgundy range */
-    filter: saturate(130%) hue-rotate(270deg) brightness(0.85) contrast(1.05);
+    filter: saturate(120%) hue-rotate(110deg) brightness(0.80) contrast(1.05);
   }
 
   /* Multiply overlay in deep wine to deepen and unify the color */
@@ -373,4 +377,21 @@ const gridClasses = cn(
   }
 
   initScrollIndicator();
+</script>
+
+<script is:inline>
+  // Set playback rate on background video from data-speed attribute
+  (function () {
+    function initVideoBg() {
+      document.querySelectorAll('video.video-bg[data-speed]').forEach(function (v) {
+        var speed = parseFloat(v.getAttribute('data-speed') || '0.75');
+        if (!isNaN(speed) && speed > 0) v.playbackRate = speed;
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVideoBg);
+    } else {
+      initVideoBg();
+    }
+  })();
 </script>
