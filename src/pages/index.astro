@@ -79,16 +79,29 @@ const posts = allRSSPosts.slice(0, 3);
         </div>
       </div>
 
-      <!-- Logo grid — replace each svg with your actual brand logo -->
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 items-center max-w-5xl mx-auto w-full" data-reveal>
-        {[1,2,3,4,5,6].map((n) => (
-          <div class="brand-logo-slot" title={`Brand ${n}`}>
-            <svg viewBox="0 0 120 48" xmlns="http://www.w3.org/2000/svg" aria-label={`Brand ${n} logo placeholder`}>
-              <rect width="120" height="48" rx="6" fill="currentColor" opacity="0.08"/>
-              <text x="60" y="30" text-anchor="middle" font-family="system-ui,sans-serif" font-size="11" font-weight="600" fill="currentColor" opacity="0.35">LOGO {n}</text>
-            </svg>
-          </div>
-        ))}
+      <!-- Logo marquee — add more <img> entries as you upload logos to public/images/brands/ -->
+      <div class="brand-marquee-track">
+        <div class="brand-marquee-inner">
+          {[
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            /* duplicate set for seamless loop */
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+            { src: url('/images/brands/filename.svg'), alt: 'Brand' },
+          ].map(({ src, alt }) => (
+            <div class="brand-logo-item">
+              <img src={src} alt={alt} height="40" loading="lazy" draggable="false" />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -394,24 +407,53 @@ const posts = allRSSPosts.slice(0, 3);
     mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
   }
 
-  /* ---- Brand logo grid ---- */
-  .brand-logo-slot {
+  /* ---- Brand logo marquee ---- */
+  .brand-marquee-track {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .brand-marquee-inner {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    width: max-content;
+    animation: brand-scroll 30s linear infinite;
+  }
+
+  .brand-marquee-track:hover .brand-marquee-inner {
+    animation-play-state: paused;
+  }
+
+  @keyframes brand-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .brand-logo-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--foreground-muted);
-    opacity: 0.6;
-    transition: opacity 0.2s;
+    opacity: 0.55;
+    transition: opacity 0.25s ease;
+    flex-shrink: 0;
   }
 
-  .brand-logo-slot:hover {
+  .brand-logo-item:hover {
     opacity: 1;
   }
 
-  .brand-logo-slot svg {
-    width: 100%;
-    height: auto;
-    max-height: 3rem;
+  .brand-logo-item img {
+    height: 2.5rem;
+    width: auto;
+    max-width: 9rem;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-marquee-inner { animation: none; }
   }
 
   /* ---- Project thumbnail ---- */
