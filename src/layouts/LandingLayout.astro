@@ -10,6 +10,7 @@
 import BaseLayout from './BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
+import ContactFooterSection from '@/components/layout/ContactFooterSection.astro';
 
 interface Props {
   title?: string;
@@ -22,6 +23,7 @@ interface Props {
   includePersonSchema?: boolean;
   includeProfessionalServiceSchema?: boolean;
   morphToBar?: boolean;
+  showContactFooter?: boolean;
 }
 
 const {
@@ -35,6 +37,7 @@ const {
   includePersonSchema = false,
   includeProfessionalServiceSchema = false,
   morphToBar = false,
+  showContactFooter = false,
 } = Astro.props;
 ---
 
@@ -66,6 +69,7 @@ const {
   />
 
   <slot />
+  {showContactFooter && <ContactFooterSection />}
 
   <Footer slot="footer" layout="simple" background="secondary" copyright="© {year} The S Curve | Shrishti S Nagar — Serving Global Clients From India" />
 </BaseLayout>
