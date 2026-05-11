@@ -732,6 +732,10 @@
   .prose h3 { font-size: 1.375em; line-height: 1.4; color: var(--color-brand-400); }
   .prose h4 { font-size: 1.15em; line-height: 1.5; color: var(--color-foreground); }
 
+  .prose h1 strong, .prose h2 strong, .prose h3 strong, .prose h4 strong {
+    color: inherit;
+  }
+
   .prose h1:first-child,
   .prose h2:first-child,
   .prose h3:first-child {
