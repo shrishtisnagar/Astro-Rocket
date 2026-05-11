@@ -164,12 +164,12 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
             target={hasBody ? undefined : "_blank"}
             rel={hasBody ? undefined : "noopener noreferrer"}
-            class="group block"
+            class="group block h-full"
             data-reveal
           >
-            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden">
+            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl ? (
-                <div class="overflow-hidden h-44">
+                <div class="overflow-hidden h-44 shrink-0">
                   <img
                     src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
                     alt={project.data.imageAlt || project.data.title}
@@ -177,18 +177,9 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
                     loading="lazy"
                   />
                 </div>
-              ) : (
-                <div class="project-thumb" aria-hidden="true">
-                  <div class="project-thumb-icon">
-                    <Icon name="layers" size="md" />
-                  </div>
-                </div>
-              )}
+              ) : null}
               <div class="flex flex-1 flex-col p-6">
-                <div class="mb-3 flex items-start justify-between gap-4">
-                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                    <Icon name="layers" size="sm" />
-                  </div>
+                <div class="mb-3 flex items-start justify-end gap-4">
                   <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
                 </div>
                 <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
@@ -248,7 +239,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           >
             <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl ? (
-                <div class="overflow-hidden h-44">
+                <div class="overflow-hidden h-44 shrink-0">
                   <img
                     src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
                     alt={project.data.imageAlt || project.data.title}
@@ -256,18 +247,9 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
                     loading="lazy"
                   />
                 </div>
-              ) : (
-                <div class="project-thumb" aria-hidden="true">
-                  <div class="project-thumb-icon">
-                    <Icon name="layers" size="md" />
-                  </div>
-                </div>
-              )}
+              ) : null}
               <div class="flex flex-1 flex-col p-6">
-                <div class="mb-3 flex items-start justify-between gap-4">
-                  <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                    <Icon name="layers" size="sm" />
-                  </div>
+                <div class="mb-3 flex items-start justify-end gap-4">
                   <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
                 </div>
                 <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
@@ -468,30 +450,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
 
   @media (prefers-reduced-motion: reduce) {
     .brand-marquee-inner { animation: none; }
-  }
-
-  /* ---- Project thumbnail ---- */
-  .project-thumb {
-    position: relative;
-    height: 9rem;
-    background: linear-gradient(135deg, oklch(18% 0.04 344) 0%, oklch(14% 0.03 344) 100%);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .project-thumb::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 70% 70% at 30% 40%, oklch(40% 0.08 344 / 0.35) 0%, transparent 70%);
-  }
-
-  .project-thumb-icon {
-    position: relative;
-    z-index: 1;
-    color: oklch(81% 0.09 344 / 0.5);
   }
 
   /* ---- Testimonial carousel ---- */
