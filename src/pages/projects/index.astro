@@ -162,14 +162,14 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           return (
           <a
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
-            target={hasBody ? undefined : "_blank"}
-            rel={hasBody ? undefined : "noopener noreferrer"}
-            class="group block"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group block h-full"
             data-reveal
           >
-            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden">
+            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl ? (
-                <div class="overflow-hidden h-44">
+                <div class="overflow-hidden h-44 shrink-0">
                   <img
                     src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
                     alt={project.data.imageAlt || project.data.title}
@@ -240,8 +240,8 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           return (
           <a
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
-            target={hasBody ? undefined : "_blank"}
-            rel={hasBody ? undefined : "noopener noreferrer"}
+            target="_blank"
+            rel="noopener noreferrer"
             class="work-card group block"
             data-category={project.data.category}
             data-reveal
