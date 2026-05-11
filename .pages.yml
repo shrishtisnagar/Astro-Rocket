@@ -1,0 +1,113 @@
+media:
+  input: public/images/projects
+  output: /images/projects
+
+content:
+  - name: projects
+    label: Case Studies
+    type: collection
+    path: src/content/projects
+    extension: mdx
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+
+      - name: description
+        label: Short Description
+        type: string
+        required: true
+
+      - name: category
+        label: Category
+        type: select
+        required: true
+        options:
+          values:
+            - LinkedIn
+            - Instagram
+            - Blogs
+            - Print Media
+            - Landing Pages
+
+      - name: subcategories
+        label: Subcategory Tags
+        type: list
+        field:
+          name: tag
+          label: Tag
+          type: string
+
+      - name: url
+        label: Case Study Link (Notion or external)
+        type: string
+
+      - name: imageUrl
+        label: Cover Image
+        type: image
+
+      - name: featured
+        label: Show in "Projects I'm Proud of"
+        type: boolean
+        default: false
+
+      - name: order
+        label: Display Order (lower = first)
+        type: number
+        default: 99
+
+      - name: draft
+        label: Hide from site (draft)
+        type: boolean
+        default: false
+
+  - name: blog
+    label: Blog Posts
+    type: collection
+    path: src/content/blog/en
+    extension: mdx
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+
+      - name: description
+        label: Short Description (shown in previews)
+        type: string
+        required: true
+
+      - name: publishedAt
+        label: Published Date
+        type: date
+        required: true
+
+      - name: author
+        label: Author
+        type: string
+        default: Shrishti
+
+      - name: tags
+        label: Tags
+        type: list
+        field:
+          name: tag
+          label: Tag
+          type: string
+
+      - name: featured
+        label: Featured
+        type: boolean
+        default: false
+
+      - name: draft
+        label: Hide from site (draft)
+        type: boolean
+        default: false
+
+      - name: body
+        label: Content
+        type: rich-text
