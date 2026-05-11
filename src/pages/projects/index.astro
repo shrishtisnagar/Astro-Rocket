@@ -243,7 +243,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
               {project.data.imageUrl ? (
                 <div class="overflow-hidden h-44">
                   <img
-                    src={project.data.imageUrl}
+                    src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
                     alt={project.data.imageAlt || project.data.title}
                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
