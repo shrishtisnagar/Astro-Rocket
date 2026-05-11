@@ -22,6 +22,7 @@ interface Props {
   repo?: string;
   tags?: string[];
   image?: ImageMetadata;
+  imageUrl?: string;
   imageAlt?: string;
   related?: CollectionEntry<'projects'>[];
 }
@@ -37,6 +38,7 @@ const {
   repo,
   tags = [],
   image,
+  imageUrl,
   imageAlt,
   related = [],
 } = Astro.props;
@@ -78,6 +80,7 @@ const breadcrumbs = [
       url={url}
       repo={repo}
       image={image}
+      imageUrl={imageUrl}
       imageAlt={imageAlt}
     />
 
