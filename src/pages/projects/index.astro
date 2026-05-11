@@ -161,7 +161,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           const hasBody = project.body && project.body.trim().length > 0;
           return (
           <a
-            href={hasBody ? `/projects/${slug}` : project.data.url}
+            href={hasBody ? url(`/projects/${slug}`) : project.data.url}
             target={hasBody ? undefined : "_blank"}
             rel={hasBody ? undefined : "noopener noreferrer"}
             class="group block"
@@ -239,7 +239,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           const hasBody = project.body && project.body.trim().length > 0;
           return (
           <a
-            href={hasBody ? `/projects/${slug}` : project.data.url}
+            href={hasBody ? url(`/projects/${slug}`) : project.data.url}
             target={hasBody ? undefined : "_blank"}
             rel={hasBody ? undefined : "noopener noreferrer"}
             class="work-card group block"
