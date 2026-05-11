@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { url as assetUrl } from '@/lib/url';
 
 interface Props {
   title: string;
@@ -131,7 +132,7 @@ const hasMeta = year || client || role;
           />
         ) : (
           <img
-            src={imageUrl}
+            src={assetUrl(imageUrl!)}
             alt={imageAlt || title}
             class="aspect-video w-full object-cover"
             loading="eager"
