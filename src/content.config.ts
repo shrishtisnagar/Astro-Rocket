@@ -75,7 +75,10 @@ const projects = defineCollection({
       imageUrl: z.string().optional(),
       image: image().optional(),
       imageAlt: z.string().optional(),
-      subcategories: z.array(z.string()).default([]),
+      subcategories: z.union([
+        z.array(z.string()),
+        z.string().transform(s => s ? s.split(',').map(t => t.trim()).filter(Boolean) : []),
+      ]).default([]),
       featured: z.boolean().default(false),
       order: z.number().default(99),
       draft: z.boolean().default(false),

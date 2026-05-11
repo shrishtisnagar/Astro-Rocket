@@ -156,11 +156,14 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
       </div>
 
       <div class="grid gap-6 md:grid-cols-3">
-        {featuredProjects.map((project) => (
+        {featuredProjects.map((project) => {
+          const slug = project.id.replace(/\.mdx?$/, '');
+          const hasBody = project.body && project.body.trim().length > 0;
+          return (
           <a
-            href={project.data.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={hasBody ? `/projects/${slug}` : project.data.url}
+            target={hasBody ? undefined : "_blank"}
+            rel={hasBody ? undefined : "noopener noreferrer"}
             class="group block"
             data-reveal
           >
@@ -193,7 +196,8 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
               </div>
             </Card>
           </a>
-        ))}
+          );
+        })}
       </div>
     </div>
   </section>
@@ -223,11 +227,14 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
 
       <!-- Cards grid -->
       <div class="works-grid" id="works-grid">
-        {allProjects.map((project) => (
+        {allProjects.map((project) => {
+          const slug = project.id.replace(/\.mdx?$/, '');
+          const hasBody = project.body && project.body.trim().length > 0;
+          return (
           <a
-            href={project.data.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={hasBody ? `/projects/${slug}` : project.data.url}
+            target={hasBody ? undefined : "_blank"}
+            rel={hasBody ? undefined : "noopener noreferrer"}
             class="work-card group block"
             data-category={project.data.category}
             data-reveal
@@ -268,7 +275,8 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
               </div>
             </Card>
           </a>
-        ))}
+          );
+        })}
       </div>
 
       <!-- Empty state -->
