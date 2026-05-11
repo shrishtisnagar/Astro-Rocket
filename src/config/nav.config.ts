@@ -15,8 +15,6 @@ export const navItems: NavItem[] = [
   { label: 'Home', href: '/', order: 1 },
   { label: 'Projects', href: '/projects', order: 2 },
   { label: 'Blog', href: '/blog', order: 3 },
-  { label: 'About', href: '/about', order: 4 },
-  { label: 'Contact', href: '/contact', order: 5 },
 ];
 
 /**
