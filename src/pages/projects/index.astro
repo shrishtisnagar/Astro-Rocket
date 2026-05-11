@@ -193,6 +193,13 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
                 </div>
                 <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
                 <p class="text-sm text-foreground-muted leading-relaxed">{project.data.description}</p>
+                {project.data.subcategories.length > 0 && (
+                  <div class="flex flex-wrap gap-1.5 mt-auto pt-4">
+                    {project.data.subcategories.map((tag: string) => (
+                      <span class="subcategory-tag">{tag}</span>
+                    ))}
+                  </div>
+                )}
               </div>
             </Card>
           </a>
