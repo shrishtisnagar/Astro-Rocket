@@ -162,11 +162,22 @@ const featuredProjects = projectItems
             data-reveal
           >
             <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden">
-              <div class="project-thumb" aria-hidden="true">
-                <div class="project-thumb-icon">
-                  <Icon name="layers" size="md" />
+              {project.data.imageUrl ? (
+                <div class="overflow-hidden h-44">
+                  <img
+                    src={project.data.imageUrl}
+                    alt={project.data.imageAlt || project.data.title}
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
-              </div>
+              ) : (
+                <div class="project-thumb" aria-hidden="true">
+                  <div class="project-thumb-icon">
+                    <Icon name="layers" size="md" />
+                  </div>
+                </div>
+              )}
               <div class="flex flex-1 flex-col p-6">
                 <div class="mb-3 flex items-start justify-between gap-4">
                   <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
