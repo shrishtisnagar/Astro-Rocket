@@ -33,12 +33,8 @@ content:
             - Landing Pages
 
       - name: subcategories
-        label: Subcategory Tags
-        type: list
-        field:
-          name: tag
-          label: Tag
-          type: string
+        label: Subcategory Tags (comma-separated, e.g. B2B, Outreach)
+        type: string
 
       - name: url
         label: Case Study Link (Notion or external)
@@ -62,3 +58,7 @@ content:
         label: Hide from site (draft)
         type: boolean
         default: false
+
+      - name: body
+        label: Case Study Content (optional — if filled, clicking the card opens this page instead of the external link)
+        type: rich-text
