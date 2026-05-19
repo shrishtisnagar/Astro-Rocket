@@ -8,6 +8,8 @@ content:
     type: collection
     path: src/content/projects
     format: yaml-frontmatter
+    view:
+      fields: [title, category, draft]
     fields:
       - name: title
         label: Title
