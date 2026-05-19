@@ -71,7 +71,7 @@ const projects = defineCollection({
       title: z.string(),
       description: z.string(),
       category: z.string().default('General'),
-      url: z.string().url().optional(),
+      url: z.union([z.string().url(), z.literal('')]).optional().transform(v => v || undefined),
       imageUrl: z.string().optional(),
       image: image().optional(),
       imageAlt: z.string().optional(),
