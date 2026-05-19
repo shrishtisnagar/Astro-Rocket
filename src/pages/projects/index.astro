@@ -268,6 +268,14 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
         })}
       </div>
 
+      <!-- See more button -->
+      <div class="flex justify-center" id="works-see-more-wrap">
+        <button id="works-see-more" class="works-see-more-btn">
+          See more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+
       <!-- Empty state -->
       <p class="works-empty hidden text-foreground-muted text-center py-12" id="works-empty">
         No case studies in this category yet — check back soon.
@@ -581,14 +589,41 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   }
 
   @media (min-width: 1024px) {
-    .works-grid { grid-template-columns: repeat(3, 1fr); }
+    .works-grid { grid-template-columns: repeat(4, 1fr); }
   }
 
   .work-card {
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
-  .work-card.hidden {
+  .work-card.hidden,
+  .work-card.see-more-hidden {
+    display: none;
+  }
+
+  /* ---- See more button ---- */
+  .works-see-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border: 1px solid oklch(100% 0 0 / 0.12);
+    background: oklch(14% 0.02 344 / 0.6);
+    color: oklch(80% 0.04 344);
+    cursor: pointer;
+    transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+  }
+
+  .works-see-more-btn:hover {
+    background: var(--color-brand-500, #f7b5dd);
+    color: oklch(15% 0.03 344);
+    border-color: transparent;
+  }
+
+  #works-see-more-wrap.hidden {
     display: none;
   }
 
@@ -650,24 +685,42 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     const btns = document.querySelectorAll<HTMLButtonElement>('.works-filter-btn');
     const cards = document.querySelectorAll<HTMLElement>('.work-card');
     const empty = document.getElementById('works-empty');
+    const seeMoreWrap = document.getElementById('works-see-more-wrap');
+    const seeMoreBtn = document.getElementById('works-see-more');
+    const PAGE_SIZE = 4;
+
+    function applyFilter(filter: string) {
+      const matching: HTMLElement[] = [];
+      cards.forEach((card) => {
+        const show = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('hidden', !show);
+        card.classList.remove('see-more-hidden');
+        if (show) matching.push(card);
+      });
+
+      // Collapse cards beyond the first row
+      matching.slice(PAGE_SIZE).forEach((card) => card.classList.add('see-more-hidden'));
+
+      if (empty) empty.classList.toggle('hidden', matching.length > 0);
+      if (seeMoreWrap) seeMoreWrap.classList.toggle('hidden', matching.length <= PAGE_SIZE);
+    }
 
     btns.forEach((btn) => {
       btn.addEventListener('click', () => {
-        const filter = btn.dataset.filter;
-
         btns.forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
-
-        let visible = 0;
-        cards.forEach((card) => {
-          const show = filter === 'all' || card.dataset.category === filter;
-          card.classList.toggle('hidden', !show);
-          if (show) visible++;
-        });
-
-        if (empty) empty.classList.toggle('hidden', visible > 0);
+        applyFilter(btn.dataset.filter ?? 'all');
       });
     });
+
+    if (seeMoreBtn && seeMoreWrap) {
+      seeMoreBtn.addEventListener('click', () => {
+        cards.forEach((card) => card.classList.remove('see-more-hidden'));
+        seeMoreWrap.classList.add('hidden');
+      });
+    }
+
+    applyFilter('all');
   }
 
   initWorksFilter();
