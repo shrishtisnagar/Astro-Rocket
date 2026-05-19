@@ -65,49 +65,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     </div>
   </Hero>
 
-  <!-- Intro -->
-  <section class="relative z-10 py-[var(--space-section-md)]" style="background:#000000">
-    <div class="relative mx-auto max-w-6xl px-6">
-      <div class="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-        <!-- Left: text -->
-        <div data-reveal="right">
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-8">
-            Before you scroll
-          </h2>
-          <div class="space-y-5 text-base text-foreground-muted leading-loose">
-            <p>
-              As I was compiling this portfolio, I went back over my campaigns — the ones that worked and the ones that didn't.
-            </p>
-            <p>
-              The ones that worked weren't the most creatively unique or the most sophisticated.
-            </p>
-            <p>
-              They got a few fundamentals right — consistently.
-            </p>
-            <p>
-              Everything I do today sits at that intersection — psychology, marketing, and systems.
-            </p>
-            <p>
-              Time and time again, the only trifecta that works. The work below is what that looks like in practice.
-            </p>
-          </div>
-        </div>
-
-        <!-- Right: illustration -->
-        <div data-reveal="left" data-reveal-delay="1">
-          <img
-            src={url('/images/sketch.png')}
-            alt="The three pillars — a handmade sketch"
-            class="w-full h-auto block"
-            loading="lazy"
-          />
-        </div>
-
-      </div>
-    </div>
-  </section>
-
   <!-- Brands -->
   <section class="relative z-10 py-12 bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-12">
