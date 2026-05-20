@@ -47,6 +47,10 @@ export interface LegalLink {
 }
 
 interface Props extends HTMLAttributes<'footer'> {
+  /** Path to a looping background video (e.g. "/videos/footer-bg.mp4") */
+  videoBg?: string;
+  /** Playback rate for the background video (default 0.75; 0.5 = half speed, 1 = normal) */
+  videoSpeed?: number;
   /** Layout style */
   layout?: 'simple' | 'columns' | 'minimal' | 'stacked';
   /** Number of columns (only for columns layout) */
@@ -74,6 +78,8 @@ interface Props extends HTMLAttributes<'footer'> {
 }
 
 const {
+  videoBg,
+  videoSpeed = 0.75,
   layout = 'simple',
   columns = 3,
   background = 'default',
@@ -114,7 +120,7 @@ const hasSocialSlot = Astro.slots.has('social');
 const hasBottomSlot = Astro.slots.has('bottom');
 
 // Compute footer classes
-const footerClasses = cn(footerVariants({ background }), className);
+const footerClasses = cn(footerVariants({ background }), videoBg ? 'video-has-bg' : '', className);
 
 // Social platform to icon mapping
 const socialIcons: Record<string, string> = {
@@ -129,8 +135,23 @@ function getSocialIcon(platform: string): string {
 }
 ---
 
-<footer class={footerClasses} {...attrs}>
-  <div class="mx-auto max-w-6xl px-6">
+<footer class={footerClasses} style="position:relative;" {...attrs}>
+  {videoBg && (
+    <div class="video-bg-wrap" aria-hidden="true">
+      <video
+        class="video-bg"
+        src={videoBg}
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        data-speed={videoSpeed}
+      />
+      <div class="video-overlay" />
+    </div>
+  )}
+  <div class="mx-auto max-w-6xl px-6" style="position:relative;z-index:1;">
     {layout === 'simple' && (
       <>
       <div class="flex flex-col md:flex-row justify-between items-center gap-[var(--space-stack-lg)]">
@@ -384,3 +405,70 @@ function getSocialIcon(platform: string): string {
   {/* Default slot for additional content */}
   <slot />
 </footer>
+
+<style>
+  /* In dark mode, make footer transparent so video shows through */
+  :global(.dark) .video-has-bg {
+    background: transparent !important;
+  }
+
+  /* ── Video background ───────────────────────────────────── */
+  .video-bg-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    /* Hide video in light mode */
+    display: none;
+  }
+
+  :global(.dark) .video-bg-wrap {
+    display: block;
+  }
+
+  .video-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 1s ease;
+    filter: saturate(70%) hue-rotate(130deg) brightness(0.55) contrast(1.10);
+  }
+
+  .video-bg.is-loaded { opacity: 1; }
+
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, var(--color-background) 0%, transparent 30%),
+      radial-gradient(ellipse at 30% 40%, oklch(28% 0.10 344 / 0.60) 0%, oklch(8% 0.04 344 / 0.80) 100%);
+    mix-blend-mode: multiply;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    function initFooterVideoBg() {
+      document.querySelectorAll('footer .video-bg').forEach(function (v) {
+        const speed = parseFloat(v.getAttribute('data-speed') || '0.75');
+        if (!isNaN(speed) && speed > 0) v.playbackRate = speed;
+
+        if (v.readyState >= 3) {
+          v.classList.add('is-loaded');
+        } else {
+          v.addEventListener('canplay', function () { v.classList.add('is-loaded'); }, { once: true });
+        }
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initFooterVideoBg);
+    } else {
+      initFooterVideoBg();
+    }
+  })();
+</script>
