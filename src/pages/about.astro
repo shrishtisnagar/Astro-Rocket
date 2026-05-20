@@ -105,46 +105,29 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
           These aren't aspirations — they're the constraints every engagement is held to, from the first conversation to the final handover.
         </p>
       </div>
-      <div class="grid gap-8 md:grid-cols-3">
-        <Card hover data-reveal>
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="search" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Start with the real problem</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Most marketing problems are positioning problems in disguise. I diagnose before I prescribe — so the strategy actually fits.
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card hover data-reveal data-reveal-delay="1">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="heart" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Build for humans</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Every piece of messaging is written for a real person, not a persona. No AI slop, no generic frameworks — just clear, resonant communication.
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card hover data-reveal data-reveal-delay="2">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="settings" size="md" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Systems over heroics</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Good marketing shouldn't require you to be everywhere all the time. I design repeatable systems so growth compounds without burning you out.
-              </p>
-            </div>
-          </div>
-        </Card>
+      <!-- Numbered step layout — no cards, dividers create structure -->
+      <div class="grid md:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden ring-1 ring-border">
+        <div class="bg-background px-8 py-10" data-reveal>
+          <span class="block font-mono text-6xl font-black text-brand-500/20 leading-none mb-6 tabular-nums select-none" aria-hidden="true">01</span>
+          <h3 class="text-base font-semibold text-foreground mb-3">Start with the real problem</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed">
+            Most marketing problems are positioning problems in disguise. I diagnose before I prescribe — so the strategy actually fits.
+          </p>
+        </div>
+        <div class="bg-background px-8 py-10" data-reveal data-reveal-delay="1">
+          <span class="block font-mono text-6xl font-black text-brand-500/20 leading-none mb-6 tabular-nums select-none" aria-hidden="true">02</span>
+          <h3 class="text-base font-semibold text-foreground mb-3">Build for humans</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed">
+            Every piece of messaging is written for a real person, not a persona. No AI slop, no generic frameworks — just clear, resonant communication.
+          </p>
+        </div>
+        <div class="bg-background px-8 py-10" data-reveal data-reveal-delay="2">
+          <span class="block font-mono text-6xl font-black text-brand-500/20 leading-none mb-6 tabular-nums select-none" aria-hidden="true">03</span>
+          <h3 class="text-base font-semibold text-foreground mb-3">Systems over heroics</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed">
+            Good marketing shouldn't require you to be everywhere all the time. I design repeatable systems so growth compounds without burning you out.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -335,5 +318,12 @@ import LetterGlitchBand from '@/components/patterns/LetterGlitchBand.astro';
 <style>
   details[open] > summary .faq-icon {
     transform: rotate(180deg);
+  }
+
+  /* Keyboard focus ring on FAQ summaries */
+  summary:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 </style>

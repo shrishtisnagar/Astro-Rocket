@@ -25,17 +25,23 @@ const {
   class={cn('space-y-6', className)}
   data-success-message={successMessage}
 >
+  <!-- Required field legend -->
+  <p class="text-xs text-foreground-muted">
+    Fields marked <span class="text-destructive font-medium" aria-hidden="true">*</span>
+    <span class="sr-only">with an asterisk</span> are required.
+  </p>
+
   <!-- Name + Email side by side on sm+ -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <Input
-      label="Name"
+      label="Name *"
       name="name"
       type="text"
       required
       autocomplete="name"
     />
     <Input
-      label="Email"
+      label="Email *"
       name="email"
       type="email"
       required
@@ -50,7 +56,7 @@ const {
   />
 
   <Textarea
-    label="Message"
+    label="Message *"
     name="message"
     required
     rows={5}
@@ -61,7 +67,13 @@ const {
     <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />
   </div>
 
-  <div id="form-message" class="hidden text-sm"></div>
+  <!-- aria-live region: always in DOM so screen readers announce status changes -->
+  <div
+    id="form-message"
+    class="text-sm min-h-[1.25rem]"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
 
   <div class="flex justify-center">
     <Button type="submit" id="submit-button" class="gap-2">
@@ -86,7 +98,9 @@ const {
 
       button.disabled = true;
       button.textContent = 'Sending…';
-      message.classList.add('hidden');
+      // Clear message first (aria-live won't re-announce if text is unchanged)
+      message.textContent = '';
+      message.className = 'text-sm min-h-[1.25rem]';
 
       try {
         const formData = new FormData(form);
@@ -99,22 +113,21 @@ const {
 
         if (data.success) {
           message.textContent = successMessage;
-          message.className = 'text-sm text-success';
+          message.className = 'text-sm min-h-[1.25rem] text-success';
           form.reset();
         } else {
           const errors = data.errors
             ? Object.values(data.errors).flat().join(', ')
             : 'Something went wrong';
           message.textContent = errors as string;
-          message.className = 'text-sm text-destructive';
+          message.className = 'text-sm min-h-[1.25rem] text-destructive';
         }
       } catch {
         message.textContent = 'Failed to send message. Please try again.';
-        message.className = 'text-sm text-destructive';
+        message.className = 'text-sm min-h-[1.25rem] text-destructive';
       } finally {
         button.disabled = false;
         button.textContent = 'Send message';
-        message.classList.remove('hidden');
       }
     });
   }

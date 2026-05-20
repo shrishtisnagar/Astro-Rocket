@@ -132,7 +132,7 @@ html.dark[data-theme="custom"] {
   --brand-700: oklch(60%  0.075 344);
   --brand-800: oklch(48%  0.065 344);
   --brand-900: oklch(35%  0.055 344);
-  --background: #000000;
+  --background: oklch(4% 0.008 344);
   --background-secondary: oklch(8% 0.008 344);
   --background-tertiary: oklch(12% 0.008 344);
   --background-elevated: oklch(8% 0.008 344);
@@ -173,7 +173,7 @@ html.dark[data-theme="custom"] {
   --destructive: oklch(65% 0.22 25);
   --destructive-foreground: var(--gray-0);
 
-  --gradient-start: #000000;
+  --gradient-start: oklch(4% 0.008 344);
   --gradient-end: oklch(8% 0.008 344);
 
   --success-light: oklch(18% 0.05 145);
@@ -188,6 +188,17 @@ html.dark[data-theme="custom"] {
   --on-invert-muted: oklch(68% 0.008 344);
   --border-invert: oklch(22% 0.008 344);
   --border-invert-strong: oklch(30% 0.006 344);
+
+  /* -------------------------------------------------------------------------
+     Aurora blob tokens — consumed by Hero.astro showAurora effect
+     Override here to match this theme's wine/plum palette
+     ------------------------------------------------------------------------- */
+  --aurora-primary:       oklch(55% 0.20 344 / 0.55);
+  --aurora-primary-mid:   oklch(35% 0.12 344 / 0.20);
+  --aurora-secondary:     oklch(48% 0.16 320 / 0.50);
+  --aurora-secondary-mid: oklch(30% 0.10 330 / 0.18);
+  --video-overlay-primary:   oklch(28% 0.10 344 / 0.60);
+  --video-overlay-secondary: oklch(8%  0.04 344 / 0.80);
 
   --theme-shadow-sm: 0 1px 3px oklch(10% 0.015 344 / 0.35);
   --theme-shadow-md: 0 4px 12px oklch(10% 0.015 344 / 0.4),
