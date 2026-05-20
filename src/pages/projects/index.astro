@@ -106,8 +106,8 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   <!-- Featured Projects -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div data-reveal>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+      <div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground" data-kinetic-heading>
           Projects I'm Proud of
         </h2>
       </div>
@@ -123,6 +123,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             rel="noopener noreferrer"
             class="group block h-full"
             data-reveal
+            data-tilt
           >
             <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl && (
@@ -160,8 +161,8 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   <!-- Explore complete works -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div data-reveal>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+      <div>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground" data-kinetic-heading>
           Explore my complete works
         </h2>
       </div>
@@ -193,6 +194,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             class="work-card group block"
             data-category={project.data.category}
             data-reveal
+            data-tilt
           >
             <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl && (
@@ -253,7 +255,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
           <Badge variant="brand" pill>Testimonials</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground" data-kinetic-heading>
             What clients say
           </h2>
         </div>

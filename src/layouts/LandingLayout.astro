@@ -73,3 +73,136 @@ const {
 
   <Footer slot="footer" layout="simple" background="secondary" copyright="© {year} The S Curve | Shrishti S Nagar — Serving Global Clients From India" />
 </BaseLayout>
+
+<script>
+  // ==========================================================================
+  //  Kinetic UI
+  //  Three self-contained effects that fire after page load.
+  //  All respect prefers-reduced-motion via an early-exit guard.
+  // ==========================================================================
+
+  function initKinetic() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    initHeroParallax();
+    initCardTilt();
+    initKineticHeadings();
+  }
+
+  // ── 1. Hero Parallax ──────────────────────────────────────────────────────
+  // Layers in the hero drift at different scroll speeds so the scene has
+  // depth as you scroll away from it. Video atmosphere fades last.
+  function initHeroParallax() {
+    const hero    = document.querySelector<HTMLElement>('[data-hero]');
+    if (!hero) return;
+
+    const photo   = document.querySelector<HTMLElement>('.hero-photo-wrap');
+    const content = document.querySelector<HTMLElement>('.animate-hero-stagger');
+    const aurora  = document.querySelector<HTMLElement>('.aurora-layer');
+    const video   = document.querySelector<HTMLElement>('.video-bg-wrap');
+
+    let ticking = false;
+
+    function update() {
+      const scrollY = window.scrollY;
+      const heroH   = hero!.offsetHeight;
+      // p = 0 at top of page → 1 when hero fully scrolled off
+      const p = Math.min(scrollY / heroH, 1);
+
+      // Photo: drifts DOWN (slower than page) — feels heavy, grounded
+      if (photo) {
+        photo.style.transform = `translateY(${scrollY * 0.14}px)`;
+        photo.style.opacity   = String(Math.max(0, 1 - p * 1.9));
+      }
+
+      // Text: barely floats UP — lifts away gently before fading
+      if (content) {
+        content.style.transform = `translateY(${scrollY * -0.06}px)`;
+        content.style.opacity   = String(Math.max(0, 1 - p * 2.2));
+      }
+
+      // Aurora: drifts up slowly — sits between text and video in depth
+      if (aurora) {
+        aurora.style.transform = `translateY(${scrollY * 0.20}px)`;
+        aurora.style.opacity   = String(Math.max(0, 1 - p * 1.2));
+      }
+
+      // Video: the atmosphere — fades last, persisting just past the fold
+      if (video) {
+        video.style.opacity = String(Math.max(0, 1 - p * 1.5));
+      }
+
+      ticking = false;
+    }
+
+    // Delay start until hero entrance animations finish (~1.4 s)
+    // so the scroll listener never fights the CSS @keyframes.
+    setTimeout(() => {
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      // Run once in case page loaded mid-scroll
+      requestAnimationFrame(update);
+    }, 1450);
+  }
+
+  // ── 2. 3D Cursor-Reactive Card Tilt ──────────────────────────────────────
+  // Cards rotate in 3D perspective following the mouse, snapping back with
+  // a spring curve on mouse-leave.
+  function initCardTilt() {
+    const cards = document.querySelectorAll<HTMLElement>('[data-tilt]');
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e: MouseEvent) => {
+        const r = card.getBoundingClientRect();
+        // Normalise cursor to −0.5 … +0.5 relative to card centre
+        const x = (e.clientX - r.left)  / r.width  - 0.5;
+        const y = (e.clientY - r.top)   / r.height - 0.5;
+
+        card.style.transition = 'transform 0.08s ease-out';
+        card.style.transform  =
+          `perspective(900px) rotateX(${y * -11}deg) rotateY(${x * 11}deg) scale3d(1.025,1.025,1.025)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        // Spring snap-back
+        card.style.transition = 'transform 0.65s cubic-bezier(0.34,1.56,0.64,1)';
+        card.style.transform  =
+          'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+      });
+    });
+  }
+
+  // ── 3. Word-split heading reveal ─────────────────────────────────────────
+  // Each word in a [data-kinetic-heading] becomes a .k-word span.
+  // An IntersectionObserver triggers .kinetic-revealed, CSS transitions
+  // blur-fade each word in with a per-word stagger delay.
+  function initKineticHeadings() {
+    const headings = document.querySelectorAll<HTMLElement>('[data-kinetic-heading]');
+    if (!headings.length) return;
+
+    headings.forEach(h => {
+      const text  = h.textContent?.trim() ?? '';
+      const words = text.split(/\s+/);
+      h.innerHTML = words
+        .map((w, i) =>
+          `<span class="k-word" style="transition-delay:${i * 60}ms">${w}</span>`
+        )
+        .join(' ');
+    });
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('kinetic-revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    headings.forEach(h => io.observe(h));
+  }
+
+  // Run on initial load and on every Astro page navigation
+  document.addEventListener('astro:page-load', initKinetic);
+  initKinetic();
+</script>

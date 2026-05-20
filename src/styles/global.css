@@ -1096,6 +1096,74 @@
   }
 }
 
+/* =============================================================================
+   Kinetic UI
+   Scroll-linked parallax, 3D cursor-reactive cards, word-reveal headings.
+   All effects are gated behind the JS reduced-motion check; the CSS below
+   only provides the "resting" (pre-reveal) state and GPU hints.
+   ============================================================================= */
+
+/* ── Word-split heading reveal ─────────────────────────────────────────────
+   JS splits heading text into .k-word spans and adds .kinetic-revealed when
+   the element enters the viewport. Words blur-in staggered from below. */
+.k-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(4px);
+  transition:
+    transform 0.7s cubic-bezier(0.34, 1.2, 0.64, 1),
+    opacity 0.55s ease,
+    filter 0.5s ease;
+}
+
+[data-kinetic-heading].kinetic-revealed .k-word {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+
+/* ── 3D tilt cards ─────────────────────────────────────────────────────────
+   data-tilt elements get perspective transform via JS mousemove.
+   will-change primes the GPU layer before the first interaction. */
+[data-tilt] {
+  will-change: transform;
+}
+
+/* Suppress Card's built-in -translate-y hover while JS tilt is active.
+   Prevents double-transform stacking during mouse-over. */
+[data-tilt]:hover > * {
+  transform: none !important;
+}
+
+/* ── Hero layer GPU hints ──────────────────────────────────────────────────
+   The parallax JS animates transform+opacity on these three elements.
+   Promoting them to their own compositor layers removes main-thread cost. */
+[data-hero] .hero-photo-wrap,
+[data-hero] .animate-hero-stagger,
+[data-hero] .aurora-layer,
+[data-hero] .video-bg-wrap {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-word {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
+  [data-tilt] { will-change: auto; }
+
+  [data-hero] .hero-photo-wrap,
+  [data-hero] .animate-hero-stagger,
+  [data-hero] .aurora-layer,
+  [data-hero] .video-bg-wrap {
+    will-change: auto;
+  }
+}
+
 /* ── Hero / CTA button styles ───────────────────────────────────────────────
    Shared across all pages. Re-enable by applying these classes to buttons.
    hero-btn-brand : brand-coloured primary action
