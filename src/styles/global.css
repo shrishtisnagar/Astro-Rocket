@@ -209,15 +209,6 @@
    Utilities
    ------------------------------------------------------------------------- */
 @layer utilities {
-  /* Invert section - remaps Tailwind theme tokens for dark/contrast sections.
-
-     Architecture: All CSS property declarations in this file reference --color-*
-     tokens (the Tailwind namespace). @theme sets --color-* defaults on :root via
-     raw tokens; .invert-section overrides --color-* directly for section theming.
-
-     The `color` property is set explicitly so that unstyled child elements
-     (e.g. headings with no text-* class) inherit the correct inverted text color
-     rather than the body's root-level color. */
   .invert-section {
     color: var(--color-foreground);
 
@@ -262,7 +253,6 @@
     --color-primary-foreground: var(--surface-invert);
   }
 
-  /* Container */
   .container {
     width: 100%;
     max-width: var(--container-max);
@@ -276,7 +266,6 @@
     }
   }
 
-  /* Screen reader */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -289,7 +278,6 @@
     border-width: 0;
   }
 
-  /* Subtle gradient background */
   .bg-gradient-subtle {
     background: linear-gradient(
       to bottom,
@@ -298,12 +286,10 @@
     );
   }
 
-  /* Hero gradient — dark mode only */
   .dark .hero-dark-gradient {
     background: linear-gradient(to bottom, var(--color-brand-600) 0%, #000 100%);
   }
 
-  /* Gradient border */
   .border-gradient {
     position: relative;
     background: var(--color-card);
@@ -327,7 +313,6 @@
     pointer-events: none;
   }
 
-  /* Grid pattern */
   .bg-grid {
     background-size: 24px 24px;
     background-image: linear-gradient(
@@ -342,7 +327,6 @@
     );
   }
 
-  /* Dot pattern */
   .bg-dots {
     background-image: radial-gradient(
       var(--color-border-strong) 1px,
@@ -351,7 +335,6 @@
     background-size: 16px 16px;
   }
 
-  /* Grid pattern - for hero sections (matches the React design) */
   .bg-grid-pattern {
     background-image:
       linear-gradient(to right, var(--gray-200) 1px, transparent 1px),
@@ -365,7 +348,6 @@
       linear-gradient(to bottom, var(--color-brand-600) 1px, transparent 1px);
   }
 
-  /* Animations */
   .animate-fade-in {
     animation: fade-in 0.5s ease-out forwards;
   }
@@ -405,7 +387,6 @@
     }
   }
 
-  /* Sheet slide up from bottom */
   .animate-sheet-up {
     animation: sheet-up 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
   }
@@ -421,7 +402,6 @@
     }
   }
 
-  /* Backdrop fade */
   .animate-backdrop {
     animation: backdrop-fade 0.2s ease-out forwards;
   }
@@ -431,7 +411,6 @@
     to { opacity: 1; }
   }
 
-  /* Dropdown animations */
   .animate-dropdown-in {
     animation: dropdown-in 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
   }
@@ -462,7 +441,6 @@
     }
   }
 
-  /* Mobile menu slide down */
   .animate-menu-down {
     transform-origin: top;
     animation: menu-down 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
@@ -495,7 +473,6 @@
     }
   }
 
-  /* Sheet exit animation */
   .animate-sheet-down {
     animation: sheet-down 0.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
   }
@@ -511,7 +488,6 @@
     }
   }
 
-  /* Backdrop fade out */
   .animate-backdrop-out {
     animation: backdrop-fade-out 0.2s ease-out forwards;
   }
@@ -521,7 +497,6 @@
     to { opacity: 0; }
   }
 
-  /* Stagger delays */
   .delay-0 { animation-delay: 0ms; }
   .delay-1 { animation-delay: 50ms; }
   .delay-2 { animation-delay: 100ms; }
@@ -529,7 +504,6 @@
   .delay-4 { animation-delay: 200ms; }
   .delay-5 { animation-delay: 250ms; }
 
-  /* Hover transitions */
   .hover-lift {
     transition: transform var(--transition-fast) var(--ease-out),
                 box-shadow var(--transition-fast) var(--ease-out);
@@ -540,7 +514,6 @@
     box-shadow: var(--shadow-lg);
   }
 
-  /* Link underline */
   .link-subtle {
     color: var(--color-foreground-secondary);
     transition: color var(--transition-fast);
@@ -550,7 +523,6 @@
     color: var(--color-foreground);
   }
 
-  /* Spin animation */
   .animate-spin {
     animation: spin 1s linear infinite;
   }
@@ -560,7 +532,6 @@
     to { transform: rotate(360deg); }
   }
 
-  /* Pulse */
   .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
@@ -570,7 +541,6 @@
     50% { opacity: 0.5; }
   }
 
-  /* Input error shake */
   .animate-shake {
     animation: shake 400ms var(--ease-default);
   }
@@ -581,7 +551,6 @@
     40%, 80% { transform: translateX(4px); }
   }
 
-  /* Tab content crossfade */
   .animate-tab-enter {
     animation: tab-enter var(--transition-normal) var(--ease-out);
   }
@@ -597,7 +566,6 @@
     }
   }
 
-  /* Toast slide-in */
   .animate-toast-in {
     animation: toast-in 350ms var(--ease-spring);
   }
@@ -614,7 +582,6 @@
     }
   }
 
-  /* Tooltip scale-in */
   .animate-tooltip-in {
     animation: tooltip-in var(--transition-fast) var(--ease-out);
   }
@@ -630,7 +597,6 @@
     }
   }
 
-  /* Reduced motion: disable micro-animations */
   @media (prefers-reduced-motion: reduce) {
     .animate-shake,
     .animate-tab-enter,
@@ -645,26 +611,15 @@
    Components
    ------------------------------------------------------------------------- */
 @layer components {
-  /* -------------------------------------------------------------------------
-     Navigation Component Tokens
-     Customize header navigation via these CSS custom properties
-     ------------------------------------------------------------------------- */
   :root {
-    /* Nav link - inactive state */
     --nav-link-color: var(--color-foreground-muted);
     --nav-link-bg: transparent;
     --nav-link-font-weight: 500;
-
-    /* Nav link - hover state */
     --nav-link-hover-color: var(--color-foreground);
     --nav-link-hover-bg: var(--color-secondary);
-
-    /* Nav link - active state (current page) */
     --nav-link-active-color: var(--color-foreground);
     --nav-link-active-bg: var(--color-secondary);
     --nav-link-active-font-weight: 600;
-
-    /* Nav link - focus state */
     --nav-link-focus-ring: var(--color-ring);
   }
 
@@ -693,7 +648,6 @@
     outline-offset: 2px;
   }
 
-  /* Mobile nav links */
   .mobile-nav-link {
     color: var(--nav-link-color);
     background-color: var(--nav-link-bg);
@@ -714,7 +668,6 @@
     font-weight: var(--nav-link-active-font-weight);
   }
 
-  /* Prose */
   .prose {
     max-width: 65ch;
     color: var(--color-foreground-secondary);
@@ -851,16 +804,12 @@
     background: var(--color-background-secondary);
   }
 
-  /* -------------------------------------------------------------------------
-     Tooltip Component
-     ------------------------------------------------------------------------- */
   .tooltip-wrapper {
     position: relative;
     display: inline-flex;
   }
 
   .tooltip-bubble {
-    /* Base styles */
     position: absolute;
     z-index: 9999;
     padding: 0.375rem 0.75rem;
@@ -873,8 +822,6 @@
     box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
     white-space: nowrap;
     pointer-events: none;
-
-    /* Hidden by default */
     opacity: 0;
     visibility: hidden;
     transform: scale(0.96);
@@ -889,7 +836,6 @@
     color: var(--gray-900);
   }
 
-  /* Position: Top (default) */
   [data-tooltip-position="top"] .tooltip-bubble {
     bottom: calc(100% + 8px);
     top: auto;
@@ -901,7 +847,6 @@
     transform: translateX(-50%) scale(1);
   }
 
-  /* Position: Bottom */
   [data-tooltip-position="bottom"] .tooltip-bubble {
     top: calc(100% + 8px);
     bottom: auto;
@@ -913,7 +858,6 @@
     transform: translateX(-50%) scale(1);
   }
 
-  /* Position: Left */
   [data-tooltip-position="left"] .tooltip-bubble {
     right: calc(100% + 8px);
     left: auto;
@@ -925,7 +869,6 @@
     transform: translateY(-50%) scale(1);
   }
 
-  /* Position: Right */
   [data-tooltip-position="right"] .tooltip-bubble {
     left: calc(100% + 8px);
     right: auto;
@@ -937,7 +880,6 @@
     transform: translateY(-50%) scale(1);
   }
 
-  /* Visible state */
   .tooltip-bubble.visible {
     opacity: 1;
     visibility: visible;
@@ -946,17 +888,8 @@
 
 /* -------------------------------------------------------------------------
    Hero entrance & scroll-reveal animations
-   Outside every @layer so these rules are unlayered CSS — highest cascade
-   precedence — and never overridden by Tailwind-generated utilities.
-   Explicit cubic-bezier values replace var() references to guarantee the
-   transition shorthand is always valid.
    ------------------------------------------------------------------------- */
 
-/* Spring curve approximating Framer Motion's spring(stiffness:100, damping:15).
-   Pronounced overshoot gives elements a "settle" feel on entrance.
-   Initial opacity is 0.01 (not 0) so the LCP element registers as a paint
-   candidate; the value is imperceptible to humans but visible to the
-   browser's LCP observer. */
 @keyframes hero-slide-up {
   from {
     opacity: 0.01;
@@ -972,9 +905,6 @@
   animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
 }
 
-/* Stagger direct children of a hero container. Each child springs in 90ms
-   behind the previous — used on the Hero content column to cascade
-   badge → title → description → actions. */
 .animate-hero-stagger > * {
   animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
 }
@@ -985,9 +915,6 @@
 .animate-hero-stagger > *:nth-child(5)   { animation-delay: 360ms; }
 .animate-hero-stagger > *:nth-child(n+6) { animation-delay: 450ms; }
 
-/* Floating header drop-in: lands from above as the hero rises from below.
-   The translate values mirror the auto-hide hidden state so the entrance
-   plays cleanly with the existing transition system. */
 @keyframes header-drop-in {
   from {
     translate: -50% calc(-100% - 1.5rem);
@@ -1027,9 +954,6 @@
 [data-reveal][data-reveal-delay="3"] { transition-delay: 300ms; }
 [data-reveal][data-reveal-delay="4"] { transition-delay: 400ms; }
 
-/* Cascading reveal for grids of cards. Each direct child stages in behind
-   the previous when the parent intersects. Stagger and travel distance are
-   tunable per-instance via custom properties. */
 [data-reveal-children] {
   --reveal-stagger: 100ms;
   --reveal-distance: 48px;
@@ -1062,10 +986,6 @@
 [data-reveal-children] > *:nth-child(12)   { transition-delay: calc(var(--reveal-stagger) * 11); }
 [data-reveal-children] > *:nth-child(n+13) { transition-delay: calc(var(--reveal-stagger) * 12); }
 
-/* Per-block reveal for long-form article bodies (single blog posts /
-   single project pages). Each direct child of the prose container —
-   paragraph, heading, list, image, blockquote, custom MDX block — is
-   given its own observer so it springs in as the reader scrolls to it. */
 [data-reveal-content] > * {
   opacity: 0;
   transform: translateY(40px);
@@ -1103,9 +1023,7 @@
    only provides the "resting" (pre-reveal) state and GPU hints.
    ============================================================================= */
 
-/* ── Word-split heading reveal ─────────────────────────────────────────────
-   JS splits heading text into .k-word spans and adds .kinetic-revealed when
-   the element enters the viewport. Words blur-in staggered from below. */
+/* Word-split heading reveal */
 .k-word {
   display: inline-block;
   opacity: 0;
@@ -1123,22 +1041,16 @@
   filter: blur(0px);
 }
 
-/* ── 3D tilt cards ─────────────────────────────────────────────────────────
-   data-tilt elements get perspective transform via JS mousemove.
-   will-change primes the GPU layer before the first interaction. */
+/* 3D tilt cards */
 [data-tilt] {
   will-change: transform;
 }
 
-/* Suppress Card's built-in -translate-y hover while JS tilt is active.
-   Prevents double-transform stacking during mouse-over. */
 [data-tilt]:hover > * {
   transform: none !important;
 }
 
-/* ── Hero layer GPU hints ──────────────────────────────────────────────────
-   The parallax JS animates transform+opacity on these three elements.
-   Promoting them to their own compositor layers removes main-thread cost. */
+/* Hero layer GPU hints */
 [data-hero] .hero-photo-wrap,
 [data-hero] .animate-hero-stagger,
 [data-hero] .aurora-layer,
@@ -1164,10 +1076,7 @@
   }
 }
 
-/* ── Hero / CTA button styles ───────────────────────────────────────────────
-   Shared across all pages. Re-enable by applying these classes to buttons.
-   hero-btn-brand : brand-coloured primary action
-   hero-btn-learn : secondary action (outline in light, white pill in dark)   */
+/* ── Hero / CTA button styles ─────────────────────────────────────────────── */
 
 .hero-btn-brand {
   background-color: var(--color-brand-700) !important;
@@ -1181,8 +1090,6 @@
   opacity: 0.85;
 }
 
-/* CTA primary button on mobile / coarse-pointer CTA sections —
-   brand-600 fill, matches the homepage hero primary button. */
 .cta-btn-brand {
   background-color: var(--color-brand-600) !important;
   background-image: none !important;
@@ -1200,7 +1107,6 @@
   background-color: var(--color-brand-600) !important;
 }
 
-/* Header CTA — brand colour in light mode */
 :root:not(.dark) .hdr-cta-brand {
   background-color: var(--color-brand-500) !important;
   background-image: none !important;
