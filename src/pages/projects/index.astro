@@ -608,13 +608,13 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     position: relative;
   }
 
-  /* Greyscale by default */
+  /* Greyscale + plum tint by default */
   .case-img-wrap img {
     filter: grayscale(100%);
     transition: filter 0.45s ease, transform 0.3s ease;
   }
 
-  /* Plum colour overlay — invisible until hover */
+  /* Plum colour overlay — visible by default, hidden on hover */
   .case-img-wrap::after {
     content: '';
     position: absolute;
@@ -622,18 +622,18 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     /* Plum from the #37090C family — lifted in lightness so mix-blend-mode: color has effect */
     background: oklch(38% 0.22 15);
     mix-blend-mode: color;
-    opacity: 0;
+    opacity: 0.75;
     transition: opacity 0.45s ease;
     pointer-events: none;
   }
 
-  /* On group hover: lift greyscale, fade in plum tint */
+  /* On group hover: restore full colour, remove plum tint */
   .group:hover .case-img-wrap img {
     filter: grayscale(0%);
   }
 
   .group:hover .case-img-wrap::after {
-    opacity: 0.75;
+    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
