@@ -614,18 +614,20 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     transition: filter 0.45s ease, transform 0.3s ease;
   }
 
-  /* Exact #37090C overlay — sits on top of the greyscale image */
+  /* Duotone: multiply blends #37090C into the grayscale —
+     shadows stay near-black, highlights take the wine hue */
   .case-img-wrap::after {
     content: '';
     position: absolute;
     inset: 0;
     background: #37090C;
-    opacity: 0.55;
+    mix-blend-mode: multiply;
+    opacity: 1;
     transition: opacity 0.45s ease;
     pointer-events: none;
   }
 
-  /* On group hover: restore full colour, remove plum overlay */
+  /* On group hover: restore full colour, remove duotone */
   .group:hover .case-img-wrap img {
     filter: grayscale(0%);
   }
