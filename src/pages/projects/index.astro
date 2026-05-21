@@ -126,7 +126,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           >
             <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl && (
-                <div class="overflow-hidden h-44 shrink-0">
+                <div class="case-img-wrap overflow-hidden h-44 shrink-0">
                   <img
                     src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
                     alt={project.data.imageAlt || project.data.title}
@@ -196,7 +196,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
           >
             <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
               {project.data.imageUrl && (
-                <div class="overflow-hidden h-44 shrink-0">
+                <div class="case-img-wrap overflow-hidden h-44 shrink-0">
                   <img
                     src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
                     alt={project.data.imageAlt || project.data.title}
@@ -601,6 +601,44 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   /* ---- Empty state ---- */
   .works-empty {
     font-size: 0.95rem;
+  }
+
+  /* ---- Case study image: greyscale → plum on hover ---- */
+  .case-img-wrap {
+    position: relative;
+  }
+
+  /* Greyscale by default */
+  .case-img-wrap img {
+    filter: grayscale(100%);
+    transition: filter 0.45s ease, transform 0.3s ease;
+  }
+
+  /* Plum colour overlay — invisible until hover */
+  .case-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Plum from the #37090C family — lifted in lightness so mix-blend-mode: color has effect */
+    background: oklch(38% 0.22 15);
+    mix-blend-mode: color;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+  }
+
+  /* On group hover: lift greyscale, fade in plum tint */
+  .group:hover .case-img-wrap img {
+    filter: grayscale(0%);
+  }
+
+  .group:hover .case-img-wrap::after {
+    opacity: 0.75;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-img-wrap img { transition: none; }
+    .case-img-wrap::after { transition: none; }
   }
 </style>
 
