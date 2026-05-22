@@ -298,49 +298,36 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             photo: '/images/testimonials/prachi.jfif',
           },
         ];
+        const items = [...testimonials, ...testimonials]; /* duplicate for seamless loop */
         return (
-          <div class="testimonial-carousel" data-reveal>
-            <div class="testimonial-slides">
-              {testimonials.map((t, i) => (
-                <div class={`testimonial-slide${i === 0 ? ' active' : ''}`} aria-hidden={i !== 0 ? 'true' : 'false'}>
-                  <div class="flex flex-col gap-4 max-w-2xl mx-auto text-center">
-                    <div class="flex gap-1 justify-center text-yellow-400" role="img" aria-label="5 out of 5 stars">
-                      {[...Array(5)].map(() => (
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
+          <div class="testimonial-marquee-track" data-reveal>
+            <div class="testimonial-marquee-inner">
+              {items.map((t) => (
+                <div class="testimonial-card">
+                  <div class="flex gap-1 mb-4 text-yellow-400">
+                    {[...Array(5)].map(() => (
+                      <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <blockquote class="text-sm text-foreground-muted leading-relaxed italic flex-1">
+                    "{t.quote}"
+                  </blockquote>
+                  <div class="flex items-center gap-3 mt-5">
+                    <div class="testimonial-avatar shrink-0">
+                      {t.photo ? (
+                        <img src={url(t.photo)} alt={t.name} class="w-full h-full object-cover rounded-full" />
+                      ) : (
+                        <span class="testimonial-avatar-initial">{t.initial}</span>
+                      )}
                     </div>
-                    <blockquote class="text-lg text-foreground-muted leading-relaxed italic">
-                      "{t.quote}"
-                    </blockquote>
-                    <div class="flex items-center justify-center gap-3 pt-4">
-                      <div class="testimonial-avatar" aria-hidden="true">
-                        {t.photo ? (
-                          <img src={url(t.photo)} alt={t.name} class="w-full h-full object-cover rounded-full" />
-                        ) : (
-                          <>
-                            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                              <rect width="64" height="64" rx="32" fill="currentColor" opacity="0.15"/>
-                              <circle cx="32" cy="26" r="11" fill="currentColor" opacity="0.4"/>
-                              <ellipse cx="32" cy="54" rx="18" ry="12" fill="currentColor" opacity="0.3"/>
-                            </svg>
-                            <span class="testimonial-avatar-initial">{t.initial}</span>
-                          </>
-                        )}
-                      </div>
-                      <div class="text-left">
-                        <p class="text-sm font-semibold text-foreground">{t.name}</p>
-                        <p class="text-xs text-foreground-muted">{t.role}</p>
-                      </div>
+                    <div>
+                      <p class="text-sm font-semibold text-foreground">{t.name}</p>
+                      <p class="text-xs text-foreground-muted">{t.role}</p>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div class="testimonial-dots" aria-hidden="true">
-              {testimonials.map((_t, i) => (
-                <button class={`testimonial-dot${i === 0 ? ' active' : ''}`} data-slide={i} aria-label={`Go to testimonial ${i + 1}`}></button>
               ))}
             </div>
           </div>
@@ -418,78 +405,60 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     .brand-marquee-inner { animation: none; }
   }
 
-  /* ---- Testimonial carousel ---- */
-  .testimonial-carousel {
-    position: relative;
-    max-width: 42rem;
-    margin: 0 auto;
+  /* ---- Testimonial marquee ---- */
+  .testimonial-marquee-track {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
   }
 
-  .testimonial-slides {
-    position: relative;
-    min-height: 280px;
-  }
-
-  .testimonial-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.7s ease;
-    pointer-events: none;
-  }
-
-  .testimonial-slide.active {
-    opacity: 1;
-    pointer-events: auto;
-    position: relative;
-  }
-
-  .testimonial-dots {
+  .testimonial-marquee-inner {
     display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 2rem;
+    gap: 1.5rem;
+    width: max-content;
+    animation: testimonial-scroll 60s linear infinite;
   }
 
-  .testimonial-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-brand-500, #f7b5dd) 30%, transparent);
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s, width 0.3s;
-    padding: 0;
+  .testimonial-marquee-track:hover .testimonial-marquee-inner {
+    animation-play-state: paused;
   }
 
-  .testimonial-dot.active {
-    width: 1.5rem;
-    background: var(--color-brand-500, #f7b5dd);
+  @keyframes testimonial-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .testimonial-card {
+    width: 22rem;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-background-secondary, oklch(14% 0.02 344 / 0.5));
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1.5rem;
   }
 
   .testimonial-avatar {
-    position: relative;
-    width: 2.75rem;
-    height: 2.75rem;
-    flex-shrink: 0;
-    color: var(--color-brand-500, #f7b5dd);
-  }
-
-  .testimonial-avatar svg { width: 100%; height: 100%; }
-
-  .testimonial-avatar-initial {
-    position: absolute;
-    inset: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--color-brand-500) 20%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .testimonial-avatar-initial {
     font-size: 0.875rem;
     font-weight: 700;
-    color: var(--color-brand-500, #f7b5dd);
+    color: var(--color-brand-500);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .testimonial-slide { transition: none; }
+    .testimonial-marquee-inner { animation: none; }
   }
 
   /* ---- Works filter ---- */
@@ -720,39 +689,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
 </style>
 
 <script>
-  function initTestimonialCarousel() {
-    const carousel = document.querySelector('.testimonial-carousel');
-    if (!carousel) return;
-
-    const slides = carousel.querySelectorAll<HTMLElement>('.testimonial-slide');
-    const dots = carousel.querySelectorAll<HTMLElement>('.testimonial-dot');
-    let current = 0;
-    let timer: ReturnType<typeof setInterval>;
-
-    function goTo(index: number) {
-      slides[current].classList.remove('active');
-      slides[current].setAttribute('aria-hidden', 'true');
-      dots[current].classList.remove('active');
-      current = (index + slides.length) % slides.length;
-      slides[current].classList.add('active');
-      slides[current].setAttribute('aria-hidden', 'false');
-      dots[current].classList.add('active');
-    }
-
-    function startAuto() {
-      clearInterval(timer);
-      timer = setInterval(() => goTo(current + 1), 5000);
-    }
-
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => { goTo(i); startAuto(); });
-    });
-
-    startAuto();
-  }
-
-  initTestimonialCarousel();
-
   function initWorksFilter() {
     const btns = document.querySelectorAll<HTMLButtonElement>('.works-filter-btn');
     const cards = document.querySelectorAll<HTMLElement>('.work-card');
