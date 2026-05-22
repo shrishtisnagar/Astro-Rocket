@@ -635,8 +635,8 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   }
 
   .cs-card:hover .cs-description {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateY(8px);
   }
 
   /* Tags — hidden, appear with description */
