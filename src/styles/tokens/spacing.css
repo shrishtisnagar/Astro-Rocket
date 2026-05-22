@@ -47,7 +47,7 @@
   /* ---------------------------------------------------------------------------
      Semantic Spacing
      --------------------------------------------------------------------------- */
-  --space-section: clamp(var(--space-16), 10vw, var(--space-24));
+  --space-section: clamp(var(--space-10), 6vw, var(--space-16));
   --space-section-header: clamp(var(--space-4), 2vw, var(--space-6));
   --space-container-x: clamp(var(--space-4), 5vw, var(--space-8));
   --space-stack-sm: var(--space-2);
@@ -60,10 +60,10 @@
   /* ---------------------------------------------------------------------------
      Section Padding - Size Variants
      --------------------------------------------------------------------------- */
-  --space-section-sm: clamp(var(--space-12), 6vw, var(--space-16));
-  --space-section-md: clamp(var(--space-16), 8vw, var(--space-24));
-  --space-section-lg: clamp(var(--space-20), 10vw, var(--space-32));
-  --space-section-xl: clamp(var(--space-28), 12vw, var(--space-40));
+  --space-section-sm: clamp(var(--space-8), 4vw, var(--space-12));
+  --space-section-md: clamp(var(--space-10), 5vw, var(--space-16));
+  --space-section-lg: clamp(var(--space-12), 7vw, var(--space-20));
+  --space-section-xl: clamp(var(--space-16), 9vw, var(--space-24));
 
   /* ---------------------------------------------------------------------------
      Section Grid Gaps - Fluid Scaling
@@ -83,6 +83,6 @@
   /* ---------------------------------------------------------------------------
      Page Top Spacing (after fixed header)
      --------------------------------------------------------------------------- */
-  --space-page-top: var(--space-32); /* 128px - clearance for fixed header + breathing room */
-  --space-page-top-sm: var(--space-24); /* 96px - smaller top clearance */
+  --space-page-top: var(--space-28); /* 112px - clearance for fixed header + breathing room */
+  --space-page-top-sm: var(--space-20); /* 80px - smaller top clearance */
 }
