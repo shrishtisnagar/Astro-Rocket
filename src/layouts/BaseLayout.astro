@@ -117,16 +117,18 @@ schemas.push(...extraSchemas);
       Skip to content
     </a>
 
-    <slot name="header" />
+    <!-- Footer sits fixed at the bottom, revealed as content scrolls away -->
+    <div class="footer-reveal-wrap">
+      <slot name="footer" />
+    </div>
 
-    <main id="main-content" class="flex-1">
-      <slot />
-    </main>
-
-    <slot name="footer" />
-
-    <!-- Bottom scroll-blur strip -->
-    <div class="scroll-blur-strip" aria-hidden="true"></div>
+    <!-- Main content scrolls over the footer -->
+    <div class="page-content-wrap">
+      <slot name="header" />
+      <main id="main-content" class="flex-1">
+        <slot />
+      </main>
+    </div>
 
     <ConsentBanner />
 
@@ -309,23 +311,22 @@ schemas.push(...extraSchemas);
 </html>
 
 <style>
-  /* Fixed bottom blur strip — content scrolls through it and softly emerges */
-  .scroll-blur-strip {
+  /* Footer pinned at bottom — page scrolls away to reveal it */
+  .footer-reveal-wrap {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 80px;
-    pointer-events: none;
-    z-index: 50;
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    /* Gradient mask: fully transparent at top, opaque at bottom */
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+    z-index: 0;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-blur-strip { display: none; }
+  /* Page content sits on top and scrolls up off the footer */
+  .page-content-wrap {
+    position: relative;
+    z-index: 1;
+    background: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
 </style>
