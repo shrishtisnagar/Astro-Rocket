@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 interface Props {
   badge?: string;
   title?: string;
@@ -11,23 +13,36 @@ const { badge, title, description, background = 'secondary' } = Astro.props;
 const bgClass = background === 'primary' ? 'bg-background' : 'bg-background-secondary';
 
 const row1 = [
-  'Meta Business Suite', 'LinkedIn Campaign Manager', 'Google Ads Manager',
-  'ChatGPT', 'Claude', 'Grok', 'Gemini', 'Poe', 'character.ai', 'Gamma',
+  { label: 'Meta Business Suite',        icon: 'lucide:layout-grid' },
+  { label: 'LinkedIn Campaign Manager',  icon: 'simple-icons:linkedin' },
+  { label: 'Google Ads Manager',         icon: 'simple-icons:googleads' },
+  { label: 'ChatGPT',                    icon: 'simple-icons:openai' },
+  { label: 'Claude',                     icon: 'lucide:sparkles' },
+  { label: 'Grok',                       icon: 'lucide:zap' },
+  { label: 'Gemini',                     icon: 'lucide:star' },
+  { label: 'Canva',                      icon: 'simple-icons:canva' },
+  { label: 'Gamma',                      icon: 'lucide:presentation' },
+  { label: 'Loom',                       icon: 'lucide:video' },
 ];
 
 const row2 = [
-  'HubSpot', 'Apollo', 'Mailchimp', 'Freshworks', 'Expandi',
-  'Snov.io', 'Zapier', 'n8n', 'ClickUp', 'Notion', 'Asana', 'Trello', 'Whimsical',
-];
-
-const row3 = [
-  'Canva', 'Loom', 'Adobe Premiere Pro', 'WordPress', 'Beehiiv',
-  'Tweethunter', 'Semrush', 'Ubersuggest', 'Google Analytics',
+  { label: 'HubSpot',                    icon: 'simple-icons:hubspot' },
+  { label: 'Apollo',                     icon: 'lucide:rocket' },
+  { label: 'Mailchimp',                  icon: 'simple-icons:mailchimp' },
+  { label: 'Expandi',                    icon: 'lucide:send' },
+  { label: 'Zapier',                     icon: 'simple-icons:zapier' },
+  { label: 'n8n',                        icon: 'lucide:workflow' },
+  { label: 'ClickUp',                    icon: 'simple-icons:clickup' },
+  { label: 'Notion',                     icon: 'simple-icons:notion' },
+  { label: 'Semrush',                    icon: 'lucide:bar-chart-2' },
+  { label: 'Google Analytics',           icon: 'simple-icons:googleanalytics' },
+  { label: 'Beehiiv',                    icon: 'lucide:mail' },
+  { label: 'WordPress',                  icon: 'simple-icons:wordpress' },
 ];
 ---
 
 <section class={`border-y border-border ${bgClass} py-[var(--space-section-md)]`}>
-  <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+  <div class="mx-auto max-w-6xl px-6 flex flex-col gap-10">
     {(badge || title || description) && (
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         {(badge || title) && (
@@ -53,7 +68,10 @@ const row3 = [
       <div class="marquee-track">
         <div class="marquee-inner marquee-left">
           {[...row1, ...row1].map((tool) => (
-            <span class="marquee-pill">{tool}</span>
+            <span class="marquee-pill">
+              <Icon name={tool.icon} class="marquee-pill-icon" />
+              {tool.label}
+            </span>
           ))}
         </div>
       </div>
@@ -62,16 +80,10 @@ const row3 = [
       <div class="marquee-track">
         <div class="marquee-inner marquee-right">
           {[...row2, ...row2].map((tool) => (
-            <span class="marquee-pill">{tool}</span>
-          ))}
-        </div>
-      </div>
-
-      <!-- Row 3: scrolls left -->
-      <div class="marquee-track">
-        <div class="marquee-inner marquee-left" style="animation-duration:36s">
-          {[...row3, ...row3].map((tool) => (
-            <span class="marquee-pill">{tool}</span>
+            <span class="marquee-pill">
+              <Icon name={tool.icon} class="marquee-pill-icon" />
+              {tool.label}
+            </span>
           ))}
         </div>
       </div>
@@ -82,47 +94,59 @@ const row3 = [
 <style>
   .marquee-track {
     overflow: hidden;
-    padding-bottom: 4px;
-    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
   }
 
   .marquee-inner {
     display: flex;
+    align-items: center;
     gap: 0.75rem;
     width: max-content;
     will-change: transform;
   }
 
-  .marquee-left {
-    animation: scroll-left 28s linear infinite;
-  }
+  .marquee-left  { animation: scroll-left  38s linear infinite; }
+  .marquee-right { animation: scroll-right 44s linear infinite; }
 
-  .marquee-right {
-    animation: scroll-right 32s linear infinite;
+  .marquee-track:hover .marquee-left,
+  .marquee-track:hover .marquee-right {
+    animation-play-state: paused;
   }
 
   .marquee-pill {
     display: inline-flex;
     align-items: center;
+    gap: 0.55rem;
     white-space: nowrap;
-    padding: 0.5rem 1.25rem;
+    padding: 0.65rem 1.25rem;
     border-radius: 9999px;
-    border: 1px solid var(--color-brand-500, #2b1422);
-    border-opacity: 0.3;
-    background: color-mix(in srgb, var(--color-brand-500, #2b1422) 8%, transparent);
-    color: var(--color-foreground);
+    border: 1px solid oklch(100% 0 0 / 0.1);
+    background: oklch(18% 0.02 344 / 0.8);
+    color: oklch(85% 0.02 344);
     font-size: 0.875rem;
     font-weight: 500;
-    transition: background 0.2s;
+    letter-spacing: 0.01em;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    cursor: default;
   }
 
-  .marquee-track:hover .marquee-left {
-    animation-play-state: paused;
+  .marquee-pill:hover {
+    background: oklch(24% 0.04 344 / 0.9);
+    border-color: oklch(100% 0 0 / 0.2);
+    color: #fff;
+    box-shadow: 0 0 16px oklch(55% 0.18 344 / 0.18);
   }
 
-  .marquee-track:hover .marquee-right {
-    animation-play-state: paused;
+  .marquee-pill-icon {
+    width: 1rem;
+    height: 1rem;
+    opacity: 0.75;
+    flex-shrink: 0;
+  }
+
+  .marquee-pill:hover .marquee-pill-icon {
+    opacity: 1;
   }
 
   @keyframes scroll-left {
@@ -136,9 +160,6 @@ const row3 = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .marquee-left,
-    .marquee-right {
-      animation: none;
-    }
+    .marquee-left, .marquee-right { animation: none; }
   }
 </style>
