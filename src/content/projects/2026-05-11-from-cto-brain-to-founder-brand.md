@@ -4,7 +4,7 @@ description: Helping a SaaS founder stand out without sounding like every other
   AI account online.
 category: LinkedIn
 subcategories: Personal Branding, Outreach, Podcast
-imageUrl: /images/projects/pexels-jakubzerdzicki-34212916.jpg
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 01_15_29 AM.png
 featured: false
 order: 6
 draft: false
