@@ -169,20 +169,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
         </h2>
       </div>
 
-      <!-- Segmented filter control -->
-      <div class="works-filter-wrap" data-reveal>
-        <div class="works-filter" role="group" aria-label="Filter by category">
-          {['All', 'LinkedIn', 'Instagram', 'Blogs', 'Print Media', 'Landing Pages'].map((label) => (
-            <button
-              class={`works-filter-btn${label === 'All' ? ' active' : ''}`}
-              data-filter={label === 'All' ? 'all' : label}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       <!-- Cards grid -->
       <div class="works-grid" id="works-grid">
         {allProjects.map((project) => {
@@ -194,7 +180,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             target="_blank"
             rel="noopener noreferrer"
             class="work-card cs-card group block"
-            data-category={project.data.category}
             data-reveal
           >
             <div class="cs-card-inner">
@@ -226,18 +211,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
         })}
       </div>
 
-      <!-- See more button -->
-      <div class="flex justify-center" id="works-see-more-wrap">
-        <button id="works-see-more" class="works-see-more-btn">
-          See more
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
-        </button>
-      </div>
-
-      <!-- Empty state -->
-      <p class="works-empty hidden text-foreground-muted text-center py-12" id="works-empty">
-        No case studies in this category yet — check back soon.
-      </p>
     </div>
   </section>
 
@@ -688,48 +661,3 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   }
 </style>
 
-<script>
-  function initWorksFilter() {
-    const btns = document.querySelectorAll<HTMLButtonElement>('.works-filter-btn');
-    const cards = document.querySelectorAll<HTMLElement>('.work-card');
-    const empty = document.getElementById('works-empty');
-    const seeMoreWrap = document.getElementById('works-see-more-wrap');
-    const seeMoreBtn = document.getElementById('works-see-more');
-    const PAGE_SIZE = 4;
-
-    function applyFilter(filter: string) {
-      const matching: HTMLElement[] = [];
-      cards.forEach((card) => {
-        const show = filter === 'all' || card.dataset.category === filter;
-        card.classList.toggle('hidden', !show);
-        card.classList.remove('see-more-hidden');
-        if (show) matching.push(card);
-      });
-
-      // Collapse cards beyond the first row
-      matching.slice(PAGE_SIZE).forEach((card) => card.classList.add('see-more-hidden'));
-
-      if (empty) empty.classList.toggle('hidden', matching.length > 0);
-      if (seeMoreWrap) seeMoreWrap.classList.toggle('hidden', matching.length <= PAGE_SIZE);
-    }
-
-    btns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        btns.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-        applyFilter(btn.dataset.filter ?? 'all');
-      });
-    });
-
-    if (seeMoreBtn && seeMoreWrap) {
-      seeMoreBtn.addEventListener('click', () => {
-        cards.forEach((card) => card.classList.remove('see-more-hidden'));
-        seeMoreWrap.classList.add('hidden');
-      });
-    }
-
-    applyFilter('all');
-  }
-
-  initWorksFilter();
-</script>
