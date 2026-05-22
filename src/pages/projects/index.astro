@@ -627,13 +627,13 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     pointer-events: none;
   }
 
-  /* On group hover: stay in the wine world, just lift the shade slightly */
+  /* On group hover: reveal full colour */
   .group:hover .case-img-wrap img {
-    filter: grayscale(100%);
+    filter: grayscale(0%);
   }
 
   .group:hover .case-img-wrap::after {
-    opacity: 0.5;
+    opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
