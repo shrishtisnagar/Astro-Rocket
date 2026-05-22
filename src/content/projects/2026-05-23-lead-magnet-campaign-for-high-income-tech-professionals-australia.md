@@ -1,6 +1,6 @@
 ---
 title: Lead Magnet Campaign for High-Income Tech Professionals (Australia)
-description: How we achieved a 1.48% CTR in one of the hardest LinkedIn audiences to crack.
+description: How we achieved a 1.48% CTR in one of the hardest LinkedIn audiences to crack
 category: LinkedIn
 subcategories: LinkedIn Ads, B2B
 featured: false
