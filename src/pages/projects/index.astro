@@ -121,35 +121,38 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="group block h-full"
+            class="cs-card group block"
             data-reveal
           >
-            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
-              {project.data.imageUrl && (
-                <div class="case-img-wrap overflow-hidden h-44 shrink-0">
-                  <img
-                    src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
-                    alt={project.data.imageAlt || project.data.title}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-              )}
-              <div class="flex flex-1 flex-col p-6">
-                <div class="mb-3 flex justify-end">
-                  <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
-                </div>
-                <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
-                <p class="text-sm text-foreground-muted leading-relaxed">{project.data.description}</p>
+            <div class="cs-card-inner">
+              {/* Full-bleed image */}
+              <div class="case-img-wrap cs-img">
+                <img
+                  src={project.data.imageUrl ? (project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl) : ''}
+                  alt={project.data.imageAlt || project.data.title}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              {/* Overlay: gradient + text */}
+              <div class="cs-overlay">
+                {/* Description — slides up on hover */}
+                <p class="cs-description">{project.data.description}</p>
+                {/* Tags */}
                 {project.data.subcategories.length > 0 && (
-                  <div class="flex flex-wrap gap-1.5 mt-auto pt-4">
+                  <div class="cs-tags">
                     {project.data.subcategories.map((tag: string) => (
                       <span class="subcategory-tag">{tag}</span>
                     ))}
                   </div>
                 )}
+                {/* Title + arrow — always visible */}
+                <div class="cs-title-row">
+                  <h3 class="cs-title">{project.data.title}</h3>
+                  <Icon name="arrow-up-right" size="sm" class="cs-arrow" />
+                </div>
               </div>
-            </Card>
+            </div>
           </a>
           );
         })}
@@ -190,36 +193,34 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="work-card group block"
+            class="work-card cs-card group block"
             data-category={project.data.category}
             data-reveal
           >
-            <Card variant="elevated" hover padding="none" class="flex flex-col overflow-hidden h-full">
-              {project.data.imageUrl && (
-                <div class="case-img-wrap overflow-hidden h-44 shrink-0">
-                  <img
-                    src={project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl}
-                    alt={project.data.imageAlt || project.data.title}
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-              )}
-              <div class="flex flex-1 flex-col p-6">
-                <div class="mb-3 flex justify-end">
-                  <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
-                </div>
-                <h3 class="font-display text-lg font-bold text-foreground mb-2">{project.data.title}</h3>
-                <p class="text-sm text-foreground-muted leading-relaxed">{project.data.description}</p>
+            <div class="cs-card-inner">
+              <div class="case-img-wrap cs-img">
+                <img
+                  src={project.data.imageUrl ? (project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl) : ''}
+                  alt={project.data.imageAlt || project.data.title}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <div class="cs-overlay">
+                <p class="cs-description">{project.data.description}</p>
                 {project.data.subcategories.length > 0 && (
-                  <div class="flex flex-wrap gap-1.5 mt-auto pt-4">
+                  <div class="cs-tags">
                     {project.data.subcategories.map((tag: string) => (
                       <span class="subcategory-tag">{tag}</span>
                     ))}
                   </div>
                 )}
+                <div class="cs-title-row">
+                  <h3 class="cs-title">{project.data.title}</h3>
+                  <Icon name="arrow-up-right" size="sm" class="cs-arrow" />
+                </div>
               </div>
-            </Card>
+            </div>
           </a>
           );
         })}
@@ -603,42 +604,118 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     font-size: 0.95rem;
   }
 
-  /* ---- Case study image: greyscale → plum on hover ---- */
-  .case-img-wrap {
+  /* ---- Case study card: full-bleed image + overlay ---- */
+  .cs-card-inner {
     position: relative;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    aspect-ratio: 3 / 4;
+    box-shadow: 0 4px 24px -4px rgba(0,0,0,0.18);
   }
 
-  /* Greyscale + plum tint by default */
-  .case-img-wrap img {
-    filter: grayscale(100%);
-    transition: filter 0.45s ease, transform 0.3s ease;
-  }
-
-  /* Duotone: multiply blends #37090C into the grayscale —
-     shadows stay near-black, highlights take the wine hue */
-  .case-img-wrap::after {
-    content: '';
+  .cs-img {
     position: absolute;
     inset: 0;
-    background: transparent;
-    mix-blend-mode: normal;
-    opacity: 0;
-    transition: opacity 0.45s ease;
-    pointer-events: none;
   }
 
-  /* On group hover: reveal full colour */
-  .group:hover .case-img-wrap img {
+  /* Greyscale by default, full colour on hover */
+  .case-img-wrap img {
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, transform 0.5s ease;
+  }
+
+  .cs-card:hover .case-img-wrap img {
     filter: grayscale(0%);
   }
 
-  .group:hover .case-img-wrap::after {
+  /* Gradient overlay */
+  .cs-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.25rem;
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.82) 0%,
+      rgba(0,0,0,0.45) 40%,
+      transparent 75%
+    );
+    transition: background 0.4s ease;
+  }
+
+  .cs-card:hover .cs-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(0,0,0,0.90) 0%,
+      rgba(0,0,0,0.60) 50%,
+      rgba(0,0,0,0.10) 100%
+    );
+  }
+
+  /* Description — hidden, slides up on hover */
+  .cs-description {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.80);
+    line-height: 1.55;
+    margin-bottom: 0.6rem;
     opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .cs-card:hover .cs-description {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Tags — hidden, appear with description */
+  .cs-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease 0.04s, transform 0.35s ease 0.04s;
+  }
+
+  .cs-card:hover .cs-tags {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Title row — always visible */
+  .cs-title-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .cs-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .cs-arrow {
+    color: rgba(255,255,255,0.7);
+    flex-shrink: 0;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .cs-card:hover .cs-arrow {
+    color: #fff;
+    transform: translate(2px, -2px);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .case-img-wrap img { transition: none; }
-    .case-img-wrap::after { transition: none; }
+    .cs-description, .cs-tags, .case-img-wrap img { transition: none; }
   }
 </style>
 
