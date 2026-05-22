@@ -327,6 +327,18 @@ schemas.push(...extraSchemas);
     background: var(--color-background);
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    /* padding-bottom set dynamically by JS to match footer height */
   }
 </style>
+
+<script is:inline>
+  function applyFooterOffset() {
+    const footer = document.querySelector('.footer-reveal-wrap');
+    const wrap = document.querySelector('.page-content-wrap');
+    if (footer && wrap) {
+      wrap.style.paddingBottom = footer.offsetHeight + 'px';
+    }
+  }
+  applyFooterOffset();
+  window.addEventListener('resize', applyFooterOffset);
+</script>
