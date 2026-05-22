@@ -28,10 +28,6 @@ interface Props {
   includeProfessionalServiceSchema?: boolean;
   extraSchemas?: WithContext<Thing>[];
   eagerReveal?: boolean;
-  /** Expand the fixed footer to fill the full viewport height (for pages
-   *  whose footer contains tall content like a contact section). The footer
-   *  becomes a "final screen" revealed as the page content scrolls away. */
-  fullHeightFooter?: boolean;
 }
 
 const {
@@ -47,7 +43,6 @@ const {
   includeProfessionalServiceSchema = false,
   extraSchemas = [],
   eagerReveal = false,
-  fullHeightFooter = false,
 } = Astro.props;
 
 // Build JSON-LD schemas
@@ -113,7 +108,7 @@ schemas.push(...extraSchemas);
     </script>
   </head>
 
-  <body class="min-h-screen bg-background text-foreground antialiased" data-eager-reveal={eagerReveal ? '' : undefined} data-full-height-footer={fullHeightFooter ? '' : undefined}>
+  <body class="min-h-screen bg-background text-foreground antialiased" data-eager-reveal={eagerReveal ? '' : undefined}>
     <!-- Skip to content link -->
     <a
       href="#main-content"
@@ -326,23 +321,6 @@ schemas.push(...extraSchemas);
     left: 0;
     right: 0;
     z-index: 0;
-  }
-
-  /* Full-height variant: footer spans the entire viewport so tall content
-   * (e.g. a contact section) is never clipped above the viewport top.
-   * The footer becomes a "final screen" – one full scroll to reveal it.
-   * Note: min-height:100% on the inner <footer> lives in Footer.astro
-   * (scoped to its own hash) so it applies correctly. */
-  body[data-full-height-footer] .footer-reveal-wrap {
-    top: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-  }
-
-  /* Make the inner <footer> element fill the full wrapper height so the
-   * video background covers the whole viewport, not just the content area. */
-  body[data-full-height-footer] .footer-reveal-wrap > footer {
-    min-height: 100%;
   }
 
   /* Bottom blur strip — sits above everything */
