@@ -116,15 +116,12 @@ const INITIAL_VISIBLE = 9;
         {allProjects.map((project, i) => {
           const slug = project.id.replace(/\.mdx?$/, '');
           const hasBody = project.body && project.body.trim().length > 0;
-          // Every group of 3: positions 1 (0-indexed) gets tall (center)
-          const posInGroup = i % 3; // 0=left, 1=center, 2=right
-          const isTall = posInGroup === 1;
           return (
           <a
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
             target={hasBody ? undefined : '_blank'}
             rel={hasBody ? undefined : 'noopener noreferrer'}
-            class={`cs-card group block editorial-card${isTall ? ' editorial-tall' : ''}${i >= INITIAL_VISIBLE ? ' editorial-hidden' : ''}`}
+            class={`cs-card group block editorial-card${i >= INITIAL_VISIBLE ? ' editorial-hidden' : ''}`}
             data-reveal
           >
             <div class="cs-card-inner">
@@ -406,31 +403,24 @@ const INITIAL_VISIBLE = 9;
     display: grid;
     gap: 1rem;
     grid-template-columns: 1fr;
-    /* mobile: single col, all cards same height */
-    grid-auto-rows: 18rem;
   }
 
   @media (min-width: 640px) {
     .editorial-grid {
       grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: 20rem;
+      gap: 1rem;
     }
   }
 
   @media (min-width: 1024px) {
     .editorial-grid {
       grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 18rem;
       gap: 1.25rem;
-    }
-    /* Every 2nd card in a 3-col group spans 2 rows */
-    .editorial-tall {
-      grid-row: span 2;
     }
   }
 
   .editorial-card {
-    /* no extra sizing — height is from grid-auto-rows */
+    display: block;
   }
 
   .editorial-hidden {
@@ -479,17 +469,11 @@ const INITIAL_VISIBLE = 9;
   }
 
   /* ---- Case study card: full-bleed image + overlay ---- */
-  .editorial-card {
-    /* fill the grid cell */
-    display: block;
-    height: 100%;
-  }
-
   .cs-card-inner {
     position: relative;
     overflow: hidden;
     border-radius: 0.75rem;
-    height: 100%;
+    aspect-ratio: 1 / 1;
     box-shadow: 0 4px 24px -4px rgba(0,0,0,0.18);
   }
 
