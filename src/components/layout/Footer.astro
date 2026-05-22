@@ -136,7 +136,7 @@ function getSocialIcon(platform: string): string {
 }
 ---
 
-<footer class={footerClasses} style="position:relative;" {...attrs}>
+<footer class={cn(footerClasses, hasTopSlot && "flex flex-col")} style="position:relative;min-height:inherit;" {...attrs}>
   {videoBg && (
     <div class="video-bg-wrap" aria-hidden="true">
       <video
@@ -153,7 +153,7 @@ function getSocialIcon(platform: string): string {
     </div>
   )}
   {hasTopSlot && (
-    <div style="position:relative;z-index:1;">
+    <div style="position:relative;z-index:1;flex:1 1 auto;">
       <slot name="top" />
     </div>
   )}
