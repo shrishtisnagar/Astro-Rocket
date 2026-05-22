@@ -8,6 +8,7 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ContactFooterSection from '@/components/layout/ContactFooterSection.astro';
+import { url } from '@/lib/url';
 
 interface Props {
   title?: string;
@@ -51,5 +52,5 @@ const { title, description, image, imageAlt, noindex, nofollow, showScrollProgre
     {showContactFooter && <ContactFooterSection />}
   </main>
 
-  <Footer slot="footer" layout="simple" videoBg="/videos/hero-bg.mp4" videoSpeed={0.825} />
+  <Footer slot="footer" layout="simple" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825} />
 </BaseLayout>

@@ -11,6 +11,7 @@ import RelatedPosts from '@/components/blog/RelatedPosts.astro';
 import CTA from '@/components/ui/marketing/CTA/CTA.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { resolveSocialLinks } from '@/lib/utils';
+import { url } from '@/lib/url';
 import { createBlogPostSchema } from '@/lib/schema';
 
 const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
@@ -184,5 +185,5 @@ const blogPostingSchema = createBlogPostSchema({
   </CTA>
   </div>
 
-  <Footer slot="footer" layout="simple" background="secondary" videoBg="/videos/hero-bg.mp4" videoSpeed={0.825} />
+  <Footer slot="footer" layout="simple" background="secondary" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825} />
 </BaseLayout>
