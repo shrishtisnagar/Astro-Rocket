@@ -170,11 +170,11 @@ const INITIAL_VISIBLE = 9;
 
   <script is:inline>
     (function () {
-      var btn = document.getElementById('editorial-see-more-btn');
-      var wrap = document.getElementById('editorial-see-more-wrap');
+      const btn = document.getElementById('editorial-see-more-btn');
+      const wrap = document.getElementById('editorial-see-more-wrap');
       if (!btn) return;
       btn.addEventListener('click', function () {
-        var hidden = document.querySelectorAll('.editorial-hidden');
+        const hidden = document.querySelectorAll('.editorial-hidden');
         hidden.forEach(function (el) { el.classList.remove('editorial-hidden'); });
         if (wrap) wrap.style.display = 'none';
       });
