@@ -4,6 +4,7 @@ description: Helping a startup media founder create visibility, relevance, and
   early awareness
 category: LinkedIn
 subcategories: Personal Branding, Positioning
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 01_56_01 AM.png
 featured: false
 order: 99
 draft: false
