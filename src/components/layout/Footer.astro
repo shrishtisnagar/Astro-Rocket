@@ -118,6 +118,7 @@ const hasTaglineSlot = Astro.slots.has('tagline');
 const hasColumnsSlot = Astro.slots.has('columns');
 const hasSocialSlot = Astro.slots.has('social');
 const hasBottomSlot = Astro.slots.has('bottom');
+const hasTopSlot = Astro.slots.has('top');
 
 // Compute footer classes
 const footerClasses = cn(footerVariants({ background }), videoBg ? 'video-has-bg' : '', className);
@@ -151,7 +152,8 @@ function getSocialIcon(platform: string): string {
       <div class="video-overlay" />
     </div>
   )}
-  <div class="mx-auto max-w-6xl px-6" style="position:relative;z-index:1;">
+  {hasTopSlot && <slot name="top" />}
+  <div class={cn("mx-auto max-w-6xl px-6", hasTopSlot && "border-t border-border pt-[var(--space-stack-lg)]")} style="position:relative;z-index:1;">
     {layout === 'simple' && (
       <>
       <div class="flex flex-col md:flex-row justify-between items-center gap-[var(--space-stack-lg)]">
