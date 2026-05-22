@@ -620,9 +620,9 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     content: '';
     position: absolute;
     inset: 0;
-    background: #8B1A20;
+    background: transparent;
     mix-blend-mode: normal;
-    opacity: 0.45;
+    opacity: 0;
     transition: opacity 0.45s ease;
     pointer-events: none;
   }
