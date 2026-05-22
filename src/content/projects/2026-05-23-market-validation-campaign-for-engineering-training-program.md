@@ -3,6 +3,7 @@ title: Market Validation Campaign for Engineering Training Program
 description: How a simple LinkedIn test revealed what actually mattered to engineers
 category: LinkedIn
 subcategories: LinkedIn Ads, B2B
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 03_42_14 AM.png
 featured: false
 order: 99
 draft: false
