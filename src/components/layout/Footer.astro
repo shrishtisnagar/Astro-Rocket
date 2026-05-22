@@ -152,7 +152,11 @@ function getSocialIcon(platform: string): string {
       <div class="video-overlay" />
     </div>
   )}
-  {hasTopSlot && <slot name="top" />}
+  {hasTopSlot && (
+    <div style="position:relative;z-index:1;">
+      <slot name="top" />
+    </div>
+  )}
   <div class={cn("mx-auto max-w-6xl px-6", hasTopSlot && "border-t border-border pt-[var(--space-stack-lg)]")} style="position:relative;z-index:1;">
     {layout === 'simple' && (
       <>

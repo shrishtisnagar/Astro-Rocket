@@ -363,4 +363,8 @@ schemas.push(...extraSchemas);
   }
   applyFooterOffset();
   window.addEventListener('resize', applyFooterOffset);
+  // Re-measure after client-side navigation (footer height changes per page)
+  document.addEventListener('astro:page-load', function () {
+    requestAnimationFrame(applyFooterOffset);
+  });
 </script>
