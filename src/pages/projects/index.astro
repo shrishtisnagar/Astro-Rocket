@@ -407,15 +407,17 @@ const INITIAL_VISIBLE = 9;
 
   @media (min-width: 640px) {
     .editorial-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 22rem));
       gap: 1rem;
+      justify-content: center;
     }
   }
 
   @media (min-width: 1024px) {
     .editorial-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 22rem));
       gap: 1.25rem;
+      justify-content: center;
     }
   }
 
