@@ -7,8 +7,8 @@ content:
     label: Case Studies
     type: collection
     path: src/content/projects
+    extension: mdx
     format: yaml-frontmatter
-    filename: '{fields.title}.mdx'
     view:
       fields: [title, category, draft]
     fields:
