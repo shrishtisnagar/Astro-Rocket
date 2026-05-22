@@ -4,7 +4,7 @@ description: Translating decades of technical legacy into a LinkedIn presence
   that resonated with modern industrial buyers.
 category: LinkedIn
 subcategories: Company Page, Events
-imageUrl: /images/projects/ChatGPT Image May 23, 2026, 01_38_54 AM.png
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 01_41_11 AM.png
 featured: true
 order: 3
 draft: false
