@@ -337,6 +337,12 @@ schemas.push(...extraSchemas);
     overscroll-behavior: contain;
   }
 
+  /* Make the inner <footer> element fill the full wrapper height so the
+   * video background covers the whole viewport, not just the content area. */
+  body[data-full-height-footer] .footer-reveal-wrap > footer {
+    min-height: 100%;
+  }
+
   /* Bottom blur strip — sits above everything */
   .scroll-blur-strip {
     position: fixed;
