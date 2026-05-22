@@ -159,31 +159,23 @@ function getSocialIcon(platform: string): string {
   )}
   <div class={cn("mx-auto max-w-6xl px-6", hasTopSlot && "border-t border-border pt-[var(--space-stack-lg)]")} style="position:relative;z-index:1;">
     {layout === 'simple' && (
-      <>
-      <div class="flex flex-col md:flex-row justify-between items-center gap-[var(--space-stack-lg)]">
-        {/* Logo & Tagline */}
+      <div class="flex flex-wrap items-center justify-between gap-4 py-2">
+        {/* Logo */}
         {!hideLogo && (
-          <div class="flex flex-col items-center md:items-start gap-2">
-            {hasLogoSlot ? (
-              <slot name="logo" />
-            ) : (
-              <a href="/" class="flex items-center gap-2">
-                <Logo size="md" />
-                <span class="font-display text-base font-bold text-brand-700 dark:text-foreground">
-                  {siteConfig.name}
-                </span>
-              </a>
-            )}
-            {(hasTaglineSlot || tagline) && (
-              <p class="text-sm text-foreground-muted">
-                {hasTaglineSlot ? <slot name="tagline" /> : tagline}
-              </p>
-            )}
-          </div>
+          hasLogoSlot ? (
+            <slot name="logo" />
+          ) : (
+            <a href="/" class="flex items-center gap-2 shrink-0">
+              <Logo size="sm" />
+              <span class="font-display text-sm font-bold text-brand-700 dark:text-foreground">
+                {siteConfig.name}
+              </span>
+            </a>
+          )
         )}
 
         {/* Navigation Links */}
-        <nav class="flex flex-wrap justify-center gap-[var(--space-inline-lg)] md:gap-[var(--space-stack-lg)] text-sm font-medium text-foreground-muted">
+        <nav class="flex flex-wrap items-center gap-x-5 gap-y-1 text-xs font-medium text-foreground-muted">
           {allNavItems.map((item) => (
             <a
               href={item.href}
@@ -196,12 +188,17 @@ function getSocialIcon(platform: string): string {
           ))}
         </nav>
 
+        {/* Copyright (inline) */}
+        {showCopyright && (
+          <p class="text-xs text-foreground-muted shrink-0" set:html={processedCopyright} />
+        )}
+
         {/* Social Links */}
         {showSocial && socialLinks.length > 0 && (
           hasSocialSlot ? (
             <slot name="social" />
           ) : (
-            <div class="flex items-center gap-[var(--space-stack-md)]">
+            <div class="flex items-center gap-3">
               {socialLinks.map((social) => (
                 <a
                   href={social.href}
@@ -210,19 +207,13 @@ function getSocialIcon(platform: string): string {
                   rel="noopener noreferrer"
                   aria-label={social.label || `Follow us on ${social.platform}`}
                 >
-                  <Icon name={getSocialIcon(social.platform)} size="md" />
+                  <Icon name={getSocialIcon(social.platform)} size="sm" />
                 </a>
               ))}
             </div>
           )
         )}
       </div>
-      {showCopyright && (
-        <div class="mt-[var(--space-stack-lg)] pt-[var(--space-stack-lg)] border-t border-border text-center">
-          <p class="text-sm text-foreground-muted" set:html={processedCopyright} />
-        </div>
-      )}
-      </>
     )}
 
     {layout === 'columns' && (
