@@ -66,11 +66,11 @@ const channels = [
       <p class="text-sm text-foreground-muted">Use the form below or reach out on any of these channels. I'll get back to you within 1 business day.</p>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-stretch">
 
       <!-- Left: contact form -->
-      <div class="lg:col-span-3">
-        <Card padding="md" class="flex flex-col justify-center">
+      <div class="lg:col-span-3 flex flex-col">
+        <Card padding="md" class="flex flex-col flex-1 justify-center">
           <h3 class="font-display text-base font-bold text-foreground mb-4">Send a message</h3>
           <ContactForm compact class="space-y-3" />
         </Card>
