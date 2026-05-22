@@ -130,6 +130,9 @@ schemas.push(...extraSchemas);
       </main>
     </div>
 
+    <!-- Bottom scroll-blur strip -->
+    <div class="scroll-blur-strip" aria-hidden="true"></div>
+
     <ConsentBanner />
 
 
@@ -318,6 +321,25 @@ schemas.push(...extraSchemas);
     left: 0;
     right: 0;
     z-index: 0;
+  }
+
+  /* Bottom blur strip — sits above everything */
+  .scroll-blur-strip {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    pointer-events: none;
+    z-index: 100;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-blur-strip { display: none; }
   }
 
   /* Page content sits on top and scrolls up off the footer */
