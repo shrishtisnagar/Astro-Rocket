@@ -13,13 +13,18 @@ import ToolMarquee from '@/components/landing/ToolMarquee.astro';
 import { getCollection } from 'astro:content';
 import { url } from '@/lib/url';
 
-const projectItems = await getCollection('projects', ({ data }) => !data.draft && data.featured);
-const featuredProjects = projectItems
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 3);
+// Merge featured (ordered) + rest (alphabetical), deduplicate by id
+const featuredItems = (await getCollection('projects', ({ data }) => !data.draft && data.featured))
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
-const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
+const allItems = await getCollection('projects', ({ data }) => !data.draft);
+const featuredIds = new Set(featuredItems.map((p) => p.id));
+const restItems = allItems
+  .filter((p) => !featuredIds.has(p.id))
   .sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const allProjects = [...featuredItems, ...restItems];
+const INITIAL_VISIBLE = 9;
 ---
 
 <LandingLayout
@@ -103,83 +108,23 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     </div>
   </section>
 
-  <!-- Featured Projects -->
+  <!-- All Case Studies — editorial grid -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div data-reveal>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          Projects I'm Proud of
-        </h2>
-      </div>
 
-      <div class="grid gap-6 md:grid-cols-3">
-        {featuredProjects.map((project) => {
+      <div class="editorial-grid" id="editorial-grid">
+        {allProjects.map((project, i) => {
           const slug = project.id.replace(/\.mdx?$/, '');
           const hasBody = project.body && project.body.trim().length > 0;
+          // Every group of 3: positions 1 (0-indexed) gets tall (center)
+          const posInGroup = i % 3; // 0=left, 1=center, 2=right
+          const isTall = posInGroup === 1;
           return (
           <a
             href={hasBody ? url(`/projects/${slug}`) : project.data.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="cs-card group block"
-            data-reveal
-          >
-            <div class="cs-card-inner">
-              {/* Full-bleed image */}
-              <div class="case-img-wrap cs-img">
-                <img
-                  src={project.data.imageUrl ? (project.data.imageUrl.startsWith('/') ? url(project.data.imageUrl) : project.data.imageUrl) : ''}
-                  alt={project.data.imageAlt || project.data.title}
-                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-              {/* Overlay: gradient + text */}
-              <div class="cs-overlay">
-                {/* Description — slides up on hover */}
-                <p class="cs-description">{project.data.description}</p>
-                {/* Tags */}
-                {project.data.subcategories.length > 0 && (
-                  <div class="cs-tags">
-                    {project.data.subcategories.map((tag: string) => (
-                      <span class="subcategory-tag">{tag}</span>
-                    ))}
-                  </div>
-                )}
-                {/* Title + arrow — always visible */}
-                <div class="cs-title-row">
-                  <h3 class="cs-title">{project.data.title}</h3>
-                  <Icon name="arrow-up-right" size="sm" class="cs-arrow" />
-                </div>
-              </div>
-            </div>
-          </a>
-          );
-        })}
-      </div>
-    </div>
-  </section>
-
-  <!-- Explore complete works -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div data-reveal>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-          Explore my complete works
-        </h2>
-      </div>
-
-      <!-- Cards grid -->
-      <div class="works-grid" id="works-grid">
-        {allProjects.map((project) => {
-          const slug = project.id.replace(/\.mdx?$/, '');
-          const hasBody = project.body && project.body.trim().length > 0;
-          return (
-          <a
-            href={hasBody ? url(`/projects/${slug}`) : project.data.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="work-card cs-card group block"
+            target={hasBody ? undefined : '_blank'}
+            rel={hasBody ? undefined : 'noopener noreferrer'}
+            class={`cs-card group block editorial-card${isTall ? ' editorial-tall' : ''}${i >= INITIAL_VISIBLE ? ' editorial-hidden' : ''}`}
             data-reveal
           >
             <div class="cs-card-inner">
@@ -193,7 +138,7 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
               </div>
               <div class="cs-overlay">
                 <p class="cs-description">{project.data.description}</p>
-                {project.data.subcategories.length > 0 && (
+                {project.data.subcategories && project.data.subcategories.length > 0 && (
                   <div class="cs-tags">
                     {project.data.subcategories.map((tag: string) => (
                       <span class="subcategory-tag">{tag}</span>
@@ -211,8 +156,30 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
         })}
       </div>
 
+      {allProjects.length > INITIAL_VISIBLE && (
+        <div class="flex justify-center" id="editorial-see-more-wrap">
+          <button id="editorial-see-more-btn" class="works-see-more-btn" type="button">
+            See more
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+        </div>
+      )}
+
     </div>
   </section>
+
+  <script is:inline>
+    (function () {
+      var btn = document.getElementById('editorial-see-more-btn');
+      var wrap = document.getElementById('editorial-see-more-wrap');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        var hidden = document.querySelectorAll('.editorial-hidden');
+        hidden.forEach(function (el) { el.classList.remove('editorial-hidden'); });
+        if (wrap) wrap.style.display = 'none';
+      });
+    })();
+  </script>
 
   <!-- Tool Marquee -->
   <ToolMarquee
@@ -434,70 +401,39 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     .testimonial-marquee-inner { animation: none; }
   }
 
-  /* ---- Works filter ---- */
-  .works-filter-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 2px;
-  }
-  .works-filter-wrap::-webkit-scrollbar { display: none; }
-
-  .works-filter {
-    display: inline-flex;
-    min-width: max-content;
-    background: oklch(14% 0.02 344 / 0.6);
-    border: 1px solid oklch(100% 0 0 / 0.08);
-    border-radius: 0.625rem;
-    padding: 0.25rem;
-    gap: 0.125rem;
-  }
-
-  .works-filter-btn {
-    padding: 0.5rem 1.125rem;
-    border-radius: 0.4rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    border: none;
-    background: transparent;
-    color: oklch(70% 0.02 344);
-    cursor: pointer;
-    transition: background 0.18s ease, color 0.18s ease;
-    white-space: nowrap;
-    line-height: 1.4;
-  }
-
-  .works-filter-btn:hover:not(.active) {
-    background: oklch(100% 0 0 / 0.05);
-    color: oklch(90% 0.02 344);
-  }
-
-  .works-filter-btn.active {
-    background: var(--color-brand-500, #f7b5dd);
-    color: oklch(15% 0.03 344);
-  }
-
-  /* ---- Works grid ---- */
-  .works-grid {
+  /* ---- Editorial grid ---- */
+  .editorial-grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
     grid-template-columns: 1fr;
+    /* mobile: single col, all cards same height */
+    grid-auto-rows: 18rem;
   }
 
   @media (min-width: 640px) {
-    .works-grid { grid-template-columns: repeat(2, 1fr); }
+    .editorial-grid {
+      grid-template-columns: repeat(2, 1fr);
+      grid-auto-rows: 20rem;
+    }
   }
 
   @media (min-width: 1024px) {
-    .works-grid { grid-template-columns: repeat(4, 1fr); }
+    .editorial-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 18rem;
+      gap: 1.25rem;
+    }
+    /* Every 2nd card in a 3-col group spans 2 rows */
+    .editorial-tall {
+      grid-row: span 2;
+    }
   }
 
-  .work-card {
-    transition: opacity 0.2s ease, transform 0.2s ease;
+  .editorial-card {
+    /* no extra sizing — height is from grid-auto-rows */
   }
 
-  .work-card.hidden,
-  .work-card.see-more-hidden {
+  .editorial-hidden {
     display: none;
   }
 
@@ -523,10 +459,6 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
     border-color: transparent;
   }
 
-  #works-see-more-wrap.hidden {
-    display: none;
-  }
-
   /* ---- Subcategory tags ---- */
   .subcategory-tag {
     display: inline-block;
@@ -547,11 +479,17 @@ const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   }
 
   /* ---- Case study card: full-bleed image + overlay ---- */
+  .editorial-card {
+    /* fill the grid cell */
+    display: block;
+    height: 100%;
+  }
+
   .cs-card-inner {
     position: relative;
     overflow: hidden;
     border-radius: 0.75rem;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     box-shadow: 0 4px 24px -4px rgba(0,0,0,0.18);
   }
 
