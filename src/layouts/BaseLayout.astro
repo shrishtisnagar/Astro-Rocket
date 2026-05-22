@@ -330,7 +330,9 @@ schemas.push(...extraSchemas);
 
   /* Full-height variant: footer spans the entire viewport so tall content
    * (e.g. a contact section) is never clipped above the viewport top.
-   * The footer becomes a "final screen" – one full scroll to reveal it. */
+   * The footer becomes a "final screen" – one full scroll to reveal it.
+   * Note: min-height:100% on the inner <footer> lives in Footer.astro
+   * (scoped to its own hash) so it applies correctly. */
   body[data-full-height-footer] .footer-reveal-wrap {
     top: 0;
     overflow-y: auto;

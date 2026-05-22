@@ -418,6 +418,14 @@ function getSocialIcon(platform: string): string {
     background: transparent !important;
   }
 
+  /* When inside a full-height footer-reveal-wrap, fill the viewport.
+   * Uses :global() on the body selector so it matches regardless of
+   * Astro's scoped hash (the footer element has Footer.astro's hash,
+   * not BaseLayout's, so the rule must live here). */
+  :global(body[data-full-height-footer]) footer {
+    min-height: 100%;
+  }
+
   /* ── Video background ───────────────────────────────────── */
   .video-bg-wrap {
     position: absolute;
