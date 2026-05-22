@@ -4,7 +4,7 @@ description: Building a personal brand around systems, burnout, and why most
   founders secretly hate operations.
 category: LinkedIn
 subcategories: Ghostwriting, Personal Branding
-imageUrl: /images/projects/pexels-thisisengineering-3862132.jpg
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 03_26_00 AM.png
 featured: false
 order: 5
 draft: false
