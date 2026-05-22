@@ -136,7 +136,7 @@ function getSocialIcon(platform: string): string {
 }
 ---
 
-<footer class={cn(footerClasses, hasTopSlot && "flex flex-col")} style="position:relative;" {...attrs}>
+<footer class={footerClasses} style="position:relative;" {...attrs}>
   {videoBg && (
     <div class="video-bg-wrap" aria-hidden="true">
       <video
@@ -153,7 +153,7 @@ function getSocialIcon(platform: string): string {
     </div>
   )}
   {hasTopSlot && (
-    <div style="position:relative;z-index:1;flex:1 1 auto;">
+    <div style="position:relative;z-index:1;">
       <slot name="top" />
     </div>
   )}
@@ -416,14 +416,6 @@ function getSocialIcon(platform: string): string {
   /* In dark mode, make footer transparent so video shows through */
   :global(.dark) .video-has-bg {
     background: transparent !important;
-  }
-
-  /* When inside a full-height footer-reveal-wrap, fill the viewport.
-   * Uses :global() on the body selector so it matches regardless of
-   * Astro's scoped hash (the footer element has Footer.astro's hash,
-   * not BaseLayout's, so the rule must live here). */
-  :global(body[data-full-height-footer]) footer {
-    min-height: 100%;
   }
 
   /* ── Video background ───────────────────────────────────── */
