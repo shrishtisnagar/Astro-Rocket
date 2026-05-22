@@ -4,7 +4,7 @@ description: From almost zero LinkedIn visibility to paid clients, workshop
   signups, and a scalable personal brand funnel
 category: LinkedIn
 subcategories: Events, Personal Branding
-imageUrl: /images/projects/mw1.jpg
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 01_30_37 AM.png
 featured: true
 order: 1
 draft: false
@@ -75,4 +75,3 @@ We started the implementation of the strategy on 1st September
 
 Here’s what she has to say!
 
-<YouTube id="NucX6HSPLLM" />
