@@ -9,12 +9,14 @@ interface Props {
   action?: string;
   successMessage?: string;
   class?: string;
+  compact?: boolean;
 }
 
 const {
   action = '/api/contact',
   successMessage = 'Message sent successfully!',
   class: className,
+  compact = false,
 } = Astro.props;
 ---
 
@@ -53,7 +55,7 @@ const {
     label="Message"
     name="message"
     required
-    rows={5}
+    rows={compact ? 3 : 5}
   />
 
   <!-- Honeypot field for spam protection -->
