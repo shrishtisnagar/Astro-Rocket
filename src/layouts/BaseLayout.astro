@@ -346,13 +346,23 @@ schemas.push(...extraSchemas);
     .scroll-blur-strip { display: none; }
   }
 
-  /* Mobile: disable the footer-reveal effect — footer sits naturally in flow */
+  /* Mobile: disable the footer-reveal effect.
+     The footer is first in the DOM, so we can't just make it static
+     (it would appear above the hero). Instead, make the body a flex
+     column and push the footer to the end with order. */
   @media (max-width: 767px) {
+    body {
+      display: flex;
+      flex-direction: column;
+    }
     .footer-reveal-wrap {
       position: static;
+      order: 10; /* always last */
     }
     .page-content-wrap {
-      margin-bottom: 0 !important; /* override the JS-set inline margin */
+      order: 1;
+      flex: 1;
+      margin-bottom: 0 !important; /* override JS-set inline margin */
     }
     .scroll-blur-strip {
       display: none;
