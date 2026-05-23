@@ -403,34 +403,28 @@ const INITIAL_VISIBLE = 9;
   .editorial-grid {
     display: grid;
     gap: 0.75rem;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .editorial-grid {
-      grid-template-columns: repeat(2, minmax(0, 22rem));
-      gap: 0.75rem;
-      justify-content: center;
-    }
+    grid-template-columns: 1fr 1fr;
   }
 
   @media (min-width: 1024px) {
     .editorial-grid {
-      /* side cols fixed, center col wider */
-      grid-template-columns: minmax(0, 17rem) minmax(0, 24rem) minmax(0, 17rem);
-      grid-auto-rows: 17rem;
+      grid-template-columns: 1fr 2fr 1fr;
       gap: 0.75rem;
-      justify-content: center;
     }
-    /* center column cards span 2 rows — taller than side cards */
+    /* center column cards span both rows */
     .editorial-center {
       grid-row: span 2;
+      align-self: stretch;
+    }
+    /* center card inner fills the full span height */
+    .editorial-center .cs-card-inner {
+      aspect-ratio: unset;
+      height: 100%;
     }
   }
 
   .editorial-card {
     display: block;
-    height: 100%;
   }
 
   .editorial-hidden {
@@ -483,16 +477,9 @@ const INITIAL_VISIBLE = 9;
     position: relative;
     overflow: hidden;
     border-radius: 0;
-    height: 100%;
+    aspect-ratio: 1 / 1;
+    width: 100%;
     box-shadow: 0 4px 24px -4px rgba(0,0,0,0.18);
-  }
-
-  /* Mobile fallback: square aspect ratio when grid rows aren't set */
-  @media (max-width: 1023px) {
-    .cs-card-inner {
-      aspect-ratio: 1 / 1;
-      height: auto;
-    }
   }
 
   .cs-img {
