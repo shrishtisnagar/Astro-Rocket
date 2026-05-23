@@ -6,7 +6,7 @@ category: LinkedIn
 subcategories: Ghostwriting, Personal Branding
 imageUrl: /images/projects/ChatGPT Image May 23, 2026, 03_26_00 AM.png
 featured: false
-order: 7
+order: 4
 draft: false
 ---
 **Platform: LinkedIn**
