@@ -655,7 +655,7 @@ const INITIAL_VISIBLE = 9;
   (function () {
     function initHvzVideo() {
       document.querySelectorAll('video.hvz-video').forEach(function (v) {
-        var speed = parseFloat(v.getAttribute('data-speed') || '0.75');
+        const speed = parseFloat(v.getAttribute('data-speed') || '0.75');
         if (!isNaN(speed) && speed > 0) v.playbackRate = speed;
         if (v.readyState >= 3) {
           v.classList.add('is-loaded');
