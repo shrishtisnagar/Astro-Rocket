@@ -180,7 +180,7 @@ const gridClasses = cn(
 
     {/* Aside Column (for split layout) */}
     {layout === 'split' && hasAsideSlot && (
-      <div class="relative z-10 w-full order-2 lg:order-1">
+      <div class="relative z-10 w-full order-2 lg:order-1 hero-aside">
         <slot name="aside" />
       </div>
     )}
@@ -278,7 +278,17 @@ const gridClasses = cn(
   }
 
 
+  /* Mobile: stagger the aside (photo) in with the title so it doesn't
+     pop in during the blank gap while badge is visible but text isn't */
+  @media (max-width: 1023px) {
+    .hero-aside {
+      animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
+      animation-delay: 90ms;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .hero-aside { animation: none; }
     .scroll-indicator              { animation: none; opacity: 1; }
     .scroll-indicator-chevron,
     .scroll-indicator-chevron-2    { animation: none; }
