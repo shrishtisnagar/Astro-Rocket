@@ -157,7 +157,7 @@ function getSocialIcon(platform: string): string {
       <slot name="top" />
     </div>
   )}
-  <div class={cn("mx-auto max-w-6xl px-6", hasTopSlot && "border-t border-border pt-[var(--space-stack-lg)]")} style="position:relative;z-index:1;">
+  <div class={cn("mx-auto max-w-6xl px-6", hasTopSlot && "border-t border-border pt-4")} style="position:relative;z-index:1;">
     {layout === 'simple' && (
       <div class="flex flex-wrap items-center justify-between gap-4 py-2">
         {/* Logo */}
