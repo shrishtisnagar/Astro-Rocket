@@ -13,17 +13,11 @@ import ToolMarquee from '@/components/landing/ToolMarquee.astro';
 import { getCollection } from 'astro:content';
 import { url } from '@/lib/url';
 
-// Merge featured (ordered) + rest (alphabetical), deduplicate by id
-const featuredItems = (await getCollection('projects', ({ data }) => !data.draft && data.featured))
+// Sort all projects by the `order` field — whatever is set in the CMS wins.
+// Default order is 99 (from schema), so unordered items fall to the end.
+// Ties preserve the glob loader's natural (filename) order.
+const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-
-const allItems = await getCollection('projects', ({ data }) => !data.draft);
-const featuredIds = new Set(featuredItems.map((p) => p.id));
-const restItems = allItems
-  .filter((p) => !featuredIds.has(p.id))
-  .sort((a, b) => a.data.title.localeCompare(b.data.title));
-
-const allProjects = [...featuredItems, ...restItems];
 const INITIAL_VISIBLE = 9;
 ---
 
