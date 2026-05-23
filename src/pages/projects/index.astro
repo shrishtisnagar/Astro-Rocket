@@ -18,7 +18,8 @@ import { url } from '@/lib/url';
 // Ties preserve the glob loader's natural (filename) order.
 const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-const INITIAL_VISIBLE = 9;
+const INITIAL_VISIBLE        = 9; // cards shown initially on desktop (3 per column)
+const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per column)
 ---
 
 <LandingLayout
@@ -132,9 +133,10 @@ const INITIAL_VISIBLE = 9;
         const centerCards = allProjects.filter((_, i) => i % 3 === 1);
         const rightCards  = allProjects.filter((_, i) => i % 3 === 2);
         // INITIAL_VISIBLE = 9 → 3 per column
-        const colVisible  = Math.ceil(INITIAL_VISIBLE / 3);
+        const colVisible       = Math.ceil(INITIAL_VISIBLE / 3);        // 3 per col — desktop
+        const colVisibleMobile = Math.ceil(MOBILE_INITIAL_VISIBLE / 3); // 2 per col — mobile
 
-        const renderCard = (project: typeof allProjects[number], hidden: boolean) => {
+        const renderCard = (project: typeof allProjects[number], hidden: boolean, mobileHidden = false) => {
           const slug   = project.id.replace(/\.mdx?$/, '');
           const hasBody = project.body && project.body.trim().length > 0;
           return (
@@ -142,7 +144,7 @@ const INITIAL_VISIBLE = 9;
               href={hasBody ? url(`/projects/${slug}`) : project.data.url}
               target={hasBody ? undefined : '_blank'}
               rel={hasBody ? undefined : 'noopener noreferrer'}
-              class={`cs-card group block${hidden ? ' editorial-hidden' : ''}`}
+              class={`cs-card group block${hidden ? ' editorial-hidden' : ''}${mobileHidden ? ' mobile-cs-hidden' : ''}`}
             >
               <div class="cs-card-inner">
                 <div class="case-img-wrap cs-img">
@@ -175,13 +177,13 @@ const INITIAL_VISIBLE = 9;
         return (
           <div class="editorial-columns" id="editorial-grid">
             <div class="editorial-col editorial-col-side">
-              {leftCards.map((p, j) => renderCard(p, j >= colVisible))}
+              {leftCards.map((p, j) => renderCard(p, j >= colVisible, j >= colVisibleMobile && j < colVisible))}
             </div>
             <div class="editorial-col editorial-col-center">
-              {centerCards.map((p, j) => renderCard(p, j >= colVisible))}
+              {centerCards.map((p, j) => renderCard(p, j >= colVisible, j >= colVisibleMobile && j < colVisible))}
             </div>
             <div class="editorial-col editorial-col-side">
-              {rightCards.map((p, j) => renderCard(p, j >= colVisible))}
+              {rightCards.map((p, j) => renderCard(p, j >= colVisible, j >= colVisibleMobile && j < colVisible))}
             </div>
           </div>
         );
@@ -189,8 +191,11 @@ const INITIAL_VISIBLE = 9;
 
     </div>
 
-    {allProjects.length > INITIAL_VISIBLE && (
-      <div class="flex justify-center mt-8 px-6" id="editorial-see-more-wrap">
+    {allProjects.length > MOBILE_INITIAL_VISIBLE && (
+      <div
+        class={`flex justify-center mt-8 px-6${allProjects.length <= INITIAL_VISIBLE ? ' mobile-see-more-only' : ''}`}
+        id="editorial-see-more-wrap"
+      >
         <button id="editorial-see-more-btn" class="works-see-more-btn" type="button">
           See more
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
@@ -205,8 +210,10 @@ const INITIAL_VISIBLE = 9;
       const wrap = document.getElementById('editorial-see-more-wrap');
       if (!btn) return;
       btn.addEventListener('click', function () {
-        const hidden = document.querySelectorAll('.editorial-hidden');
-        hidden.forEach(function (el) { el.classList.remove('editorial-hidden'); });
+        document.querySelectorAll('.editorial-hidden, .mobile-cs-hidden').forEach(function (el) {
+          el.classList.remove('editorial-hidden');
+          el.classList.remove('mobile-cs-hidden');
+        });
         if (wrap) wrap.style.display = 'none';
       });
     })();
@@ -498,7 +505,7 @@ const INITIAL_VISIBLE = 9;
   .editorial-col-side   { flex: 1; }
   .editorial-col-center { flex: 1.15; }
 
-  /* Mobile: stack all as single column */
+  /* Tablet: stack the three column groups vertically, each as a 2-up row */
   @media (max-width: 1023px) {
     .editorial-columns {
       flex-direction: column;
@@ -509,6 +516,29 @@ const INITIAL_VISIBLE = 9;
     }
     .editorial-col > * {
       flex: 1 1 calc(50% - 0.375rem);
+    }
+  }
+
+  /* Mobile: unified 2-column square grid — dissolve the three column containers
+     so all cards flow into one shared grid, 6 visible to start */
+  @media (max-width: 767px) {
+    .editorial-columns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .editorial-col {
+      display: contents; /* cards become direct grid children */
+    }
+    .mobile-cs-hidden {
+      display: none;
+    }
+  }
+
+  /* Hide the "See more" wrapper on desktop when only mobile has hidden cards */
+  @media (min-width: 768px) {
+    .mobile-see-more-only {
+      display: none;
     }
   }
 
