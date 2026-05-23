@@ -6,7 +6,7 @@ category: LinkedIn
 subcategories: Personal Branding, Outreach
 imageUrl: /images/projects/ChatGPT Image May 23, 2026, 04_56_34 PM.png
 featured: false
-order: 4
+order: 5
 draft: false
 ---
 **Platform: LinkedIn**
