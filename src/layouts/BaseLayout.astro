@@ -133,9 +133,6 @@ schemas.push(...extraSchemas);
     <!-- Bottom scroll-blur strip -->
     <div class="scroll-blur-strip" aria-hidden="true"></div>
 
-    <!-- Subtle brand glow at the bottom edge — hints that footer is below -->
-    <div class="footer-glow" aria-hidden="true"></div>
-
     <ConsentBanner />
 
 
@@ -345,23 +342,19 @@ schemas.push(...extraSchemas);
     .scroll-blur-strip { display: none; }
   }
 
-  /* Brand glow — dark mode only, sits just below the blur strip */
-  .footer-glow {
-    position: fixed;
+  /* Brand glow at the very bottom of the page content — dark mode only.
+     position:absolute pins it to the bottom of .page-content-wrap so it
+     scrolls into view naturally as the user reaches the end of the page. */
+  :global(.dark) .page-content-wrap::after {
+    content: '';
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 160px;
+    height: 220px;
     pointer-events: none;
-    z-index: 99;
-    /* Hidden in light mode */
-    display: none;
-    background: radial-gradient(ellipse 55% 100% at 50% 100%, var(--color-brand-500) 0%, transparent 70%);
-    opacity: 0.10;
-  }
-
-  :global(.dark) .footer-glow {
-    display: block;
+    background: radial-gradient(ellipse 60% 100% at 50% 100%, var(--color-brand-500) 0%, transparent 70%);
+    opacity: 0.13;
   }
 
   /* Page content sits on top and scrolls up off the footer */
