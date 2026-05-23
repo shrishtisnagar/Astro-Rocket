@@ -48,6 +48,12 @@ const hasDescriptionSlot = Astro.slots.has('description');
 const hasActionsSlot = Astro.slots.has('actions');
 const hasAsideSlot = Astro.slots.has('aside');
 
+// For split layout: pre-render the badge so it can appear above the photo
+// on mobile (order-1) while the desktop version stays inside the content column.
+const badgeSlotHtml = (hasBadgeSlot && layout === 'split')
+  ? await Astro.slots.render('badge')
+  : '';
+
 // Compute alignment based on layout
 const alignment = layout === 'centered' ? 'text-center items-center' : 'text-left items-start';
 
@@ -133,11 +139,19 @@ const gridClasses = cn(
   )}
 
   <div class={cn(gridClasses, 'relative z-10')}>
+    {/* Mobile-only: badge row above photo (split layout only) */}
+    {layout === 'split' && hasBadgeSlot && (
+      <div
+        class="hero-mobile-badge lg:hidden order-1 mb-[var(--space-heading-gap)]"
+        set:html={badgeSlotHtml}
+      />
+    )}
+
     {/* Content Column */}
-    <div class={cn(contentClasses, 'order-1 lg:order-2 animate-hero-stagger')}>
-      {/* Badge Slot */}
+    <div class={cn(contentClasses, layout === 'split' ? 'order-3 lg:order-2' : 'order-1', 'animate-hero-stagger')}>
+      {/* Badge Slot — hidden on mobile for split (rendered above photo instead) */}
       {hasBadgeSlot && (
-        <div class="mb-[var(--space-heading-gap)]">
+        <div class={cn('mb-[var(--space-heading-gap)]', layout === 'split' && 'hidden lg:block')}>
           <slot name="badge" />
         </div>
       )}
@@ -278,9 +292,12 @@ const gridClasses = cn(
   }
 
 
-  /* Mobile: stagger the aside (photo) in with the title so it doesn't
-     pop in during the blank gap while badge is visible but text isn't */
+  /* Mobile (split layout): badge sits above photo, both animate in first */
   @media (max-width: 1023px) {
+    .hero-mobile-badge {
+      animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
+      animation-delay: 0ms;
+    }
     .hero-aside {
       animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
       animation-delay: 90ms;
