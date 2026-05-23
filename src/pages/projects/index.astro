@@ -493,7 +493,7 @@ const INITIAL_VISIBLE = 9;
   .editorial-columns {
     display: flex;
     gap: 0.75rem;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .editorial-col {
@@ -503,12 +503,7 @@ const INITIAL_VISIBLE = 9;
   }
 
   .editorial-col-side   { flex: 1; }
-
-  /* Center col: slightly wider, pulled up so it protrudes above side cols */
-  .editorial-col-center {
-    flex: 1.15;
-    margin-top: -2rem;
-  }
+  .editorial-col-center { flex: 1.15; }
 
   /* Mobile: stack all as single column */
   @media (max-width: 1023px) {
