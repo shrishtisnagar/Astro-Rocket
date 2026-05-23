@@ -70,7 +70,8 @@ const {
   />
 
   <slot />
-  {showContactFooter && <ContactFooterSection />}
 
-  <Footer slot="footer" layout="simple" background="secondary" copyright="© {year} The S Curve | Shrishti S Nagar — Serving Global Clients From India" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825} />
+  <Footer slot="footer" layout="simple" background="secondary" copyright="© {year} The S Curve | Shrishti S Nagar — Serving Global Clients From India" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825}>
+    {showContactFooter && <ContactFooterSection slot="top" />}
+  </Footer>
 </BaseLayout>
