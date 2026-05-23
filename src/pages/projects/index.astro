@@ -566,6 +566,13 @@ const INITIAL_VISIBLE = 9;
   }
 
   /* ---- Case study card: full-bleed image + overlay ---- */
+
+  /* Always show the native pointer hand on case-study cards.
+     The moon-ball effect stays visible — it tracks any <a> element. */
+  .cs-card {
+    cursor: pointer;
+  }
+
   .cs-card-inner {
     position: relative;
     overflow: hidden;

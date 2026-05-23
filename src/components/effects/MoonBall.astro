@@ -1,0 +1,121 @@
+---
+/**
+ * MoonBall
+ * A glowing white moon-like ball that softly follows the mouse cursor.
+ * The native cursor stays visible — this is purely additive.
+ *
+ * Desktop / fine pointer only:
+ *  - Skipped on (hover: none) / (pointer: coarse) devices
+ *  - Skipped on prefers-reduced-motion
+ */
+---
+
+<!-- Glowing moon ball element -->
+<div id="moon-ball" aria-hidden="true"></div>
+
+<style>
+  /* Hide on touch / coarse pointer devices and reduced-motion */
+  @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    #moon-ball { display: none !important; }
+  }
+
+  #moon-ball {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* Size of the ball */
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0;
+    /* Offset so the centre of the ball tracks the cursor */
+    transform: translate(-50%, -50%);
+    will-change: left, top, opacity;
+    transition: opacity 0.4s ease;
+
+    /* White moon appearance: bright centre fading to a soft outer glow */
+    background: radial-gradient(
+      circle at 38% 38%,
+      #ffffff 0%,
+      rgba(255, 255, 255, 0.92) 30%,
+      rgba(220, 230, 255, 0.55) 58%,
+      rgba(180, 210, 255, 0.18) 80%,
+      transparent 100%
+    );
+
+    /* Layered box-shadows for the halo glow effect */
+    box-shadow:
+      0 0 8px  4px  rgba(255, 255, 255, 0.70),
+      0 0 18px 8px  rgba(220, 235, 255, 0.40),
+      0 0 38px 16px rgba(180, 210, 255, 0.22),
+      0 0 70px 28px rgba(160, 195, 255, 0.10);
+  }
+
+  /* Fully visible once mouse enters */
+  #moon-ball.is-visible {
+    opacity: 1;
+  }
+
+  /* Grows slightly when hovering an interactive element */
+  #moon-ball.is-hovering {
+    width: 36px;
+    height: 36px;
+    box-shadow:
+      0 0 10px  5px  rgba(255, 255, 255, 0.80),
+      0 0 24px 12px  rgba(220, 235, 255, 0.50),
+      0 0 50px 22px  rgba(180, 210, 255, 0.28),
+      0 0 90px 36px  rgba(160, 195, 255, 0.14);
+    transition: opacity 0.4s ease, width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease;
+  }
+</style>
+
+<script is:inline>
+(function () {
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var ball = document.getElementById('moon-ball');
+  if (!ball) return;
+
+  var INTERACTIVE = 'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for]';
+
+  // Target position (mouse)
+  var tx = -200, ty = -200;
+  // Current position (lerped)
+  var cx = tx, cy = ty;
+
+  // How quickly the ball "catches up" to the cursor — lower = more lag, floatier
+  var LERP = 0.09;
+
+  function onMove(e) {
+    tx = e.clientX;
+    ty = e.clientY;
+    ball.classList.add('is-visible');
+  }
+
+  function onLeave() {
+    ball.classList.remove('is-visible');
+  }
+
+  function syncHover(e) {
+    var target = e.target && e.target.closest ? e.target.closest(INTERACTIVE) : null;
+    ball.classList.toggle('is-hovering', !!target);
+  }
+
+  function tick() {
+    // Smooth lerp toward the mouse target
+    cx += (tx - cx) * LERP;
+    cy += (ty - cy) * LERP;
+    ball.style.left = cx + 'px';
+    ball.style.top  = cy + 'px';
+    requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseleave', onLeave);
+  document.addEventListener('mouseover', syncHover);
+  requestAnimationFrame(tick);
+})();
+</script>
