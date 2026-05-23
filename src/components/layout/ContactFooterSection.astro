@@ -42,8 +42,8 @@ const channels = [
         </h2>
         <p class="text-sm text-foreground-muted">Use the form below or reach out directly. I'll get back to you within 1 business day.</p>
       </div>
-      <!-- Icon-only channel buttons -->
-      <div class="flex items-center gap-2 shrink-0 mt-1">
+      <!-- Icon-only channel buttons: mobile only -->
+      <div class="flex items-center gap-2 shrink-0 mt-1 lg:hidden">
         {channels.map((ch) => (
           <a
             href={ch.href}
@@ -57,10 +57,40 @@ const channels = [
       </div>
     </div>
 
-    <!-- Contact form full-width -->
-    <Card padding="md" class="flex flex-col justify-center">
-      <ContactForm compact class="space-y-3" />
-    </Card>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-start">
+
+      <!-- Left: contact form -->
+      <div class="lg:col-span-3">
+        <Card padding="md" class="flex flex-col justify-center">
+          <ContactForm compact class="space-y-3" />
+        </Card>
+      </div>
+
+      <!-- Right: channel cards (desktop only) -->
+      <div class="hidden lg:block lg:col-span-2 space-y-2">
+        {channels.map((ch) => (
+          <a
+            href={ch.href}
+            {...ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+            class="block group"
+          >
+            <Card hover padding="sm">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 shrink-0 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+                  <Icon name={ch.icon} size="sm" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <p class="font-semibold text-xs text-foreground">{ch.label}</p>
+                  <p class="text-xs text-foreground-muted truncate">{ch.value}</p>
+                </div>
+                <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
+              </div>
+            </Card>
+          </a>
+        ))}
+      </div>
+
+    </div>
   </div>
 </div>
 
