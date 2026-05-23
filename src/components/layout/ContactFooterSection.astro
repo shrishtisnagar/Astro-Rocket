@@ -35,11 +35,26 @@ const channels = [
 <div class="contact-footer-inner">
   <div class="mx-auto max-w-5xl px-6 pt-6 pb-0">
 
-    <div class="mb-4">
-      <h2 class="font-display text-2xl font-bold text-foreground mb-1">
-        Send me a <span class="text-brand-500">message.</span>
-      </h2>
-      <p class="text-sm text-foreground-muted">Use the form below or reach out directly. I'll get back to you within 1 business day.</p>
+    <div class="mb-4 flex items-start justify-between gap-4">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-foreground mb-1">
+          Send me a <span class="text-brand-500">message.</span>
+        </h2>
+        <p class="text-sm text-foreground-muted">Use the form below or reach out directly. I'll get back to you within 1 business day.</p>
+      </div>
+      <!-- Icon-only channel buttons: mobile only -->
+      <div class="flex items-center gap-2 shrink-0 mt-1 lg:hidden">
+        {channels.map((ch) => (
+          <a
+            href={ch.href}
+            aria-label={ch.label}
+            {...ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+            class="contact-icon-btn"
+          >
+            <Icon name={ch.icon} size="sm" />
+          </a>
+        ))}
+      </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-10 items-start">
@@ -51,8 +66,8 @@ const channels = [
         </Card>
       </div>
 
-      <!-- Right: channels -->
-      <div class="lg:col-span-2 space-y-2">
+      <!-- Right: channel cards (desktop only) -->
+      <div class="hidden lg:block lg:col-span-2 space-y-2">
         {channels.map((ch) => (
           <a
             href={ch.href}
@@ -78,3 +93,25 @@ const channels = [
     </div>
   </div>
 </div>
+
+<style>
+  .contact-icon-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;       /* 32px */
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-foreground-muted);
+    background: transparent;
+    transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+    flex-shrink: 0;
+  }
+
+  .contact-icon-btn:hover {
+    color: var(--color-brand-500);
+    border-color: var(--color-brand-500);
+    background: color-mix(in oklch, var(--color-brand-500) 10%, transparent);
+  }
+</style>
