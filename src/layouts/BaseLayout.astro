@@ -126,8 +126,9 @@ schemas.push(...extraSchemas);
     <!-- Main content scrolls over the footer -->
     <div class="page-content-wrap">
       <slot name="header" />
-      <main id="main-content" class="flex-1">
+      <main id="main-content" class="flex-1 relative">
         <slot />
+        <div class="page-end-glow" aria-hidden="true"></div>
       </main>
     </div>
 
@@ -345,19 +346,24 @@ schemas.push(...extraSchemas);
     .scroll-blur-strip { display: none; }
   }
 
-  /* Brand glow at the very bottom of the page content — dark mode only.
-     position:absolute pins it to the bottom of .page-content-wrap so it
-     scrolls into view naturally as the user reaches the end of the page. */
-  :global(.dark) .page-content-wrap::after {
-    content: '';
+  /* Brand glow — sits at the bottom of <main>, overlays the last section.
+     position:absolute + z-index:20 paints it on top of page sections so
+     it's actually visible. display:none in light mode. */
+  .page-end-glow {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 220px;
+    height: 260px;
     pointer-events: none;
-    background: radial-gradient(ellipse 60% 100% at 50% 100%, var(--color-brand-500) 0%, transparent 70%);
-    opacity: 0.13;
+    z-index: 20;
+    display: none;
+    background: radial-gradient(ellipse 70% 100% at 50% 100%, var(--color-brand-500) 0%, transparent 65%);
+    opacity: 0.15;
+  }
+
+  :global(.dark) .page-end-glow {
+    display: block;
   }
 
   /* Page content sits on top and scrolls up off the footer */
