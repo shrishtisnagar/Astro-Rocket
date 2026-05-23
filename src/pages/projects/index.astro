@@ -19,7 +19,7 @@ import { url } from '@/lib/url';
 const allProjects = (await getCollection('projects', ({ data }) => !data.draft))
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 const INITIAL_VISIBLE        = 9; // cards shown initially on desktop (3 per column)
-const MOBILE_INITIAL_VISIBLE = 6; // cards shown initially on mobile  (2 per column)
+const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per column)
 ---
 
 <LandingLayout
@@ -524,9 +524,8 @@ const MOBILE_INITIAL_VISIBLE = 6; // cards shown initially on mobile  (2 per col
   @media (max-width: 767px) {
     .editorial-columns {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 0.75rem;
-      align-items: start;
     }
     .editorial-col {
       display: contents; /* cards become direct grid children */
