@@ -23,51 +23,41 @@
     position: fixed;
     top: 0;
     left: 0;
-    /* Size of the ball */
-    width: 28px;
-    height: 28px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 9990;
     opacity: 0;
-    /* Offset so the centre of the ball tracks the cursor */
     transform: translate(-50%, -50%);
     will-change: left, top, opacity;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease, width 0.2s ease, height 0.2s ease;
 
-    /* White moon appearance: bright centre fading to a soft outer glow */
     background: radial-gradient(
-      circle at 38% 38%,
+      circle at 40% 38%,
       #ffffff 0%,
-      rgba(255, 255, 255, 0.92) 30%,
-      rgba(220, 230, 255, 0.55) 58%,
-      rgba(180, 210, 255, 0.18) 80%,
+      rgba(255, 255, 255, 0.95) 45%,
+      rgba(230, 240, 255, 0.6) 75%,
       transparent 100%
     );
 
-    /* Layered box-shadows for the halo glow effect */
     box-shadow:
-      0 0 8px  4px  rgba(255, 255, 255, 0.70),
-      0 0 18px 8px  rgba(220, 235, 255, 0.40),
-      0 0 38px 16px rgba(180, 210, 255, 0.22),
-      0 0 70px 28px rgba(160, 195, 255, 0.10);
+      0 0 4px  2px rgba(255, 255, 255, 0.55),
+      0 0 10px 4px rgba(210, 228, 255, 0.22),
+      0 0 20px 8px rgba(180, 210, 255, 0.08);
   }
 
-  /* Fully visible once mouse enters */
   #moon-ball.is-visible {
     opacity: 1;
   }
 
-  /* Grows slightly when hovering an interactive element */
   #moon-ball.is-hovering {
-    width: 36px;
-    height: 36px;
+    width: 13px;
+    height: 13px;
     box-shadow:
-      0 0 10px  5px  rgba(255, 255, 255, 0.80),
-      0 0 24px 12px  rgba(220, 235, 255, 0.50),
-      0 0 50px 22px  rgba(180, 210, 255, 0.28),
-      0 0 90px 36px  rgba(160, 195, 255, 0.14);
-    transition: opacity 0.4s ease, width 0.25s ease, height 0.25s ease, box-shadow 0.25s ease;
+      0 0 5px  3px rgba(255, 255, 255, 0.65),
+      0 0 14px 6px rgba(210, 228, 255, 0.28),
+      0 0 26px 10px rgba(180, 210, 255, 0.12);
   }
 </style>
 
