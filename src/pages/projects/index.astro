@@ -578,14 +578,14 @@ const INITIAL_VISIBLE = 9;
     inset: 0;
   }
 
-  /* Greyscale by default, full colour on hover */
+  /* Greyscale by default, full colour on hover with brightness boost */
   .case-img-wrap img {
-    filter: grayscale(100%);
+    filter: grayscale(100%) brightness(0.85);
     transition: filter 0.5s ease, transform 0.5s ease;
   }
 
   .cs-card:hover .case-img-wrap img {
-    filter: grayscale(0%);
+    filter: grayscale(0%) brightness(1.05) saturate(1.2);
   }
 
   /* Gradient overlay */
@@ -598,9 +598,9 @@ const INITIAL_VISIBLE = 9;
     padding: 1.25rem;
     background: linear-gradient(
       to top,
-      rgba(0,0,0,0.82) 0%,
-      rgba(0,0,0,0.45) 40%,
-      transparent 75%
+      rgba(0,0,0,0.80) 0%,
+      rgba(0,0,0,0.35) 40%,
+      transparent 70%
     );
     transition: background 0.4s ease;
   }
@@ -608,9 +608,9 @@ const INITIAL_VISIBLE = 9;
   .cs-card:hover .cs-overlay {
     background: linear-gradient(
       to top,
-      rgba(0,0,0,0.90) 0%,
-      rgba(0,0,0,0.60) 50%,
-      rgba(0,0,0,0.10) 100%
+      rgba(0,0,0,0.65) 0%,
+      rgba(0,0,0,0.15) 45%,
+      transparent 70%
     );
   }
 
