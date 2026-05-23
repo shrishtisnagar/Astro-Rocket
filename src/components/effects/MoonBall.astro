@@ -76,18 +76,18 @@
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var ball = document.getElementById('moon-ball');
+  const ball = document.getElementById('moon-ball');
   if (!ball) return;
 
-  var INTERACTIVE = 'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for]';
+  const INTERACTIVE = 'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for]';
 
   // Target position (mouse)
-  var tx = -200, ty = -200;
+  let tx = -200, ty = -200;
   // Current position (lerped)
-  var cx = tx, cy = ty;
+  let cx = tx, cy = ty;
 
   // How quickly the ball "catches up" to the cursor — lower = more lag, floatier
-  var LERP = 0.09;
+  const LERP = 0.09;
 
   function onMove(e) {
     tx = e.clientX;
@@ -100,7 +100,7 @@
   }
 
   function syncHover(e) {
-    var target = e.target && e.target.closest ? e.target.closest(INTERACTIVE) : null;
+    const target = e.target && e.target.closest ? e.target.closest(INTERACTIVE) : null;
     ball.classList.toggle('is-hovering', !!target);
   }
 
