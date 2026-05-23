@@ -4,7 +4,7 @@ description: Helped a mompreneur build her personal brand on LinkedIn and
   attract her ideal clients from scratch.
 category: LinkedIn
 subcategories: Personal Branding, Outreach
-imageUrl: /images/projects/ChatGPT Image May 23, 2026, 12_03_21 AM.png
+imageUrl: /images/projects/ChatGPT Image May 23, 2026, 04_56_34 PM.png
 featured: false
 order: 4
 draft: false
