@@ -408,15 +408,14 @@ const INITIAL_VISIBLE = 9;
 
   @media (min-width: 1024px) {
     .editorial-grid {
-      grid-template-columns: 1fr 1.4fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 0.75rem;
     }
-    /* center column cards span both rows */
+    /* center card spans 2 rows — taller, same width as sides */
     .editorial-center {
       grid-row: span 2;
       align-self: stretch;
     }
-    /* center card inner fills the full span height */
     .editorial-center .cs-card-inner {
       aspect-ratio: unset;
       height: 100%;
