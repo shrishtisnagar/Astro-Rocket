@@ -49,8 +49,9 @@ const { title, description, image, imageAlt, noindex, nofollow, showScrollProgre
 
   <main class="min-h-screen pt-16">
     <slot />
-    {showContactFooter && <ContactFooterSection />}
   </main>
 
-  <Footer slot="footer" layout="simple" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825} />
+  <Footer slot="footer" layout="simple" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825}>
+    {showContactFooter && <ContactFooterSection slot="top" />}
+  </Footer>
 </BaseLayout>
