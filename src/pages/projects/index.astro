@@ -131,7 +131,7 @@ const INITIAL_VISIBLE = 9;
 
   <!-- All Case Studies — editorial grid -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+    <div class="flex flex-col gap-8 px-6">
 
       <div class="editorial-grid" id="editorial-grid">
         {allProjects.map((project, i) => {
@@ -479,17 +479,9 @@ const INITIAL_VISIBLE = 9;
 
   @media (min-width: 1024px) {
     .editorial-grid {
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1.15fr 1fr;
       gap: 0.75rem;
-    }
-    /* center card spans 2 rows — taller, same width as sides */
-    .editorial-center {
-      grid-row: span 2;
-      align-self: stretch;
-    }
-    .editorial-center .cs-card-inner {
-      aspect-ratio: unset;
-      height: 100%;
+      align-items: center;
     }
   }
 
