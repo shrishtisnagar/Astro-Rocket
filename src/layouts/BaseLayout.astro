@@ -346,6 +346,19 @@ schemas.push(...extraSchemas);
     .scroll-blur-strip { display: none; }
   }
 
+  /* Mobile: disable the footer-reveal effect — footer sits naturally in flow */
+  @media (max-width: 767px) {
+    .footer-reveal-wrap {
+      position: static;
+    }
+    .page-content-wrap {
+      margin-bottom: 0 !important; /* override the JS-set inline margin */
+    }
+    .scroll-blur-strip {
+      display: none;
+    }
+  }
+
   /* Brand glow — sits at the bottom of <main>, overlays the last section.
      position:absolute + z-index:20 paints it on top of page sections so
      it's actually visible. display:none in light mode. */
