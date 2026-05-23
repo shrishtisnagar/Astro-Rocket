@@ -142,7 +142,7 @@ const gridClasses = cn(
     {/* Mobile-only: badge row above photo (split layout only) */}
     {layout === 'split' && hasBadgeSlot && (
       <div
-        class="hero-mobile-badge lg:hidden order-1 mb-[var(--space-heading-gap)]"
+        class="hero-mobile-badge lg:hidden order-1"
         set:html={badgeSlotHtml}
       />
     )}
@@ -297,6 +297,8 @@ const gridClasses = cn(
     .hero-mobile-badge {
       animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
       animation-delay: 0ms;
+      /* Tighten the gap between the pill and the photo */
+      margin-bottom: -1rem;
     }
     .hero-aside {
       animation: hero-slide-up 1s cubic-bezier(0.22, 1.6, 0.36, 1) both;
