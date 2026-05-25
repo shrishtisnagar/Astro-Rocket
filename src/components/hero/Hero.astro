@@ -242,9 +242,9 @@ const gridClasses = cn(
     position: absolute;
     inset: 0;
     background:
-      /* Bottom fade into the next section */
-      linear-gradient(to bottom, transparent 60%, var(--color-background) 100%);
-    /* No radial tint — let the video's own filter/colours show through */
+      linear-gradient(to bottom, transparent 60%, var(--color-background) 100%),
+      radial-gradient(ellipse at 30% 40%, oklch(28% 0.10 344 / 0.60) 0%, oklch(8% 0.04 344 / 0.80) 100%);
+    mix-blend-mode: multiply;
   }
 
   /* ── Desktop only: hide on landscape mobile ─────────────── */
