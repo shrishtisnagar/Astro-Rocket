@@ -3,7 +3,7 @@ title: B2B mine deals in the inbox!
 description: From Low Traction to 100K+ Monthly Impressions in a Hyper-Niche Industry
 category: LinkedIn
 subcategories: B2B, Personal Branding
-imageUrl: /images/projects/ChatGPT Image May 23, 2026, 04_26_20 PM.png
+imageUrl: /images/projects/ChatGPT Image May 25, 2026, 09_30_38 PM.png
 featured: true
 order: 2
 draft: false
