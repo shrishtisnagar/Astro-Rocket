@@ -317,15 +317,20 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
 </LandingLayout>
 
 <script>
-  // "Contact me" button in hero scrolls to the footer contact section.
-  // The footer is position:fixed so a plain anchor won't reach it —
-  // we scroll the page all the way to the bottom instead, which reveals it.
-  document.addEventListener('click', function (e) {
-    const btn = (e.target as Element).closest('[data-scroll-to-contact]');
+  // "Contact me" button scrolls to the footer contact section.
+  // The footer is position:fixed — scroll to the maximum scroll position to reveal it.
+  function initContactScroll() {
+    const btn = document.querySelector('[data-scroll-to-contact]');
     if (!btn) return;
-    e.preventDefault();
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  });
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      window.scrollTo({ top: maxScroll, behavior: 'smooth' });
+    });
+  }
+  // Run on load and after any client-side navigation
+  initContactScroll();
+  document.addEventListener('astro:page-load', initContactScroll);
 </script>
 
 <style>
