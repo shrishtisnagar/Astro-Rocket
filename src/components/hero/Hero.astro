@@ -243,10 +243,8 @@ const gridClasses = cn(
     inset: 0;
     background:
       /* Bottom fade into the next section */
-      linear-gradient(to bottom, transparent 60%, var(--color-background) 100%),
-      /* Wine tint (dark mode only via mix-blend-mode) */
-      radial-gradient(ellipse at 30% 40%, rgb(33 3 0 / 0.80) 0%, rgb(5 0 0 / 0.95) 100%);
-    mix-blend-mode: multiply;
+      linear-gradient(to bottom, transparent 60%, var(--color-background) 100%);
+    /* No radial tint — let the video's own filter/colours show through */
   }
 
   /* ── Desktop only: hide on landscape mobile ─────────────── */

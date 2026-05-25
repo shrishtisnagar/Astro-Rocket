@@ -362,9 +362,8 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to bottom, transparent 65%, var(--color-background) 100%),
-      radial-gradient(ellipse at 30% 40%, rgb(33 3 0 / 0.80) 0%, rgb(5 0 0 / 0.95) 100%);
-    mix-blend-mode: multiply;
+      linear-gradient(to bottom, transparent 65%, var(--color-background) 100%);
+    /* No radial tint — let the video's own filter/colours show through */
   }
 
   /* ---- Hero photo ---- */
