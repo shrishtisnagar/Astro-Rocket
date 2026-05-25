@@ -367,7 +367,7 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to bottom, transparent 65%, var(--color-background) 100%),
+      linear-gradient(to bottom, transparent 65%, #210300 100%),
       radial-gradient(ellipse at 30% 40%, oklch(28% 0.10 344 / 0.60) 0%, oklch(8% 0.04 344 / 0.80) 100%);
     mix-blend-mode: multiply;
   }
@@ -664,8 +664,8 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
   }
 
   .cs-card:hover .cs-description {
-    opacity: 0;
-    transform: translateY(8px);
+    opacity: 1;
+    transform: translateY(0);
   }
 
   /* Tags — hidden, appear with description */
