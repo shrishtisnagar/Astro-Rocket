@@ -298,9 +298,11 @@
     );
   }
 
-  /* Hero gradient — dark mode only */
+  /* Hero gradient — dark mode only.
+     Starts from #210300 (the deep-wine base the video settles into) so there
+     is no pink flash while the background video is still loading. */
   .dark .hero-dark-gradient {
-    background: linear-gradient(to bottom, var(--color-brand-600) 0%, #000 100%);
+    background: linear-gradient(to bottom, #210300 0%, #000 100%);
   }
 
   /* Gradient border */
