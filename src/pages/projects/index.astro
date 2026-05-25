@@ -64,7 +64,7 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
           Book a call
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" href={url("/contact")}>
+        <Button size="lg" variant="outline" href="#contact" data-scroll-to-contact>
           <Icon name="mail" size="sm" />
           Contact me
           <Icon name="arrow-right" size="sm" />
@@ -315,6 +315,18 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
   </section>
 
 </LandingLayout>
+
+<script>
+  // "Contact me" button in hero scrolls to the footer contact section.
+  // The footer is position:fixed so a plain anchor won't reach it —
+  // we scroll the page all the way to the bottom instead, which reveals it.
+  document.addEventListener('click', function (e) {
+    const btn = (e.target as Element).closest('[data-scroll-to-contact]');
+    if (!btn) return;
+    e.preventDefault();
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  });
+</script>
 
 <style>
   /* ════════════════════════════════════════════════════════════════════════
