@@ -371,7 +371,8 @@ schemas.push(...extraSchemas);
 
   /* Brand glow — sits at the bottom of <main>, overlays the last section.
      position:absolute + z-index:20 paints it on top of page sections so
-     it's actually visible. display:none in light mode. */
+     it's actually visible. display:none in light mode.
+     Uses a deep wine tone (#210300-range) so it never flashes pink. */
   .page-end-glow {
     position: absolute;
     bottom: 0;
@@ -381,8 +382,8 @@ schemas.push(...extraSchemas);
     pointer-events: none;
     z-index: 20;
     display: none;
-    background: radial-gradient(ellipse 70% 100% at 50% 100%, var(--color-brand-500) 0%, transparent 65%);
-    opacity: 0.15;
+    background: radial-gradient(ellipse 70% 100% at 50% 100%, oklch(30% 0.12 344) 0%, transparent 65%);
+    opacity: 0.45;
   }
 
   :global(.dark) .page-end-glow {
