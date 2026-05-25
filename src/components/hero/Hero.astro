@@ -222,13 +222,6 @@ const gridClasses = cn(
     display: block;
   }
 
-  /* Placeholder colour shown while the video is still loading.
-     #210300 is the deep-wine base that the video settles into once loaded,
-     so the transition is invisible rather than a flash from black/transparent. */
-  :global(.dark) section.video-has-bg {
-    background: #210300;
-  }
-
   .video-bg {
     position: absolute;
     inset: 0;
@@ -252,7 +245,7 @@ const gridClasses = cn(
       /* Bottom fade into the next section */
       linear-gradient(to bottom, transparent 60%, var(--color-background) 100%),
       /* Wine tint (dark mode only via mix-blend-mode) */
-      radial-gradient(ellipse at 30% 40%, oklch(28% 0.10 344 / 0.60) 0%, oklch(8% 0.04 344 / 0.80) 100%);
+      radial-gradient(ellipse at 30% 40%, rgb(33 3 0 / 0.80) 0%, rgb(5 0 0 / 0.95) 100%);
     mix-blend-mode: multiply;
   }
 
