@@ -210,7 +210,7 @@ const heroImageSrc = image
 
       <!-- ─── Article prose ─── -->
       <article class="cs-article" id="cs-article">
-        <div class="prose prose-lg max-w-none dark:prose-invert" data-reveal-content>
+        <div class="prose prose-lg dark:prose-invert" data-reveal-content>
           <slot />
         </div>
 
@@ -604,6 +604,107 @@ const heroImageSrc = image
     max-width: 720px;
     margin: 0 auto;
     padding: 4rem 2rem 3rem;
+  }
+
+  /* ── Prose content overrides ── */
+
+  /* Fix 1: width — prose defaults to ~65ch; .cs-article centres it */
+
+  /* Fix 2: h2 section headings → calm editorial chapter markers */
+  .cs-article :global(.prose h2) {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-brand-500);
+    border-left: 3px solid var(--color-brand-500);
+    padding-left: 0.875rem;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.4;
+  }
+  :global(.dark) .cs-article :global(.prose h2) {
+    color: var(--color-brand-400);
+    border-left-color: var(--color-brand-400);
+  }
+
+  /* h3 gets a quieter version */
+  .cs-article :global(.prose h3) {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Fix 3: images — rounded corners, shadow, centred */
+  .cs-article :global(.prose img) {
+    border-radius: 0.75rem;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.25),
+      0 8px 32px -4px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--color-border);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Fix 4: stat tables — distinct background, bold header row */
+  .cs-article :global(.prose table) {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.625rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    margin-top: 1.75rem;
+    margin-bottom: 1.75rem;
+    font-size: 0.875rem;
+  }
+
+  .cs-article :global(.prose thead) {
+    background: color-mix(in oklch, var(--color-brand-500) 12%, var(--color-background-secondary));
+  }
+
+  .cs-article :global(.prose thead th) {
+    padding: 0.75rem 1rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+  }
+  :global(.dark) .cs-article :global(.prose thead th) {
+    color: var(--color-brand-400);
+  }
+
+  .cs-article :global(.prose tbody tr) {
+    background: var(--color-background-secondary);
+    transition: background 0.15s ease;
+  }
+
+  .cs-article :global(.prose tbody tr:hover) {
+    background: color-mix(in oklch, var(--color-brand-500) 6%, var(--color-background-secondary));
+  }
+
+  .cs-article :global(.prose tbody tr:nth-child(even)) {
+    background: color-mix(in oklch, var(--color-background) 60%, var(--color-background-secondary));
+  }
+
+  .cs-article :global(.prose tbody td) {
+    padding: 0.625rem 1rem;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-foreground-muted);
+    vertical-align: middle;
+  }
+
+  .cs-article :global(.prose tbody td:first-child) {
+    font-weight: 500;
+    color: var(--color-foreground);
   }
 
   .cs-article-footer {
