@@ -165,46 +165,23 @@ const heroImageSrc = image
     <!-- ══════════ RIGHT PANEL (scrolls) ══════════ -->
     <div class="cs-panel" id="cs-panel">
 
-      <!-- ─── Cinematic hero: full panel height ─── -->
-      <div class="cs-hero" id="cs-hero">
-        {heroImageSrc
-          ? (
-            <div class="cs-hero-image-wrap" aria-hidden="true">
-              <img
-                src={heroImageSrc}
-                alt=""
-                class="cs-hero-img"
-                loading="eager"
-                decoding="async"
-              />
-            </div>
-          )
-          : (
-            <div class="cs-hero-fallback" aria-hidden="true"></div>
-          )
-        }
-        <div class="cs-hero-gradient" aria-hidden="true"></div>
-
-        <div class="cs-hero-content">
-          {tags.length > 0 && (
-            <div class="cs-hero-tags">
-              {tags.map((tag) => (
-                <span class="cs-hero-tag">{tag}</span>
-              ))}
-            </div>
-          )}
-          <h1 class="cs-hero-title">{title}</h1>
-          <p class="cs-hero-desc">{description}</p>
-
-          <!-- Animated scroll hint -->
-          <div class="cs-scroll-hint" aria-hidden="true">
-            <span class="cs-scroll-hint-label">Scroll to read</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-              class="cs-scroll-hint-icon" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-            </svg>
-          </div>
+      <!-- ─── Intro: PROBLEM + OBJECTIVE side-by-side cards ─── -->
+      <div class="cs-intro" id="cs-intro">
+        <div class="cs-intro-card" id="cs-intro-problem">
+          <div class="cs-intro-card-label">Problem</div>
+          <div class="cs-intro-card-body" id="cs-intro-problem-body"></div>
+        </div>
+        <div class="cs-intro-card cs-intro-card--right" id="cs-intro-objective">
+          <div class="cs-intro-card-label">Objective</div>
+          <div class="cs-intro-card-body" id="cs-intro-objective-body"></div>
+        </div>
+        <div class="cs-scroll-hint" aria-hidden="true">
+          <span class="cs-scroll-hint-label">Scroll to read</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+            class="cs-scroll-hint-icon" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
         </div>
       </div>
 
@@ -472,108 +449,128 @@ const heroImageSrc = image
   }
 
   /* ════════════════════════
-     CINEMATIC HERO
+     INTRO CARDS
      ════════════════════════ */
-  .cs-hero {
+  .cs-intro {
+    display: none; /* shown as flex by JS when content is found */
+    min-height: calc(100dvh - var(--cs-header-h));
+    border-bottom: 1px solid var(--color-border);
     position: relative;
-    height: calc(100dvh - var(--cs-header-h));
-    overflow: hidden;
-    background: oklch(8% 0.015 250); /* deep dark fallback */
   }
 
-  .cs-hero-image-wrap {
-    position: absolute;
-    inset: 0;
+  .cs-intro.is-ready {
+    display: flex;
   }
 
-  .cs-hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    /* Heavy blur turns any image into an atmospheric backdrop —
-       scale up prevents visible blur edges */
-    filter: blur(18px) brightness(0.28) saturate(1.6);
-    transform: scale(1.12);
-    will-change: filter;
-  }
-
-  .cs-hero-fallback {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 70% at 60% 40%, oklch(20% 0.06 280), oklch(6% 0.02 250) 70%);
-  }
-
-  .cs-hero-gradient {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.94) 0%,
-        rgba(0, 0, 0, 0.60) 30%,
-        rgba(0, 0, 0, 0.18) 60%,
-        transparent 100%
-      );
-    pointer-events: none;
-  }
-
-  .cs-hero-content {
-    position: absolute;
-    inset: 0;
+  .cs-intro-card {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3.5rem);
-    padding-bottom: clamp(2.5rem, 6vw, 5rem);
+    padding: clamp(2rem, 5vw, 3.5rem);
+    padding-top: clamp(4rem, 8vw, 6rem); /* room for the top label */
+    background: oklch(9% 0.018 280);
+    position: relative;
+    overflow: hidden;
   }
 
-  .cs-hero-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.125rem;
+  .cs-intro-card--right {
+    background: oklch(9% 0.01 260);
+    border-left: 1px solid var(--color-border);
   }
 
-  .cs-hero-tag {
-    font-size: 0.625rem;
+  /* Subtle noise-like gradient overlay per card */
+  .cs-intro-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 20% 80%, oklch(14% 0.03 290 / 0.6), transparent 70%);
+    pointer-events: none;
+  }
+
+  .cs-intro-card--right::before {
+    background: radial-gradient(ellipse 80% 60% at 80% 80%, oklch(13% 0.025 260 / 0.6), transparent 70%);
+  }
+
+  /* Section label pinned to top */
+  .cs-intro-card-label {
+    position: absolute;
+    top: clamp(1.75rem, 4vw, 2.5rem);
+    left: clamp(2rem, 5vw, 3.5rem);
+    font-size: 0.6rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 0.3rem 0.75rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.10);
-    color: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-
-  .cs-hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 3.75rem);
-    font-weight: 800;
-    line-height: 1.06;
-    letter-spacing: -0.025em;
-    color: #fff;
-    margin: 0 0 0.875rem;
-    max-width: 18ch;
-  }
-
-  .cs-hero-desc {
-    font-size: clamp(0.875rem, 1.5vw, 1.0625rem);
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.65);
-    margin: 0 0 2.25rem;
-    max-width: 52ch;
-  }
-
-  /* Scroll hint */
-  .cs-scroll-hint {
+    color: var(--color-brand-500);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    opacity: 0.55;
+    z-index: 1;
   }
+
+  .cs-intro-card-label::before {
+    content: '';
+    display: inline-block;
+    width: 1.5rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  :global(.dark) .cs-intro-card-label {
+    color: var(--color-brand-400);
+  }
+
+  /* Content block */
+  .cs-intro-card-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cs-intro-card-body :global(p) {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: clamp(0.875rem, 1.3vw, 1rem);
+    line-height: 1.85;
+    margin: 0;
+  }
+
+  .cs-intro-card-body :global(ul),
+  .cs-intro-card-body :global(ol) {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
+    line-height: 1.75;
+    margin: 0;
+    padding-left: 1.375rem;
+  }
+
+  .cs-intro-card-body :global(li) {
+    margin-bottom: 0.35rem;
+  }
+
+  .cs-intro-card-body :global(strong) {
+    color: rgba(255, 255, 255, 0.90);
+    font-weight: 600;
+  }
+
+  /* Scroll hint pinned to bottom-center of the intro section */
+  .cs-intro .cs-scroll-hint {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.40;
+    z-index: 2;
+    white-space: nowrap;
+  }
+
   .cs-scroll-hint-label {
     font-size: 0.625rem;
     font-weight: 600;
@@ -581,6 +578,7 @@ const heroImageSrc = image
     text-transform: uppercase;
     color: rgba(255, 255, 255, 0.8);
   }
+
   .cs-scroll-hint-icon {
     color: rgba(255, 255, 255, 0.8);
     animation: cs-bounce 1.8s ease-in-out infinite;
@@ -863,8 +861,24 @@ const heroImageSrc = image
       overflow: visible;
     }
 
-    .cs-hero {
-      height: calc(100dvh - var(--cs-header-h));
+    .cs-intro.is-ready {
+      flex-direction: column;
+      min-height: auto;
+    }
+
+    .cs-intro-card {
+      padding: 4rem 1.5rem 2.5rem;
+      min-height: 60vmax;
+      justify-content: flex-end;
+    }
+
+    .cs-intro-card--right {
+      border-left: none;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .cs-intro .cs-scroll-hint {
+      display: none; /* not useful after stacking */
     }
 
     .cs-article {
@@ -880,32 +894,9 @@ const heroImageSrc = image
     }
   }
 
-  /* ── PROBLEM / OBJECTIVE callout boxes (injected by JS) ── */
-  :global(.cs-callout) {
-    border: 1px solid var(--color-border);
-    border-left: 3px solid var(--color-brand-500);
-    border-radius: 0 0.5rem 0.5rem 0;
-    padding: 1.375rem 1.5rem 1.375rem 1.25rem;
-    background: color-mix(in oklch, var(--color-background-secondary) 65%, transparent);
-    margin: 2rem 0;
-  }
-  /* The h2 inside the box already has a left border from the section style —
-     remove it since the box provides the visual anchor */
-  :global(.cs-callout) :global(h2) {
-    border-left: none !important;
-    padding-left: 0 !important;
-    margin-top: 0 !important;
-  }
-  :global(.cs-callout) :global(p),
-  :global(.cs-callout) :global(li) {
-    margin-bottom: 0;
-  }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .cs-hero-img {
-      transform: scale(1.12); /* keep the scale, skip transition */
-    }
     .cs-scroll-hint-icon {
       animation: none;
     }
@@ -919,48 +910,103 @@ const heroImageSrc = image
 (function () {
   'use strict';
 
-  function initCallouts() {
+  // Meta line prefixes rendered as bold paragraphs at the top of prose.
+  // These repeat information already visible in the sidebar, so we hide them.
+  const META_PREFIXES = [
+    'PLATFORM:', 'ACCOUNT TYPE:', 'CAMPAIGN TYPE:', 'OBJECTIVE:',
+    'CLIENT:', 'INDUSTRY:', 'SECTOR:', 'TOOL:', 'TOOLS:',
+  ];
+
+  const PROBLEM_KEYS = ['PROBLEM', 'CHALLENGE'];
+  const OBJECTIVE_KEYS = ['OBJECTIVE', 'GOAL', 'GOALS'];
+
+  function cleanText(el) {
+    return el.textContent.replace(/[*_#:`]/g, '').trim().toUpperCase();
+  }
+
+  function extractSection(h2) {
+    // Returns [h2, ...siblings] until the next h2
+    const members = [h2];
+    let cursor = h2.nextElementSibling;
+    while (cursor && cursor.tagName !== 'H2') {
+      members.push(cursor);
+      cursor = cursor.nextElementSibling;
+    }
+    return members;
+  }
+
+  function findSectionH2(h2s, keys) {
+    for (let i = 0; i < h2s.length; i++) {
+      const t = cleanText(h2s[i]);
+      if (keys.some((k) => t.includes(k))) return h2s[i];
+    }
+    return null;
+  }
+
+  function liftIntoCard(h2, cardBody) {
+    if (!h2 || !cardBody) return false;
+    const members = extractSection(h2);
+    let moved = false;
+    members.forEach((el, i) => {
+      if (i === 0) {
+        // hide the h2 from prose — the card already has a label
+        el.style.display = 'none';
+      } else {
+        cardBody.appendChild(el.cloneNode(true));
+        el.style.display = 'none';
+        moved = true;
+      }
+    });
+    return moved;
+  }
+
+  function initIntroCards() {
     const article = document.getElementById('cs-article');
     if (!article) return;
-
     const prose = article.querySelector('.prose');
     if (!prose) return;
 
-    // Keywords that warrant a callout box
-    const KEYWORDS = ['PROBLEM', 'OBJECTIVE', 'CHALLENGE', 'GOAL', 'GOALS'];
-
-    const h2s = Array.prototype.slice.call(prose.querySelectorAll('h2'));
-
-    h2s.forEach(function (h2) {
-      // Skip if already wrapped
-      if (h2.closest('.cs-callout')) return;
-
-      const text = h2.textContent.replace(/[*_#:`]/g, '').trim().toUpperCase();
-      const isCallout = KEYWORDS.some(function (kw) { return text.includes(kw); });
-      if (!isCallout) return;
-
-      // Gather this h2 + all following siblings until the next h2
-      const members = [h2];
-      let cursor = h2.nextElementSibling;
-      while (cursor && cursor.tagName !== 'H2') {
-        members.push(cursor);
-        cursor = cursor.nextElementSibling;
+    // ── 1. Hide metadata bold-paragraph lines at the very top of prose
+    let node = prose.firstElementChild;
+    while (node && node.tagName === 'P') {
+      const isStrongOnly =
+        node.children.length === 1 &&
+        node.children[0].tagName === 'STRONG' &&
+        node.textContent.trim() === node.children[0].textContent.trim();
+      if (!isStrongOnly) break;
+      const upper = node.textContent.trim().toUpperCase();
+      if (META_PREFIXES.some((p) => upper.startsWith(p))) {
+        node.style.display = 'none';
+        node = node.nextElementSibling;
+      } else {
+        break;
       }
+    }
 
-      // Wrap in callout box
-      const box = document.createElement('div');
-      box.className = 'cs-callout';
-      prose.insertBefore(box, h2);
-      members.forEach(function (el) { box.appendChild(el); });
-    });
+    // ── 2. Lift PROBLEM and OBJECTIVE into intro cards
+    const h2s = Array.prototype.slice.call(prose.querySelectorAll('h2'));
+    const problemH2   = findSectionH2(h2s, PROBLEM_KEYS);
+    const objectiveH2 = findSectionH2(h2s, OBJECTIVE_KEYS);
+
+    const problemBody   = document.getElementById('cs-intro-problem-body');
+    const objectiveBody = document.getElementById('cs-intro-objective-body');
+
+    const hadProblem   = liftIntoCard(problemH2,   problemBody);
+    const hadObjective = liftIntoCard(objectiveH2, objectiveBody);
+
+    // ── 3. Show the intro section if at least one card has content
+    if (hadProblem || hadObjective) {
+      const intro = document.getElementById('cs-intro');
+      if (intro) intro.classList.add('is-ready');
+    }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCallouts);
+    document.addEventListener('DOMContentLoaded', initIntroCards);
   } else {
-    initCallouts();
+    initIntroCards();
   }
-  document.addEventListener('astro:page-load', initCallouts);
+  document.addEventListener('astro:page-load', initIntroCards);
 })();
 </script>
 
