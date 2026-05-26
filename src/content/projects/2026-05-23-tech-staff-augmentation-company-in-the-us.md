@@ -6,7 +6,7 @@ category: LinkedIn
 subcategories: Company Page, B2B
 imageUrl: /images/projects/ChatGPT Image May 26, 2026, 10_02_22 PM.png
 featured: false
-order: 99
+order: 11
 draft: false
 ---
 **Platform: LinkedIn**
