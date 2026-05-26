@@ -86,6 +86,6 @@ We crossed 12000 qualified followers in March 2026!
 
 We also get multiple viral posts every month 
 
-![](/images/projects/numberscarlo)
+![](/images/projects/numberscarlo.png)
 
 Now who doesn’t want REAL results like that?
