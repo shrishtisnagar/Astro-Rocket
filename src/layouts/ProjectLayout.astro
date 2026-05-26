@@ -439,7 +439,7 @@ const heroImageSrc = image
   /* ── Sidebar image ── */
   .cs-sidebar-image {
     flex: 1;
-    min-height: 140px;
+    min-height: 240px;
     overflow: hidden;
     border-radius: 0.75rem;
     margin-top: auto;
@@ -490,17 +490,11 @@ const heroImageSrc = image
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(45%) brightness(0.55);
-    transform: scale(1.04);
-    transition:
-      filter 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-      transform 14s ease;
-    will-change: filter, transform;
-  }
-
-  .cs-hero:hover .cs-hero-img {
-    filter: grayscale(0%) brightness(0.72);
-    transform: scale(1.0);
+    /* Heavy blur turns any image into an atmospheric backdrop —
+       scale up prevents visible blur edges */
+    filter: blur(18px) brightness(0.28) saturate(1.6);
+    transform: scale(1.12);
+    will-change: filter;
   }
 
   .cs-hero-fallback {
@@ -637,18 +631,32 @@ const heroImageSrc = image
     margin-bottom: 0.75rem;
   }
 
-  /* Fix 3: images — rounded corners, shadow, centred */
+  /* Fix 3: images — rounded corners, visible ring + shadow on dark bg */
   .cs-article :global(.prose img) {
     border-radius: 0.75rem;
+    /* Bright ring makes screenshots visible against dark backgrounds;
+       drop shadow adds depth without blending into the dark panel */
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.25),
-      0 8px 32px -4px rgba(0, 0, 0, 0.4);
-    border: 1px solid var(--color-border);
+      0 0 0 1px rgba(255, 255, 255, 0.10),
+      0 4px 6px -2px rgba(0, 0, 0, 0.5),
+      0 12px 40px -4px rgba(0, 0, 0, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.09);
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 1.75rem;
-    margin-bottom: 1.75rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* Fix 4 (reading strain): slightly off-white body text + more air */
+  .cs-article :global(.prose p),
+  .cs-article :global(.prose li) {
+    color: rgba(255, 255, 255, 0.80);
+    line-height: 1.9;
+  }
+
+  .cs-article :global(.prose strong) {
+    color: rgba(255, 255, 255, 0.95);
   }
 
   /* Fix 4: stat tables — distinct background, bold header row */
@@ -875,11 +883,31 @@ const heroImageSrc = image
     }
   }
 
+  /* ── PROBLEM / OBJECTIVE callout boxes (injected by JS) ── */
+  :global(.cs-callout) {
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-brand-500);
+    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 1.375rem 1.5rem 1.375rem 1.25rem;
+    background: color-mix(in oklch, var(--color-background-secondary) 65%, transparent);
+    margin: 2rem 0;
+  }
+  /* The h2 inside the box already has a left border from the section style —
+     remove it since the box provides the visual anchor */
+  :global(.cs-callout) :global(h2) {
+    border-left: none !important;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+  }
+  :global(.cs-callout) :global(p),
+  :global(.cs-callout) :global(li) {
+    margin-bottom: 0;
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .cs-hero-img {
-      transition: filter 0.3s ease;
-      transform: none !important;
+      transform: scale(1.12); /* keep the scale, skip transition */
     }
     .cs-scroll-hint-icon {
       animation: none;
@@ -889,4 +917,53 @@ const heroImageSrc = image
     }
   }
 </style>
+
+<script is:inline>
+(function () {
+  'use strict';
+
+  function initCallouts() {
+    const article = document.getElementById('cs-article');
+    if (!article) return;
+
+    const prose = article.querySelector('.prose');
+    if (!prose) return;
+
+    // Keywords that warrant a callout box
+    const KEYWORDS = ['PROBLEM', 'OBJECTIVE', 'CHALLENGE', 'GOAL', 'GOALS'];
+
+    const h2s = Array.prototype.slice.call(prose.querySelectorAll('h2'));
+
+    h2s.forEach(function (h2) {
+      // Skip if already wrapped
+      if (h2.closest('.cs-callout')) return;
+
+      const text = h2.textContent.replace(/[*_#:`]/g, '').trim().toUpperCase();
+      const isCallout = KEYWORDS.some(function (kw) { return text.includes(kw); });
+      if (!isCallout) return;
+
+      // Gather this h2 + all following siblings until the next h2
+      const members = [h2];
+      let cursor = h2.nextElementSibling;
+      while (cursor && cursor.tagName !== 'H2') {
+        members.push(cursor);
+        cursor = cursor.nextElementSibling;
+      }
+
+      // Wrap in callout box
+      const box = document.createElement('div');
+      box.className = 'cs-callout';
+      prose.insertBefore(box, h2);
+      members.forEach(function (el) { box.appendChild(el); });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCallouts);
+  } else {
+    initCallouts();
+  }
+  document.addEventListener('astro:page-load', initCallouts);
+})();
+</script>
 
