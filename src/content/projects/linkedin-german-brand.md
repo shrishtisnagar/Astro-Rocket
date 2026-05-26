@@ -56,10 +56,10 @@ More on this paid media strategy here: [https://shrishtisnagar.notion.site/Marke
 
 And obviously, who doesn’t enjoy leads:
 
-![](</images/projects/image (3).png>)
+![](/images/projects/image%20(3).png)
 
-![](</images/projects/image (4).png>)
+![](/images/projects/image%20(4).png)
 
-![](</images/projects/Screenshot 2026-04-07 224210 (1).png>)
+![](/images/projects/Screenshot%202026-04-07%20224210%20(1).png)
 
 **Update:** In April 2026, we crossed 2 competitors in terms of follower count, reaching 700 followers.
