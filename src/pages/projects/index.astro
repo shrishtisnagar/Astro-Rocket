@@ -629,7 +629,7 @@ const MOBILE_INITIAL_VISIBLE = 3; // cards shown initially on mobile  (1 per col
 
   /* Greyscale by default, full colour on hover with brightness boost */
   .case-img-wrap img {
-    filter: grayscale(100%) brightness(0.85);
+    filter: grayscale(100%) sepia(80%) hue-rotate(310deg) saturate(250%) brightness(0.8);
     transition: filter 0.5s ease, transform 0.5s ease;
   }
 
