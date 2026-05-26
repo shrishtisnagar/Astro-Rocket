@@ -30,7 +30,7 @@ const {
   year,
   client,
   role,
-  services = [],
+  services: _services = [],
   url,
   repo,
   tags = [],
@@ -178,7 +178,6 @@ const heroImageSrc = image
             </div>
           )
           : (
-            <!-- No image: use dark gradient background -->
             <div class="cs-hero-fallback" aria-hidden="true"></div>
           )
         }
@@ -851,16 +850,16 @@ const heroImageSrc = image
   'use strict';
 
   function initCaseTOC() {
-    var panel   = document.getElementById('cs-panel');
-    var tocList = document.getElementById('cs-toc-list');
-    var tocNav  = document.getElementById('cs-toc');
+    const panel   = document.getElementById('cs-panel');
+    const tocList = document.getElementById('cs-toc-list');
+    const tocNav  = document.getElementById('cs-toc');
     if (!panel || !tocList || !tocNav) return;
 
     // Collect headings from inside the article only
-    var article = panel.querySelector('.cs-article');
+    const article = panel.querySelector('.cs-article');
     if (!article) return;
 
-    var headings = Array.prototype.slice.call(
+    const headings = Array.prototype.slice.call(
       article.querySelectorAll('h2, h3')
     );
 
@@ -872,7 +871,7 @@ const heroImageSrc = image
     // Ensure every heading has an id
     headings.forEach(function (h, i) {
       if (!h.id) {
-        var slug = h.textContent
+        const slug = h.textContent
           .trim()
           .toLowerCase()
           .replace(/[^a-z0-9\s-]/g, '')
@@ -884,12 +883,12 @@ const heroImageSrc = image
 
     // Build TOC list items
     tocList.innerHTML = '';
-    var items = [];
+    const items = [];
     headings.forEach(function (h) {
-      var li = document.createElement('li');
+      const li = document.createElement('li');
       li.className = 'cs-toc-item ' + (h.tagName === 'H3' ? 'cs-h3' : 'cs-h2');
 
-      var a = document.createElement('a');
+      const a = document.createElement('a');
       a.href = '#' + h.id;
       // Strip markdown bold/italic markers that end up in text
       a.textContent = h.textContent.replace(/[*_#`]/g, '').trim();
@@ -907,7 +906,7 @@ const heroImageSrc = image
 
     // Active-section tracking via IntersectionObserver
     // root: panel → intersections are relative to the panel's visible area
-    var activeId = headings[0] ? headings[0].id : null;
+    let activeId = headings[0] ? headings[0].id : null;
 
     function setActive(id) {
       if (id === activeId) return;
@@ -924,10 +923,10 @@ const heroImageSrc = image
     // Initialise first item as active
     if (items.length) items[0].li.classList.add('is-active');
 
-    var observer = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       function (entries) {
         // Pick the top-most intersecting heading
-        var intersecting = entries
+        const intersecting = entries
           .filter(function (e) { return e.isIntersecting; })
           .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
 
@@ -946,7 +945,7 @@ const heroImageSrc = image
     headings.forEach(function (h) { observer.observe(h); });
 
     // Panel scroll: also track backward scroll (headings leaving bottom)
-    var scrollObserver = new IntersectionObserver(
+    const scrollObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
