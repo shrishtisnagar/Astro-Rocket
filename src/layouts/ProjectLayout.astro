@@ -171,17 +171,9 @@ const heroImageSrc = image
           <div class="cs-intro-card-label">Problem</div>
           <div class="cs-intro-card-body" id="cs-intro-problem-body"></div>
         </div>
-        <div class="cs-intro-card cs-intro-card--right" id="cs-intro-objective">
+        <div class="cs-intro-card" id="cs-intro-objective">
           <div class="cs-intro-card-label">Objective</div>
           <div class="cs-intro-card-body" id="cs-intro-objective-body"></div>
-        </div>
-        <div class="cs-scroll-hint" aria-hidden="true">
-          <span class="cs-scroll-hint-label">Scroll to read</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-            class="cs-scroll-hint-icon" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-          </svg>
         </div>
       </div>
 
@@ -453,9 +445,7 @@ const heroImageSrc = image
      ════════════════════════ */
   .cs-intro {
     display: none; /* shown as flex by JS when content is found */
-    min-height: calc(100dvh - var(--cs-header-h));
     border-bottom: 1px solid var(--color-border);
-    position: relative;
   }
 
   .cs-intro.is-ready {
@@ -467,36 +457,17 @@ const heroImageSrc = image
     min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding: clamp(2rem, 5vw, 3.5rem);
-    padding-top: clamp(4rem, 8vw, 6rem); /* room for the top label */
-    background: oklch(9% 0.018 280);
+    padding-top: clamp(3.75rem, 7vw, 5rem); /* room for the top label */
+    background: var(--color-background);
     position: relative;
-    overflow: hidden;
-  }
-
-  .cs-intro-card--right {
-    background: oklch(9% 0.01 260);
-    border-left: 1px solid var(--color-border);
-  }
-
-  /* Subtle noise-like gradient overlay per card */
-  .cs-intro-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 20% 80%, oklch(14% 0.03 290 / 0.6), transparent 70%);
-    pointer-events: none;
-  }
-
-  .cs-intro-card--right::before {
-    background: radial-gradient(ellipse 80% 60% at 80% 80%, oklch(13% 0.025 260 / 0.6), transparent 70%);
   }
 
   /* Section label pinned to top */
   .cs-intro-card-label {
     position: absolute;
-    top: clamp(1.75rem, 4vw, 2.5rem);
+    top: clamp(1.5rem, 3.5vw, 2rem);
     left: clamp(2rem, 5vw, 3.5rem);
     font-size: 0.6rem;
     font-weight: 700;
@@ -506,7 +477,6 @@ const heroImageSrc = image
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    z-index: 1;
   }
 
   .cs-intro-card-label::before {
@@ -525,15 +495,13 @@ const heroImageSrc = image
 
   /* Content block */
   .cs-intro-card-body {
-    position: relative;
-    z-index: 1;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
   }
 
   .cs-intro-card-body :global(p) {
-    color: rgba(255, 255, 255, 0.72);
+    color: var(--color-foreground-muted);
     font-size: clamp(0.875rem, 1.3vw, 1rem);
     line-height: 1.85;
     margin: 0;
@@ -541,7 +509,7 @@ const heroImageSrc = image
 
   .cs-intro-card-body :global(ul),
   .cs-intro-card-body :global(ol) {
-    color: rgba(255, 255, 255, 0.72);
+    color: var(--color-foreground-muted);
     font-size: clamp(0.8125rem, 1.2vw, 0.9375rem);
     line-height: 1.75;
     margin: 0;
@@ -553,40 +521,8 @@ const heroImageSrc = image
   }
 
   .cs-intro-card-body :global(strong) {
-    color: rgba(255, 255, 255, 0.90);
+    color: var(--color-foreground);
     font-weight: 600;
-  }
-
-  /* Scroll hint pinned to bottom-center of the intro section */
-  .cs-intro .cs-scroll-hint {
-    position: absolute;
-    bottom: 1.75rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0.40;
-    z-index: 2;
-    white-space: nowrap;
-  }
-
-  .cs-scroll-hint-label {
-    font-size: 0.625rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .cs-scroll-hint-icon {
-    color: rgba(255, 255, 255, 0.8);
-    animation: cs-bounce 1.8s ease-in-out infinite;
-  }
-
-  @keyframes cs-bounce {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(5px); }
   }
 
   /* ════════════════════════
@@ -632,14 +568,15 @@ const heroImageSrc = image
   /* Fix 3: images — rounded corners, visible ring + shadow on dark bg */
   .cs-article :global(.prose img) {
     border-radius: 0.75rem;
-    /* Bright ring makes screenshots visible against dark backgrounds;
-       drop shadow adds depth without blending into the dark panel */
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.10),
+      0 0 0 1px rgba(255, 255, 255, 0.12),
       0 4px 6px -2px rgba(0, 0, 0, 0.5),
       0 12px 40px -4px rgba(0, 0, 0, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     display: block;
+    max-width: 100%;
+    height: auto;
+    opacity: 1 !important; /* override any reveal-system opacity */
     margin-left: auto;
     margin-right: auto;
     margin-top: 2rem;
@@ -708,6 +645,12 @@ const heroImageSrc = image
   .cs-article :global(.prose tbody td:first-child) {
     font-weight: 500;
     color: var(--color-foreground);
+  }
+
+  /* Column separators */
+  .cs-article :global(.prose th:not(:last-child)),
+  .cs-article :global(.prose td:not(:last-child)) {
+    border-right: 1px solid var(--color-border);
   }
 
   .cs-article-footer {
@@ -863,22 +806,14 @@ const heroImageSrc = image
 
     .cs-intro.is-ready {
       flex-direction: column;
-      min-height: auto;
     }
 
     .cs-intro-card {
-      padding: 4rem 1.5rem 2.5rem;
-      min-height: 60vmax;
-      justify-content: flex-end;
+      padding: 3.5rem 1.5rem 2rem;
     }
 
-    .cs-intro-card--right {
-      border-left: none;
+    .cs-intro-card + .cs-intro-card {
       border-top: 1px solid var(--color-border);
-    }
-
-    .cs-intro .cs-scroll-hint {
-      display: none; /* not useful after stacking */
     }
 
     .cs-article {

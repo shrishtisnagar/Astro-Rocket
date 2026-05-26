@@ -49,7 +49,7 @@ Over a few weeks, I optimized the ads, monitored cost patterns, and analyzed whe
 
 **Performance Highlights (over 4 weeks):**
 
-![](</images/projects/Screenshot 2025-12-03 222458 (1).png>)
+![](/images/projects/Screenshot%202025-12-03%20222458%20(1).png)
 
 
 | **Metric** | **Result** | **Benchmark (LinkedIn Avg.)** | **Insight** |
