@@ -3,7 +3,7 @@ title: Lead Magnet Campaign for High-Income Tech Professionals (Australia)
 description: How we achieved a 1.48% CTR in one of the hardest LinkedIn audiences to crack
 category: LinkedIn
 subcategories: LinkedIn Ads, B2B
-imageUrl: /images/projects/ChatGPT Image May 23, 2026, 03_37_07 AM.png
+imageUrl: /images/projects/ChatGPT Image May 26, 2026, 10_18_47 PM.png
 featured: false
 order: 99
 draft: false
