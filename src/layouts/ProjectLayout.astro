@@ -146,16 +146,18 @@ const heroImageSrc = image
           </a>
         )}
 
-        <!-- Divider -->
-        <div class="cs-sidebar-divider" aria-hidden="true"></div>
-
-        <!-- Table of contents (populated by JS from article headings) -->
-        <nav class="cs-toc" id="cs-toc" aria-label="Table of contents">
-          <p class="cs-toc-heading">On this page</p>
-          <ul class="cs-toc-list" id="cs-toc-list" role="list">
-            <!-- filled by initCaseTOC() -->
-          </ul>
-        </nav>
+        <!-- Project image fills the remaining sidebar space -->
+        {heroImageSrc && (
+          <div class="cs-sidebar-image">
+            <img
+              src={heroImageSrc}
+              alt={imageAlt || title}
+              class="cs-sidebar-img"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        )}
 
       </div>
     </aside>
@@ -223,59 +225,55 @@ const heroImageSrc = image
         </div>
       </article>
 
-      <!-- ─── Related projects ─── -->
-      {related.length > 0 && (
-        <section class="cs-related" data-reveal>
-          <div class="cs-related-inner">
-            <h2 class="cs-related-title">More projects</h2>
-            <div class="cs-related-grid">
-              {related.map((project) => {
-                const slug = project.id.replace(/\.mdx?$/, '');
-                const hasBody = project.body && project.body.trim().length > 0;
-                return (
-                  <a
-                    href={hasBody ? assetUrl(`/projects/${slug}`) : project.data.url}
-                    target={hasBody ? undefined : '_blank'}
-                    rel={hasBody ? undefined : 'noopener noreferrer'}
-                    class="rp-card group block"
-                  >
-                    <div class="rp-card-inner">
-                      <div class="rp-img">
-                        {project.data.imageUrl && (
-                          <img
-                            src={project.data.imageUrl.startsWith('/') ? assetUrl(project.data.imageUrl) : project.data.imageUrl}
-                            alt={project.data.imageAlt || project.data.title}
-                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                            loading="lazy"
-                          />
-                        )}
-                      </div>
-                      <div class="rp-overlay">
-                        <div class="rp-title-row">
-                          <h3 class="rp-title">{project.data.title}</h3>
-                          <Icon name="arrow-up-right" size="sm" class="rp-arrow" />
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <ContactFooterSection
-        videoBg={assetUrl("/videos/hero-bg.mp4")}
-        videoSpeed={0.825}
-      />
-
     </div><!-- /cs-panel -->
   </div><!-- /cs-shell -->
 
-  <!-- No footer slot: case study shell is self-contained.
-       The empty slot means footer-reveal-wrap has 0 height,
-       so no margin-bottom is added to page-content-wrap. -->
+  <!-- ══ Normal document flow: scrolled to after the shell ══ -->
+  {related.length > 0 && (
+    <section class="cs-related" data-reveal>
+      <div class="cs-related-inner">
+        <h2 class="cs-related-title">More projects</h2>
+        <div class="cs-related-grid">
+          {related.map((project) => {
+            const slug = project.id.replace(/\.mdx?$/, '');
+            const hasBody = project.body && project.body.trim().length > 0;
+            return (
+              <a
+                href={hasBody ? assetUrl(`/projects/${slug}`) : project.data.url}
+                target={hasBody ? undefined : '_blank'}
+                rel={hasBody ? undefined : 'noopener noreferrer'}
+                class="rp-card group block"
+              >
+                <div class="rp-card-inner">
+                  <div class="rp-img">
+                    {project.data.imageUrl && (
+                      <img
+                        src={project.data.imageUrl.startsWith('/') ? assetUrl(project.data.imageUrl) : project.data.imageUrl}
+                        alt={project.data.imageAlt || project.data.title}
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    )}
+                  </div>
+                  <div class="rp-overlay">
+                    <div class="rp-title-row">
+                      <h3 class="rp-title">{project.data.title}</h3>
+                      <Icon name="arrow-up-right" size="sm" class="rp-arrow" />
+                    </div>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <ContactFooterSection
+    videoBg={assetUrl("/videos/hero-bg.mp4")}
+    videoSpeed={0.825}
+  />
 </BaseLayout>
 
 <!-- ════════════════════════════════════════════════════════
@@ -288,15 +286,9 @@ const heroImageSrc = image
     --cs-sidebar-w: 300px;
   }
 
-  /* Hide default back-to-top on case study pages
-     (window doesn't scroll — panel does) */
+  /* Hide default back-to-top on case study pages */
   :global(#back-to-top) {
     display: none !important;
-  }
-
-  /* Disable the footer-reveal margin added by BaseLayout JS */
-  :global(.page-content-wrap) {
-    margin-bottom: 0 !important;
   }
 
   /* ════════════════════════
@@ -444,65 +436,25 @@ const heroImageSrc = image
     color: var(--color-brand-300);
   }
 
-  /* Divider */
-  .cs-sidebar-divider {
-    height: 1px;
-    background: var(--color-border);
-    flex-shrink: 0;
-  }
-
-  /* ── Table of Contents ── */
-  .cs-toc {
+  /* ── Sidebar image ── */
+  .cs-sidebar-image {
     flex: 1;
-    min-height: 0;
+    min-height: 140px;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    margin-top: auto;
   }
 
-  .cs-toc-heading {
-    font-size: 0.625rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-foreground-subtle);
-    margin: 0 0 0.625rem;
-  }
-
-  .cs-toc-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.0625rem;
-  }
-
-  /* TOC items are injected by JS — use :global() */
-  :global(.cs-toc-item) > a {
+  .cs-sidebar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    font-size: 0.8rem;
-    line-height: 1.45;
-    color: var(--color-foreground-muted);
-    text-decoration: none;
-    padding: 0.35rem 0.75rem;
-    border-left: 2px solid transparent;
-    border-radius: 0 0.25rem 0.25rem 0;
-    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    transition: transform 0.6s ease;
   }
-  :global(.cs-toc-item) > a:hover {
-    color: var(--color-foreground);
-    background: var(--color-background-secondary);
-  }
-  :global(.cs-toc-item.is-active) > a {
-    color: var(--color-brand-600);
-    border-left-color: var(--color-brand-500);
-    background: color-mix(in oklch, var(--color-brand-500) 8%, transparent);
-  }
-  :global(.dark .cs-toc-item.is-active) > a {
-    color: var(--color-brand-400);
-  }
-  /* h3 items indented */
-  :global(.cs-toc-item.cs-h3) > a {
-    padding-left: 1.375rem;
-    font-size: 0.75rem;
+
+  .cs-sidebar:hover .cs-sidebar-img {
+    transform: scale(1.03);
   }
 
   /* ════════════════════════
@@ -800,11 +752,6 @@ const heroImageSrc = image
       padding: 1.25rem 1.25rem 1.5rem;
     }
 
-    /* On mobile, collapse TOC — too much vertical space */
-    .cs-toc {
-      display: none;
-    }
-
     .cs-panel {
       height: auto;
       overflow: visible;
@@ -842,135 +789,3 @@ const heroImageSrc = image
   }
 </style>
 
-<!-- ════════════════════════════════════════════════════════
-     SCRIPTS: TOC builder + panel-scroll IntersectionObserver
-     ════════════════════════════════════════════════════════ -->
-<script is:inline>
-(function () {
-  'use strict';
-
-  function initCaseTOC() {
-    const panel   = document.getElementById('cs-panel');
-    const tocList = document.getElementById('cs-toc-list');
-    const tocNav  = document.getElementById('cs-toc');
-    if (!panel || !tocList || !tocNav) return;
-
-    // Collect headings from inside the article only
-    const article = panel.querySelector('.cs-article');
-    if (!article) return;
-
-    const headings = Array.prototype.slice.call(
-      article.querySelectorAll('h2, h3')
-    );
-
-    if (!headings.length) {
-      tocNav.style.display = 'none';
-      return;
-    }
-
-    // Ensure every heading has an id
-    headings.forEach(function (h, i) {
-      if (!h.id) {
-        const slug = h.textContent
-          .trim()
-          .toLowerCase()
-          .replace(/[^a-z0-9\s-]/g, '')
-          .replace(/\s+/g, '-')
-          .slice(0, 48);
-        h.id = 'cs-h-' + i + '-' + slug;
-      }
-    });
-
-    // Build TOC list items
-    tocList.innerHTML = '';
-    const items = [];
-    headings.forEach(function (h) {
-      const li = document.createElement('li');
-      li.className = 'cs-toc-item ' + (h.tagName === 'H3' ? 'cs-h3' : 'cs-h2');
-
-      const a = document.createElement('a');
-      a.href = '#' + h.id;
-      // Strip markdown bold/italic markers that end up in text
-      a.textContent = h.textContent.replace(/[*_#`]/g, '').trim();
-
-      // Smooth-scroll inside the panel on click
-      a.addEventListener('click', function (e) {
-        e.preventDefault();
-        h.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-
-      li.appendChild(a);
-      tocList.appendChild(li);
-      items.push({ li: li, id: h.id });
-    });
-
-    // Active-section tracking via IntersectionObserver
-    // root: panel → intersections are relative to the panel's visible area
-    let activeId = headings[0] ? headings[0].id : null;
-
-    function setActive(id) {
-      if (id === activeId) return;
-      activeId = id;
-      items.forEach(function (item) {
-        if (item.id === activeId) {
-          item.li.classList.add('is-active');
-        } else {
-          item.li.classList.remove('is-active');
-        }
-      });
-    }
-
-    // Initialise first item as active
-    if (items.length) items[0].li.classList.add('is-active');
-
-    const observer = new IntersectionObserver(
-      function (entries) {
-        // Pick the top-most intersecting heading
-        const intersecting = entries
-          .filter(function (e) { return e.isIntersecting; })
-          .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
-
-        if (intersecting.length) {
-          setActive(intersecting[0].target.id);
-        }
-      },
-      {
-        root: panel,
-        // Fire when heading enters top 35% of the panel
-        rootMargin: '0px 0px -65% 0px',
-        threshold: 0,
-      }
-    );
-
-    headings.forEach(function (h) { observer.observe(h); });
-
-    // Panel scroll: also track backward scroll (headings leaving bottom)
-    const scrollObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-            // Heading has scrolled above the panel top — keep it active
-            // until the next heading enters
-          }
-        });
-      },
-      { root: panel, threshold: 0 }
-    );
-    headings.forEach(function (h) { scrollObserver.observe(h); });
-
-    // Cleanup on navigation
-    document.addEventListener('astro:before-swap', function () {
-      observer.disconnect();
-      scrollObserver.disconnect();
-    }, { once: true });
-  }
-
-  // Run on page load (and after Astro client-side transitions)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initCaseTOC);
-  } else {
-    initCaseTOC();
-  }
-  document.addEventListener('astro:page-load', initCaseTOC);
-})();
-</script>
