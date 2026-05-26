@@ -26,6 +26,7 @@ const { Content } = await render(project);
 <ProjectLayout
   title={project.data.title}
   description={project.data.description}
+  tags={[project.data.category, ...project.data.subcategories].filter(Boolean)}
   url={project.data.url}
   image={project.data.image}
   imageUrl={project.data.imageUrl}

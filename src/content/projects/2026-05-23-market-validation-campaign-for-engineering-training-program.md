@@ -44,9 +44,9 @@ The insights from this test became the input for the actual registration-focused
 
 **Performance Highlights (over 2 weeks):**
 
-![](</images/projects/for ad portfolio.png>)
+![](/images/projects/for%20ad%20portfolio.png)
 
-![](</images/projects/Screenshot 2025-12-03 215900 (1).png>)
+![](/images/projects/Screenshot%202025-12-03%20215900%20(1).png)
 
 - **9000+ impressions** across variants
 - **Generated 56 clicks with an overall 0.6% CTR**
