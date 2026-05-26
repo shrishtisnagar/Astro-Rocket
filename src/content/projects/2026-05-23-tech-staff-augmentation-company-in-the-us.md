@@ -4,7 +4,7 @@ description: Consistent company branding without needing constant approvals,
   meetings, or a full-time marketer
 category: LinkedIn
 subcategories: Company Page, B2B
-imageUrl: /images/projects/ChatGPT Image May 23, 2026, 02_15_03 AM.png
+imageUrl: /images/projects/ChatGPT Image May 26, 2026, 10_02_22 PM.png
 featured: false
 order: 99
 draft: false
