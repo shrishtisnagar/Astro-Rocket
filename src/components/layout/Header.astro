@@ -28,7 +28,6 @@ import { headerVariants, headerInnerVariants } from './header.variants';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Logo from '@/components/ui/marketing/Logo/Logo.astro';
-import ThemeModeDropdown from '@/components/layout/ThemeModeDropdown.astro';
 import siteConfig from '@/config/site.config';
 import { url } from '@/lib/url';
 
@@ -57,7 +56,6 @@ interface Props extends HTMLAttributes<'header'> {
   showCta?: boolean;
   cta?: { label?: string; href?: string; icon?: string; trailingIcon?: string };
   actions?: HeaderAction[];
-  showThemeToggle?: boolean;
   showMobileMenu?: boolean;
   showActiveState?: boolean;
   logoText?: string;
@@ -214,13 +212,6 @@ const buttonId = `${menuId}-button`;
           <slot name="actions" />
         ) : (
           <>
-            {showThemeToggle && (
-              <div class="hidden md:flex">
-                <ThemeModeDropdown class={isFloating ? 'hdr-invert-text' : undefined} />
-              </div>
-            )}
-
-
             {showSocialLinks && siteConfig.socialLinks.length > 0 && (
               <div class="hidden md:flex items-center gap-0.5">
                 {siteConfig.socialLinks.map((url) => {
@@ -384,15 +375,6 @@ const buttonId = `${menuId}-button`;
                   {cta.label}
                   {cta.trailingIcon && <Icon name={cta.trailingIcon} size="sm" />}
                 </Button>
-              </div>
-            )}
-
-            {showThemeToggle && (
-              <div class="border-border mt-3 border-t pt-3">
-                <div class="flex items-center justify-between px-1">
-                  <span class="text-sm text-foreground-muted">Theme mode</span>
-                  <ThemeModeDropdown />
-                </div>
               </div>
             )}
 
@@ -827,11 +809,6 @@ const buttonId = `${menuId}-button`;
     box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.35), 0 2px 8px -2px rgba(0, 0, 0, 0.2);
   }
 
-  .dark [data-header-shape="floating"] .theme-dropdown-wrapper button,
-  .dark [data-header-shape="floating"] .ttg-wrapper .ttg-trigger {
-    border-color: var(--color-foreground-subtle);
-  }
-
   [data-header-shape="floating"][data-header-color-scheme="invert"][data-scrolled] .hdr-logo-text {
     color: var(--color-brand-700);
   }
@@ -883,10 +860,6 @@ const buttonId = `${menuId}-button`;
   .dark [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .hdr-logo-text {
     color: var(--color-brand-700);
   }
-  .dark [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .theme-dropdown-wrapper button,
-  .dark [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .ttg-wrapper .ttg-trigger {
-    border-color: rgba(0, 0, 0, 0.15);
-  }
 
   /* Light mode: flip to dark capsule */
   html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] {
@@ -904,22 +877,16 @@ const buttonId = `${menuId}-button`;
   html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .hdr-logo-text {
     color: var(--color-brand-400);
   }
-  html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .theme-dropdown-wrapper button,
-  html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .ttg-wrapper .ttg-trigger {
-    border-color: rgba(255, 255, 255, 0.2);
-  }
 
   /* ===== Returned state: fix button hover backgrounds ===== */
   /* Dark mode: white header needs light hover, not dark-mode secondary */
-  .dark [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] button.hdr-invert-text:hover,
-  .dark [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .theme-dropdown-wrapper > button:hover {
+  .dark [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] button.hdr-invert-text:hover {
     background-color: rgba(0, 0, 0, 0.08);
     color: oklch(8% 0 0);
   }
 
   /* Light mode: dark header needs dark hover, not light-mode secondary */
-  html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] button.hdr-invert-text:hover,
-  html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] .theme-dropdown-wrapper > button:hover {
+  html:not(.dark) [data-header-shape="floating"][data-header-returned][data-header-invert-on-return="true"] button.hdr-invert-text:hover {
     background-color: rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 1);
   }
