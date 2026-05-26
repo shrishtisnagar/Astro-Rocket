@@ -4,7 +4,7 @@ description: Helping a SaaS founder stand out without sounding like every other
   AI account online.
 category: LinkedIn
 subcategories: Personal Branding, Outreach, Podcast
-imageUrl: /images/projects/ChatGPT Image May 23, 2026, 01_24_18 AM.png
+imageUrl: /images/projects/ChatGPT Image May 26, 2026, 10_15_52 PM.png
 featured: false
 order: 8
 draft: false
