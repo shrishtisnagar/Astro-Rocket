@@ -74,116 +74,111 @@ const heroImageSrc = image
        ╚═══════════════════════════════════════════════════════╝ -->
   <div class="cs-shell" id="cs-shell">
 
-    <!-- ══════════ LEFT panel ══════════ -->
-    <div class="cs-left" id="cs-left">
+    <!-- ══════════ FULL-WIDTH header — spans the whole shell ══════════ -->
+    <div class="cs-header" id="cs-header">
+      <a href={assetUrl('/projects')} class="cs-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        All projects
+      </a>
 
-      <!-- ── STATIC header: back link + project identity ── -->
-      <div class="cs-left-header">
-        <a href={assetUrl('/projects')} class="cs-back">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          All projects
-        </a>
-
-        <div class="cs-identity">
-          {tags.length > 0 && (
-            <div class="cs-id-tags">
-              {tags.map((tag) => (
-                <span class="cs-id-tag">{tag}</span>
-              ))}
-            </div>
-          )}
-          <h1 class="cs-id-title">{title}</h1>
-          {description && (
-            <p class="cs-id-desc">{description}</p>
-          )}
-
-          {(year || client || role) && (
-            <dl class="cs-meta">
-              {year && (<><dt class="cs-meta-label">Year</dt><dd class="cs-meta-value">{year}</dd></>)}
-              {client && (<><dt class="cs-meta-label">Client</dt><dd class="cs-meta-value">{client}</dd></>)}
-              {role && (<><dt class="cs-meta-label">Role</dt><dd class="cs-meta-value">{role}</dd></>)}
-            </dl>
-          )}
-
-          <div class="cs-cta-row">
-            {url && (
-              <a href={url} target="_blank" rel="noopener noreferrer" class="cs-id-cta">
-                View case study
-                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                </svg>
-              </a>
-            )}
-            {repo && (
-              <a href={repo} target="_blank" rel="noopener noreferrer" class="cs-id-cta cs-id-cta--secondary">
-                View source
-                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                </svg>
-              </a>
-            )}
-          </div>
-        </div>
-
-        <!-- Mobile-only image -->
-        {heroImageSrc && (
-          <div class="cs-mobile-image" aria-hidden="true">
-            <img src={heroImageSrc} alt={imageAlt || title} class="cs-mobile-img" loading="eager" decoding="async" />
+      <div class="cs-identity">
+        {tags.length > 0 && (
+          <div class="cs-id-tags">
+            {tags.map((tag) => (
+              <span class="cs-id-tag">{tag}</span>
+            ))}
           </div>
         )}
-      </div><!-- /cs-left-header -->
+        <h1 class="cs-id-title">{title}</h1>
+        {description && (
+          <p class="cs-id-desc">{description}</p>
+        )}
 
-      <!-- ── SCROLLABLE body: only the timeline sections scroll ── -->
-      <div class="cs-scroll-body" id="cs-scroll-body">
-        <div class="cs-timeline-wrap" id="cs-timeline-wrap">
-          <div class="cs-tl-line" aria-hidden="true"></div>
-          <article class="cs-article" id="cs-article">
-            <div class="prose dark:prose-invert" id="cs-prose">
-              <slot />
-            </div>
-          </article>
+        {(year || client || role) && (
+          <dl class="cs-meta">
+            {year && (<><dt class="cs-meta-label">Year</dt><dd class="cs-meta-value">{year}</dd></>)}
+            {client && (<><dt class="cs-meta-label">Client</dt><dd class="cs-meta-value">{client}</dd></>)}
+            {role && (<><dt class="cs-meta-label">Role</dt><dd class="cs-meta-value">{role}</dd></>)}
+          </dl>
+        )}
+
+        <div class="cs-cta-row">
+          {url && (
+            <a href={url} target="_blank" rel="noopener noreferrer" class="cs-id-cta">
+              View case study
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </a>
+          )}
+          {repo && (
+            <a href={repo} target="_blank" rel="noopener noreferrer" class="cs-id-cta cs-id-cta--secondary">
+              View source
+              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
+            </a>
+          )}
         </div>
+      </div>
+    </div><!-- /cs-header -->
 
-        <div class="cs-article-footer">
-          <a href={assetUrl('/projects')} class="cs-back-inline">
-            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    <!-- ══════════ BODY ROW: timeline (left) + image (right) ══════════ -->
+    <div class="cs-body-row" id="cs-body-row">
+
+      <!-- LEFT: scrollable timeline -->
+      <div class="cs-left" id="cs-left">
+        <div class="cs-scroll-body" id="cs-scroll-body">
+          <div class="cs-timeline-wrap" id="cs-timeline-wrap">
+            <div class="cs-tl-line" aria-hidden="true"></div>
+            <article class="cs-article" id="cs-article">
+              <div class="prose dark:prose-invert" id="cs-prose">
+                <slot />
+              </div>
+            </article>
+          </div>
+
+          <div class="cs-article-footer">
+            <a href={assetUrl('/projects')} class="cs-back-inline">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              Back to Projects
+            </a>
+          </div>
+        </div><!-- /cs-scroll-body -->
+      </div><!-- /cs-left -->
+
+      <!-- RIGHT: static image -->
+      <div class="cs-image-panel" id="cs-image-panel" aria-hidden="true">
+        {heroImageSrc ? (
+          <div class="cs-image-wrap">
+            <img
+              src={heroImageSrc}
+              alt={imageAlt || title}
+              class="cs-hero-img"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        ) : (
+          <div class="cs-image-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"
+              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.25" aria-hidden="true" opacity="0.2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 3h18M3 21h18" />
             </svg>
-            Back to Projects
-          </a>
-        </div>
-      </div><!-- /cs-scroll-body -->
+          </div>
+        )}
+      </div><!-- /cs-image-panel -->
 
-    </div><!-- /cs-left -->
-
-    <!-- ══════════ RIGHT: Static square image ══════════ -->
-    <div class="cs-image-panel" id="cs-image-panel" aria-hidden="true">
-      {heroImageSrc ? (
-        <div class="cs-image-wrap">
-          <img
-            src={heroImageSrc}
-            alt={imageAlt || title}
-            class="cs-hero-img"
-            loading="eager"
-            decoding="async"
-          />
-        </div>
-      ) : (
-        <div class="cs-image-placeholder">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.25" aria-hidden="true" opacity="0.2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 3h18M3 21h18" />
-          </svg>
-        </div>
-      )}
-    </div>
+    </div><!-- /cs-body-row -->
 
   </div><!-- /cs-shell -->
 
@@ -257,6 +252,7 @@ const heroImageSrc = image
      ════════════════════════ */
   .cs-shell {
     display: flex;
+    flex-direction: column;
     height: calc(100dvh - var(--cs-header-h));
     margin-top: var(--cs-header-h);
     max-width: 960px;
@@ -266,32 +262,42 @@ const heroImageSrc = image
   }
 
   /* ════════════════════════
-     LEFT PANEL — flex column: static header + scrollable body
+     FULL-WIDTH HEADER — spans the whole shell
      ════════════════════════ */
-  .cs-left {
-    width: var(--cs-scroll-w);
-    flex-shrink: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background: var(--color-background);
-    overflow: hidden;
-  }
-
-  /* Static header block — never scrolls */
-  .cs-left-header {
+  .cs-header {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
     padding: 1.75rem 2.5rem 1.5rem;
     box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* ════════════════════════
+     BODY ROW — timeline left + image right
+     ════════════════════════ */
+  .cs-body-row {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* LEFT PANEL — takes remaining width, scrolls internally */
+  .cs-left {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-background);
+    overflow: hidden;
   }
 
   /* Scrollable timeline body */
   .cs-scroll-body {
     flex: 1;
-    min-height: 0; /* required: prevents flex child from growing beyond parent */
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
@@ -406,22 +412,6 @@ const heroImageSrc = image
   .cs-id-cta--secondary:hover { color: var(--color-foreground); }
   :global(.dark) .cs-id-cta { color: var(--color-brand-400); }
   :global(.dark) .cs-id-cta:hover { color: var(--color-brand-300); }
-
-  /* ── Mobile-only image ── */
-  .cs-mobile-image {
-    display: none; /* shown on mobile */
-    border-radius: 0.75rem;
-    overflow: hidden;
-    aspect-ratio: 1 / 1;
-    width: 100%;
-  }
-
-  .cs-mobile-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
 
   /* ════════════════════════
      TIMELINE WRAPPER
@@ -645,7 +635,6 @@ const heroImageSrc = image
   .cs-image-panel {
     width: var(--cs-image-w);
     flex-shrink: 0;
-    height: 100%;          /* fills the fixed-height shell naturally */
     overflow: hidden;
     background: var(--color-background-secondary);
   }
@@ -782,9 +771,8 @@ const heroImageSrc = image
   @media (min-width: 768px) and (max-width: 1200px) {
     :root {
       --cs-image-w: 38%;
-      --cs-scroll-w: 62%;
     }
-    .cs-left-header {
+    .cs-header {
       padding: 1.5rem 2rem 1.25rem;
     }
   }
@@ -792,21 +780,21 @@ const heroImageSrc = image
   /* Mobile: stack vertically, full normal scroll */
   @media (max-width: 767px) {
     .cs-shell {
-      flex-direction: column;
       height: auto;
+      overflow: visible;
+    }
+
+    .cs-body-row {
+      flex-direction: column;
       overflow: visible;
     }
 
     .cs-left {
-      width: 100%;
-      height: auto;
       overflow: visible;
-      border-right: none;
     }
 
-    .cs-left-header {
+    .cs-header {
       padding: 1.25rem 1.25rem 1.25rem;
-      border-bottom: 1px solid var(--color-border);
     }
 
     .cs-scroll-body {
@@ -814,10 +802,7 @@ const heroImageSrc = image
       padding: 1.5rem 1.25rem 2.5rem;
     }
 
-    /* Show mobile image */
-    .cs-mobile-image { display: block; }
-
-    /* Hide desktop image panel */
+    /* Hide desktop image panel on mobile */
     .cs-image-panel { display: none; }
 
     /* Timeline: less padding on mobile */
