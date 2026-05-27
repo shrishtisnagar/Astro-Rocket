@@ -797,8 +797,17 @@ const heroImageSrc = image
       padding: 1.5rem 1.25rem 2.5rem;
     }
 
-    /* Hide desktop image panel on mobile */
-    .cs-image-panel { display: none; }
+    /* Image panel stacks below header on mobile */
+    .cs-image-panel {
+      width: 100%;
+      padding: 0 1.25rem 1.5rem;
+      justify-content: flex-start;
+    }
+
+    .cs-image-wrap {
+      width: 100%;
+      max-width: 320px;
+    }
 
     /* Timeline: less padding on mobile */
     .cs-timeline-wrap {
