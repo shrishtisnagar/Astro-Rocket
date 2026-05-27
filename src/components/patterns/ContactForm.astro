@@ -4,29 +4,35 @@ import Textarea from '@/components/ui/form/Textarea/Textarea.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { cn } from '@/lib/cn';
+import { PUBLIC_WEB3FORMS_ACCESS_KEY } from 'astro:env/client';
+import siteConfig from '@/config/site.config';
 
 interface Props {
-  action?: string;
   successMessage?: string;
   class?: string;
   compact?: boolean;
 }
 
 const {
-  action = '/api/contact',
   successMessage = 'Message sent successfully!',
   class: className,
   compact = false,
 } = Astro.props;
+
+const accessKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 ---
 
 <form
   id="contact-form"
-  action={action}
-  method="POST"
   class={cn('space-y-6', className)}
   data-success-message={successMessage}
 >
+  <!-- Web3Forms hidden fields -->
+  <input type="hidden" name="access_key" value={accessKey} />
+  <input type="hidden" name="subject" value={`New contact from ${siteConfig.name}`} />
+  <input type="hidden" name="from_name" value={siteConfig.name} />
+  <input type="hidden" name="replyto" value="" id="web3forms-replyto" />
+
   <!-- Name + Email side by side on sm+ -->
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
     <Input
@@ -52,9 +58,9 @@ const {
     rows={compact ? 2 : 5}
   />
 
-  <!-- Honeypot field for spam protection -->
+  <!-- Honeypot / botcheck for spam protection -->
   <div class="hidden" aria-hidden="true">
-    <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />
+    <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none" />
   </div>
 
   <div id="form-message" class="hidden text-sm"></div>
@@ -77,8 +83,23 @@ const {
 
     const successMessage = form.dataset.successMessage || 'Message sent successfully!';
 
+    // Mirror the email field into the replyto hidden input so Web3Forms
+    // sets the reply-to header correctly.
+    const emailInput = form.querySelector<HTMLInputElement>('[name="email"]');
+    const replytoInput = form.querySelector<HTMLInputElement>('#web3forms-replyto');
+    if (emailInput && replytoInput) {
+      emailInput.addEventListener('input', () => {
+        replytoInput.value = emailInput.value;
+      });
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Sync replyto one final time in case the user didn't trigger input event
+      if (emailInput && replytoInput) {
+        replytoInput.value = emailInput.value;
+      }
 
       button.disabled = true;
       button.textContent = 'Sending…';
@@ -86,7 +107,7 @@ const {
 
       try {
         const formData = new FormData(form);
-        const response = await fetch(form.action, {
+        const response = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           body: formData,
         });
@@ -98,10 +119,7 @@ const {
           message.className = 'text-sm text-success';
           form.reset();
         } else {
-          const errors = data.errors
-            ? Object.values(data.errors).flat().join(', ')
-            : 'Something went wrong';
-          message.textContent = errors as string;
+          message.textContent = data.message || 'Something went wrong. Please try again.';
           message.className = 'text-sm text-destructive';
         }
       } catch {
