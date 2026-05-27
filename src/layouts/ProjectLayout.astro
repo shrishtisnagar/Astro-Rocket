@@ -918,6 +918,9 @@ const heroImageSrc = image
       wrap.className = 'cs-tl-section';
       wrap.dataset.index = String(sectionIdx);
 
+      /* Move members into wrap */
+      const h2El = members[0];
+
       /* Dot */
       const dot = document.createElement('div');
       dot.className = 'cs-tl-dot';
@@ -930,8 +933,6 @@ const heroImageSrc = image
       label.textContent = h2El.textContent.replace(/[*_#:`]/g, '').replace(/:$/, '').trim();
       wrap.appendChild(label);
 
-      /* Move members into wrap */
-      const h2El = members[0];
       h2El.parentNode.insertBefore(wrap, h2El);
       members.forEach(function (el) { wrap.appendChild(el); });
 
