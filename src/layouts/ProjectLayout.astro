@@ -876,6 +876,9 @@ const heroImageSrc = image
   function buildTimeline() {
     const prose = document.getElementById('cs-prose');
     if (!prose) return;
+    /* Guard: don't run twice on the same prose node */
+    if (prose.dataset.tlBuilt) return;
+    prose.dataset.tlBuilt = '1';
 
     /* 1. Hide meta bold-paragraph lines at top */
     let node = prose.firstElementChild;
