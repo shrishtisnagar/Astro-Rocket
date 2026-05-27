@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
 import ContactFooterSection from '@/components/layout/ContactFooterSection.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import siteConfig from '@/config/site.config';
@@ -212,10 +213,9 @@ const heroImageSrc = image
     </section>
   )}
 
-  <ContactFooterSection
-    videoBg={assetUrl("/videos/hero-bg.mp4")}
-    videoSpeed={0.825}
-  />
+  <Footer slot="footer" layout="simple" background="secondary" copyright="© {year} The S Curve | Shrishti S Nagar — Serving Global Clients From India" videoBg={assetUrl("/videos/hero-bg.mp4")} videoSpeed={0.825}>
+    <ContactFooterSection slot="top" />
+  </Footer>
 </BaseLayout>
 
 <!-- ════════════════════════════════════════════════════════
