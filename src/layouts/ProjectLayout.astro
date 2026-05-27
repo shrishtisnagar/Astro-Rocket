@@ -257,22 +257,20 @@ const heroImageSrc = image
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none; /* hide scrollbar — only scrolls if info is very long */
-    padding: 1.5rem 1.25rem;
-    gap: 1.25rem;
+    overflow: hidden; /* not scrollable — must fit */
+    padding: 0.75rem;
+    gap: 0.75rem;
     box-sizing: border-box;
   }
-  .cs-left::-webkit-scrollbar { display: none; }
 
-  /* Square image at top of left panel */
+  /* Square image — shrinks if panel is short so info stays visible */
   .cs-image-wrap {
     width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 0.75rem;
+    border-radius: 0.625rem;
     overflow: hidden;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-height: 0;
     position: relative;
   }
 
@@ -289,7 +287,8 @@ const heroImageSrc = image
   .cs-info {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.75rem;
+    flex-shrink: 0;
   }
 
   /* ════════════════════════
@@ -312,7 +311,7 @@ const heroImageSrc = image
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: var(--color-border) transparent;
-    padding: 0;
+    padding-top: 1rem; /* breathing room so first heading isn't clipped */
   }
 
   /* Back link */
@@ -335,7 +334,7 @@ const heroImageSrc = image
   .cs-identity {
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
+    gap: 0.5rem;
   }
 
   .cs-id-tags {
