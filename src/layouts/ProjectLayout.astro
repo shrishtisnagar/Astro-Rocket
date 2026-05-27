@@ -466,74 +466,6 @@ const heroImageSrc = image
     transform: translateX(-50%);
   }
 
-  /* ── Timeline sections injected by JS ── */
-  :global(.cs-tl-section) {
-    position: relative;
-    padding-bottom: 4rem;
-    /* Dim inactive sections */
-    opacity: 0.38;
-    transition: opacity 0.55s ease;
-  }
-
-  :global(.cs-tl-section:last-child) {
-    padding-bottom: 0;
-  }
-
-  :global(.cs-tl-section.is-active) {
-    opacity: 1;
-  }
-
-  /* Dot — sits on the timeline line.
-     The .cs-timeline-wrap has padding-left = var(--cs-tl-gutter) + 1.5rem.
-     The line centre is at var(--cs-tl-gutter) from the wrapper edge.
-     Therefore the dot's left from the section edge = -(1.5rem) - dot-size/2 */
-  :global(.cs-tl-dot) {
-    position: absolute;
-    left: calc(-1.5rem - var(--cs-tl-dot-size) / 2);
-    top: 0.35rem;
-    width: var(--cs-tl-dot-size);
-    height: var(--cs-tl-dot-size);
-    border-radius: 50%;
-    background: color-mix(in oklch, var(--color-border) 60%, transparent);
-    border: 2px solid var(--color-background);
-    transition: background 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
-  }
-
-  /* Active dot: brand colour + layered glow */
-  :global(.cs-tl-section.is-active .cs-tl-dot) {
-    background: var(--cs-dot-color);
-    transform: scale(1.5);
-    box-shadow:
-      0 0 0 3px color-mix(in oklch, var(--cs-dot-color) 25%, transparent),
-      0 0 10px 4px color-mix(in oklch, var(--cs-dot-color) 35%, transparent),
-      0 0 22px 8px color-mix(in oklch, var(--cs-dot-color) 15%, transparent);
-  }
-
-  /* Section label above H2 — shows the H2 text in small-caps style */
-  :global(.cs-tl-label) {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--color-brand-500);
-    margin-bottom: 0.625rem;
-  }
-
-  :global(.cs-tl-label::before) {
-    content: '';
-    display: inline-block;
-    width: 1.5rem;
-    height: 2px;
-    background: currentColor;
-    border-radius: 1px;
-    flex-shrink: 0;
-  }
-
-  :global(.dark) :global(.cs-tl-label) { color: var(--color-brand-400); }
-
   /* ════════════════════════
      ARTICLE PROSE
      ════════════════════════ */
@@ -854,9 +786,79 @@ const heroImageSrc = image
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    :global(.cs-tl-dot),
-    :global(.cs-tl-label),
     .rp-img img { transition: none; }
+  }
+</style>
+
+<!-- ════════════════════════════════════════════════════════
+     GLOBAL STYLES — timeline elements injected by JS.
+     Must be is:global so Astro doesn't scope them away.
+     Uses plain rgba (no color-mix) for broad browser support.
+     ════════════════════════════════════════════════════════ -->
+<style is:global>
+  /* ── Section wrappers ── */
+  .cs-tl-section {
+    position: relative;
+    padding-bottom: 4rem;
+    opacity: 0.32;
+    transition: opacity 0.6s ease;
+  }
+  .cs-tl-section:last-child { padding-bottom: 0; }
+  .cs-tl-section.is-active  { opacity: 1; }
+
+  /* ── Bullet dot on the line ── */
+  .cs-tl-dot {
+    position: absolute;
+    /* left = -(padding-content-offset) - half-dot = -1.5rem - 6px */
+    left: calc(-1.5rem - 6px);
+    top: 0.3rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(150, 150, 160, 0.45);
+    border: 2px solid var(--color-background, #0d0d0f);
+    transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    z-index: 2;
+  }
+
+  /* Active dot — brand pink/rose fill + hard glow rings */
+  .cs-tl-section.is-active .cs-tl-dot {
+    background: #e879b0;          /* brand-500 fallback */
+    background: var(--color-brand-500, #e879b0);
+    transform: scale(1.8);
+    box-shadow:
+      0 0 0 4px  rgba(232, 121, 176, 0.28),   /* inner ring */
+      0 0 12px 5px rgba(232, 121, 176, 0.45),  /* mid halo */
+      0 0 28px 10px rgba(232, 121, 176, 0.22), /* outer bloom */
+      0 0 50px 18px rgba(232, 121, 176, 0.08); /* far ambient */
+  }
+
+  /* ── Section label (H2 text shown in small-caps above the heading) ── */
+  .cs-tl-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-brand-500, #e879b0);
+    margin-bottom: 0.5rem;
+  }
+
+  .cs-tl-label::before {
+    content: '';
+    display: inline-block;
+    width: 1.5rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs-tl-section,
+    .cs-tl-dot { transition: none; }
   }
 </style>
 
