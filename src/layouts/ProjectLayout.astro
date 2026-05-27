@@ -897,14 +897,14 @@ const heroImageSrc = image
     if (!prose) return;
 
     /* 1. Hide meta bold-paragraph lines at top */
-    var node = prose.firstElementChild;
+    let node = prose.firstElementChild;
     while (node && node.tagName === 'P') {
-      var isStrongOnly =
+      const isStrongOnly =
         node.children.length === 1 &&
         node.children[0].tagName === 'STRONG' &&
         node.textContent.trim() === node.children[0].textContent.trim();
       if (!isStrongOnly) break;
-      var upper = node.textContent.trim().toUpperCase();
+      const upper = node.textContent.trim().toUpperCase();
       if (META_PREFIXES.some(function (p) { return upper.startsWith(p); })) {
         node.style.display = 'none';
         node = node.nextElementSibling;
@@ -914,16 +914,16 @@ const heroImageSrc = image
     }
 
     /* 2. Find all H2s and wrap sections into .cs-tl-section blocks */
-    var h2s = Array.prototype.slice.call(prose.querySelectorAll('h2'));
+    const h2s = Array.prototype.slice.call(prose.querySelectorAll('h2'));
     if (!h2s.length) return;
 
     /* Build section ranges: [h2, ...siblings until next h2] */
-    var sections = h2s.map(function (h2, idx) {
-      var members = [];
-      var cursor = h2;
+    const sections = h2s.map(function (h2) {
+      const members = [];
+      let cursor = h2;
       while (cursor) {
         members.push(cursor);
-        var next = cursor.nextElementSibling;
+        const next = cursor.nextElementSibling;
         if (!next || (next.tagName === 'H2' && next !== h2)) break;
         cursor = next;
       }
@@ -931,44 +931,43 @@ const heroImageSrc = image
     });
 
     /* Wrap each section in a div.cs-tl-section */
-    var sectionEls = [];
-    sections.forEach(function (members, idx) {
-      var wrap = document.createElement('div');
+    const sectionEls = [];
+    sections.forEach(function (members, sectionIdx) {
+      const wrap = document.createElement('div');
       wrap.className = 'cs-tl-section';
-      wrap.dataset.index = String(idx);
+      wrap.dataset.index = String(sectionIdx);
 
       /* Dot */
-      var dot = document.createElement('div');
+      const dot = document.createElement('div');
       dot.className = 'cs-tl-dot';
       dot.setAttribute('aria-hidden', 'true');
       wrap.appendChild(dot);
 
-      /* Label (section index like "01", or h2 text) */
-      var label = document.createElement('div');
+      /* Label (section index like "01") */
+      const label = document.createElement('div');
       label.className = 'cs-tl-label';
-      var num = String(idx + 1).padStart(2, '0');
+      const num = String(sectionIdx + 1).padStart(2, '0');
       label.textContent = num;
       wrap.appendChild(label);
 
       /* Move members into wrap */
-      var h2 = members[0];
-      h2.parentNode.insertBefore(wrap, h2);
+      const h2El = members[0];
+      h2El.parentNode.insertBefore(wrap, h2El);
       members.forEach(function (el) { wrap.appendChild(el); });
 
       sectionEls.push(wrap);
     });
 
     /* 3. Update counter total */
-    var totalEl = document.getElementById('cs-counter-total');
+    const totalEl = document.getElementById('cs-counter-total');
     if (totalEl) totalEl.textContent = String(h2s.length).padStart(2, '0');
 
     /* 4. IntersectionObserver to highlight active section */
-    var currentEl = document.getElementById('cs-counter-current');
-    var scrollEl = document.getElementById('cs-scroll') || window;
+    const currentEl = document.getElementById('cs-counter-current');
 
-    var observer = new IntersectionObserver(function (entries) {
+    const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        var section = entry.target;
+        const section = entry.target;
         if (entry.isIntersecting) {
           /* Mark as active */
           sectionEls.forEach(function (s) { s.classList.remove('is-active'); });
@@ -977,13 +976,13 @@ const heroImageSrc = image
 
           /* Update counter */
           if (currentEl) {
-            var idx = parseInt(section.dataset.index || '0', 10);
-            currentEl.textContent = String(idx + 1).padStart(2, '0');
+            const activeIdx = parseInt(section.dataset.index || '0', 10);
+            currentEl.textContent = String(activeIdx + 1).padStart(2, '0');
           }
         }
       });
     }, {
-      root: document.getElementById('cs-scroll') || null,
+      root: null,
       rootMargin: '-20% 0px -60% 0px',
       threshold: 0,
     });
