@@ -60,7 +60,7 @@ export interface SiteConfig {
 const siteConfig: SiteConfig = {
   name: 'The S Curve',
   description: 'Marketing Strategist for B2B leaders — strategy, positioning, and growth systems that actually work.',
-  url: SITE_URL || 'https://shrishtisnagar.github.io/Astro-Rocket',
+  url: SITE_URL || 'https://thescurve.in',
   ogImage: '/og-default.svg',
   author: 'Shrishti S Nagar',
   email: 'shrishtisnagar@gmail.com',
