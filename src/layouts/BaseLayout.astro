@@ -147,15 +147,36 @@ schemas.push(...extraSchemas);
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Book a call"
-      class="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold text-white shadow-lg"
-      style="opacity:0;translate:0 2rem;pointer-events:none;background:var(--color-brand-600)"
+      class="bac-btn fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full flex items-center justify-center text-white"
+      style="opacity:0;translate:0 2rem;pointer-events:none"
     >
-      <!-- Calendar icon -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      <!-- Phone icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.29h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.84a16 16 0 0 0 6.29 6.29l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
       </svg>
-      Book a call
     </a>
+
+    <style>
+      .bac-btn {
+        background: var(--color-brand-600);
+        box-shadow:
+          0 0 0 1px color-mix(in oklch, var(--color-brand-400) 30%, transparent),
+          0 4px 16px -2px color-mix(in oklch, var(--color-brand-600) 60%, transparent),
+          0 8px 32px -4px rgba(0,0,0,0.4);
+        transition: box-shadow 0.25s ease, transform 0.2s ease, background 0.2s ease;
+      }
+      .bac-btn:hover {
+        background: var(--color-brand-500);
+        box-shadow:
+          0 0 0 1px color-mix(in oklch, var(--color-brand-300) 40%, transparent),
+          0 6px 24px -2px color-mix(in oklch, var(--color-brand-500) 70%, transparent),
+          0 12px 40px -4px rgba(0,0,0,0.45);
+        transform: scale(1.07);
+      }
+      .bac-btn:active {
+        transform: scale(0.97);
+      }
+    </style>
 
     <script is:inline>
       (function () {
