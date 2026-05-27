@@ -44,7 +44,7 @@ function rehypeRebaseImages() {
 export default defineConfig({
   output: 'static',
   adapter: isNetlify ? netlify() : vercel(),
-  site: process.env.SITE_URL || 'https://example.com',
+  site: process.env.SITE_URL || 'https://thescurve.in',
   base: process.env.BASE_PATH || '/',
 
   build: {
