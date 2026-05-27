@@ -3,6 +3,8 @@ import siteConfig from '@/config/site.config';
 
 interface Props {
   title?: string;
+  /** When set, used verbatim as the <title> — skips the automatic "title — Site Name" template. */
+  titleFull?: string;
   description?: string;
   image?: string;
   imageAlt?: string;
@@ -18,6 +20,7 @@ interface Props {
 
 const {
   title,
+  titleFull,
   description = siteConfig.description,
   image,
   imageAlt,
@@ -26,7 +29,7 @@ const {
   nofollow = false,
 } = Astro.props;
 
-const pageTitle = title ? `${title} — ${siteConfig.name}` : siteConfig.name;
+const pageTitle = titleFull ?? (title ? `${title} — ${siteConfig.name}` : siteConfig.name);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
