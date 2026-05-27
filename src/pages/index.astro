@@ -32,11 +32,14 @@ import { url } from '@/lib/url';
         Book a call
         <Icon name="arrow-right" size="sm" />
       </Button>
-      <Button size="lg" variant="outline" href={url("/projects")}>
-        <Icon name="layers" size="sm" />
-        View my work
-        <Icon name="arrow-right" size="sm" />
-      </Button>
+      <a href="https://www.linkedin.com/in/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+        <Icon name="linkedin" size="md" />
+        LinkedIn
+      </a>
+      <a href="https://x.com/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X (Twitter)">
+        <Icon name="x-twitter" size="md" />
+        X
+      </a>
     </Fragment>
 
     <div slot="aside" class="flex items-center justify-center lg:justify-end">
@@ -56,6 +59,26 @@ import { url } from '@/lib/url';
 </LandingLayout>
 
 <style>
+  .social-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid oklch(100% 0 0 / 0.18);
+    background: oklch(100% 0 0 / 0.06);
+    color: oklch(90% 0.02 344);
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+  .social-btn:hover {
+    background: oklch(100% 0 0 / 0.12);
+    border-color: oklch(100% 0 0 / 0.3);
+    color: #fff;
+  }
+
   .hero-photo-wrap {
     position: relative;
     width: 16rem;
