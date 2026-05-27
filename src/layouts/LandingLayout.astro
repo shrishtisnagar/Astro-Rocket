@@ -15,6 +15,7 @@ import { url } from '@/lib/url';
 
 interface Props {
   title?: string;
+  titleFull?: string;
   description?: string;
   image?: string;
   imageAlt?: string;
@@ -29,6 +30,7 @@ interface Props {
 
 const {
   title,
+  titleFull,
   description,
   image,
   imageAlt,
@@ -44,6 +46,7 @@ const {
 
 <BaseLayout
   title={title}
+  titleFull={titleFull}
   description={description}
   image={image}
   imageAlt={imageAlt}

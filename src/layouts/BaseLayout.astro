@@ -13,6 +13,7 @@ import MoonBall from '@/components/effects/MoonBall.astro';
 
 interface Props {
   title?: string;
+  titleFull?: string;
   description?: string;
   image?: string;
   imageAlt?: string;
@@ -33,6 +34,7 @@ interface Props {
 
 const {
   title,
+  titleFull,
   description,
   image,
   imageAlt,
@@ -78,6 +80,7 @@ schemas.push(...extraSchemas);
     <!-- SEO -->
     <SEO
       title={title}
+      titleFull={titleFull}
       description={description}
       image={image}
       imageAlt={imageAlt}
