@@ -74,11 +74,11 @@ const heroImageSrc = image
        ╚═══════════════════════════════════════════════════════╝ -->
   <div class="cs-shell" id="cs-shell">
 
-    <!-- ══════════ LEFT: Scrollable Timeline ══════════ -->
-    <div class="cs-scroll" id="cs-scroll">
-      <div class="cs-scroll-inner">
+    <!-- ══════════ LEFT panel ══════════ -->
+    <div class="cs-left" id="cs-left">
 
-        <!-- Back link -->
+      <!-- ── STATIC header: back link + project identity ── -->
+      <div class="cs-left-header">
         <a href={assetUrl('/projects')} class="cs-back">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -87,7 +87,6 @@ const heroImageSrc = image
           All projects
         </a>
 
-        <!-- Project identity block -->
         <div class="cs-identity">
           {tags.length > 0 && (
             <div class="cs-id-tags">
@@ -101,31 +100,14 @@ const heroImageSrc = image
             <p class="cs-id-desc">{description}</p>
           )}
 
-          {/* Meta row */}
           {(year || client || role) && (
             <dl class="cs-meta">
-              {year && (
-                <>
-                  <dt class="cs-meta-label">Year</dt>
-                  <dd class="cs-meta-value">{year}</dd>
-                </>
-              )}
-              {client && (
-                <>
-                  <dt class="cs-meta-label">Client</dt>
-                  <dd class="cs-meta-value">{client}</dd>
-                </>
-              )}
-              {role && (
-                <>
-                  <dt class="cs-meta-label">Role</dt>
-                  <dd class="cs-meta-value">{role}</dd>
-                </>
-              )}
+              {year && (<><dt class="cs-meta-label">Year</dt><dd class="cs-meta-value">{year}</dd></>)}
+              {client && (<><dt class="cs-meta-label">Client</dt><dd class="cs-meta-value">{client}</dd></>)}
+              {role && (<><dt class="cs-meta-label">Role</dt><dd class="cs-meta-value">{role}</dd></>)}
             </dl>
           )}
 
-          {/* External CTAs */}
           <div class="cs-cta-row">
             {url && (
               <a href={url} target="_blank" rel="noopener noreferrer" class="cs-id-cta">
@@ -148,25 +130,18 @@ const heroImageSrc = image
           </div>
         </div>
 
-        <!-- ── Mobile-only image ── -->
+        <!-- Mobile-only image -->
         {heroImageSrc && (
           <div class="cs-mobile-image" aria-hidden="true">
-            <img
-              src={heroImageSrc}
-              alt={imageAlt || title}
-              class="cs-mobile-img"
-              loading="eager"
-              decoding="async"
-            />
+            <img src={heroImageSrc} alt={imageAlt || title} class="cs-mobile-img" loading="eager" decoding="async" />
           </div>
         )}
+      </div><!-- /cs-left-header -->
 
-        <!-- ── Timeline wrapper: JS populates dots around H2 sections ── -->
+      <!-- ── SCROLLABLE body: only the timeline sections scroll ── -->
+      <div class="cs-scroll-body" id="cs-scroll-body">
         <div class="cs-timeline-wrap" id="cs-timeline-wrap">
-          <!-- The vertical line -->
           <div class="cs-tl-line" aria-hidden="true"></div>
-
-          <!-- Article prose (JS will restructure this into timeline sections) -->
           <article class="cs-article" id="cs-article">
             <div class="prose dark:prose-invert" id="cs-prose">
               <slot />
@@ -174,8 +149,7 @@ const heroImageSrc = image
           </article>
         </div>
 
-        <!-- Footer -->
-        <div class="cs-article-footer" data-reveal>
+        <div class="cs-article-footer">
           <a href={assetUrl('/projects')} class="cs-back-inline">
             <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -184,9 +158,9 @@ const heroImageSrc = image
             Back to Projects
           </a>
         </div>
+      </div><!-- /cs-scroll-body -->
 
-      </div>
-    </div>
+    </div><!-- /cs-left -->
 
     <!-- ══════════ RIGHT: Static square image ══════════ -->
     <div class="cs-image-panel" id="cs-image-panel" aria-hidden="true">
@@ -199,6 +173,12 @@ const heroImageSrc = image
             loading="eager"
             decoding="async"
           />
+          <!-- Section counter, updated by JS -->
+          <div class="cs-section-counter" id="cs-section-counter">
+            <span id="cs-counter-current">01</span>
+            <span class="cs-counter-sep"> / </span>
+            <span id="cs-counter-total">01</span>
+          </div>
         </div>
       ) : (
         <div class="cs-image-placeholder">
@@ -275,36 +255,55 @@ const heroImageSrc = image
     --cs-dot-color: var(--color-brand-500, #e879b0);
   }
 
+  /* Hide default back-to-top */
+  :global(#back-to-top) { display: none !important; }
 
   /* ════════════════════════
-     SHELL: side-by-side
+     SHELL: fixed viewport height — no window scroll
      ════════════════════════ */
   .cs-shell {
     display: flex;
-    min-height: calc(100dvh - var(--cs-header-h));
+    height: calc(100dvh - var(--cs-header-h));
     margin-top: var(--cs-header-h);
-    position: relative;
+    overflow: hidden;
   }
 
   /* ════════════════════════
-     LEFT — scrollable (window scroll, not inner scroll)
+     LEFT PANEL — flex column: static header + scrollable body
      ════════════════════════ */
-  .cs-scroll {
+  .cs-left {
     width: var(--cs-scroll-w);
     flex-shrink: 0;
-    min-height: 100%;
-    border-right: 1px solid var(--color-border);
-    background: var(--color-background);
-    /* Do NOT use overflow-x: hidden — it would create a scroll container
-       and break position:sticky on the right image panel */
-  }
-
-  .cs-scroll-inner {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 2.5rem 3rem 4rem;
-    max-width: 680px;
+    border-right: 1px solid var(--color-border);
+    background: var(--color-background);
+    overflow: hidden;
+  }
+
+  /* Static header block — never scrolls */
+  .cs-left-header {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.75rem 2.5rem 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    max-width: 620px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  /* Scrollable timeline body */
+  .cs-scroll-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+    padding: 0;
   }
 
   /* Back link */
@@ -464,6 +463,70 @@ const heroImageSrc = image
     transform: translateX(-50%);
   }
 
+  /* ── Timeline sections injected by JS ── */
+  :global(.cs-tl-section) {
+    position: relative;
+    padding-bottom: 3.5rem;
+  }
+
+  :global(.cs-tl-section:last-child) {
+    padding-bottom: 0;
+  }
+
+  /* Dot — sits on the timeline line.
+     The .cs-timeline-wrap has padding-left = var(--cs-tl-gutter) + 1.5rem.
+     The line centre is at var(--cs-tl-gutter) from the wrapper edge.
+     Therefore the dot's left from the section edge = -(1.5rem) - dot-size/2 */
+  :global(.cs-tl-dot) {
+    position: absolute;
+    left: calc(-1.5rem - var(--cs-tl-dot-size) / 2);
+    top: 0.3rem;
+    width: var(--cs-tl-dot-size);
+    height: var(--cs-tl-dot-size);
+    border-radius: 50%;
+    background: var(--color-border);
+    border: 2px solid var(--color-background);
+    transition: background 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  :global(.cs-tl-section.is-active .cs-tl-dot) {
+    background: var(--cs-dot-color);
+    transform: scale(1.5);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--cs-dot-color) 30%, transparent);
+  }
+
+  /* Section label above H2 */
+  :global(.cs-tl-label) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-brand-500);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  :global(.cs-tl-section.is-active .cs-tl-label),
+  :global(.cs-tl-section.was-active .cs-tl-label) {
+    opacity: 1;
+  }
+
+  :global(.cs-tl-label::before) {
+    content: '';
+    display: inline-block;
+    width: 1.25rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
+  :global(.dark) :global(.cs-tl-label) { color: var(--color-brand-400); }
+
   /* ════════════════════════
      ARTICLE PROSE
      ════════════════════════ */
@@ -589,11 +652,7 @@ const heroImageSrc = image
   .cs-image-panel {
     width: var(--cs-image-w);
     flex-shrink: 0;
-    /* Sticky: fills the full shell, image locked in viewport */
-    position: sticky;
-    top: var(--cs-header-h);
-    height: calc(100dvh - var(--cs-header-h));
-    align-self: flex-start;
+    height: 100%;          /* fills the fixed-height shell naturally */
     overflow: hidden;
     background: var(--color-background-secondary);
   }
@@ -611,29 +670,46 @@ const heroImageSrc = image
     display: block;
   }
 
-  /* Vignette + left-edge fade so image blends into the content panel */
+  /* Subtle vignette overlay */
   .cs-image-wrap::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to top,  rgba(0,0,0,0.55) 0%, transparent 45%),
-      linear-gradient(to right, rgba(0,0,0,0.22) 0%, transparent 28%);
+      linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 40%),
+      linear-gradient(to right, rgba(0,0,0,0.12) 0%, transparent 30%);
     pointer-events: none;
   }
 
-  /* Inner glow on image — brand colour bleeds in from the left edge */
-  .cs-image-wrap::before {
-    content: '';
+  /* Section counter badge — bottom right of image */
+  .cs-section-counter {
     position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: radial-gradient(
-      ellipse 60% 80% at -10% 50%,
-      color-mix(in oklch, var(--cs-dot-color) 18%, transparent) 0%,
-      transparent 70%
-    );
-    pointer-events: none;
+    bottom: 1.75rem;
+    right: 1.75rem;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    gap: 0.1rem;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.92);
+    letter-spacing: 0.04em;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .cs-counter-sep {
+    opacity: 0.5;
+    margin: 0 0.1rem;
+  }
+
+  #cs-counter-total {
+    opacity: 0.55;
   }
 
   .cs-image-placeholder {
@@ -746,32 +822,40 @@ const heroImageSrc = image
       --cs-image-w: 38%;
       --cs-scroll-w: 62%;
     }
-    .cs-scroll-inner {
-      padding: 2rem 2rem 3rem;
+    .cs-left-header {
+      padding: 1.5rem 2rem 1.25rem;
     }
   }
 
-  /* Mobile: stack vertically */
+  /* Mobile: stack vertically, full normal scroll */
   @media (max-width: 767px) {
     .cs-shell {
       flex-direction: column;
+      height: auto;
+      overflow: visible;
     }
 
-    .cs-scroll {
+    .cs-left {
       width: 100%;
+      height: auto;
+      overflow: visible;
       border-right: none;
+    }
+
+    .cs-left-header {
+      padding: 1.25rem 1.25rem 1.25rem;
       border-bottom: 1px solid var(--color-border);
     }
 
-    .cs-scroll-inner {
+    .cs-scroll-body {
+      overflow: visible;
       padding: 1.5rem 1.25rem 2.5rem;
-      gap: 1.5rem;
     }
 
     /* Show mobile image */
     .cs-mobile-image { display: block; }
 
-    /* Hide desktop sticky image panel */
+    /* Hide desktop image panel */
     .cs-image-panel { display: none; }
 
     /* Timeline: less padding on mobile */
@@ -784,79 +868,9 @@ const heroImageSrc = image
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
+    :global(.cs-tl-dot),
+    :global(.cs-tl-label),
     .rp-img img { transition: none; }
-  }
-</style>
-
-<!-- ════════════════════════════════════════════════════════
-     GLOBAL STYLES — timeline elements injected by JS.
-     Must be is:global so Astro doesn't scope them away.
-     Uses plain rgba (no color-mix) for broad browser support.
-     ════════════════════════════════════════════════════════ -->
-<style is:global>
-  /* ── Section wrappers ── */
-  .cs-tl-section {
-    position: relative;
-    padding-bottom: 4rem;
-    opacity: 0.32;
-    transition: opacity 0.6s ease;
-  }
-  .cs-tl-section:last-child { padding-bottom: 0; }
-  .cs-tl-section.is-active  { opacity: 1; }
-
-  /* ── Bullet dot on the line ── */
-  .cs-tl-dot {
-    position: absolute;
-    /* left = -(padding-content-offset) - half-dot = -1.5rem - 6px */
-    left: calc(-1.5rem - 6px);
-    top: 0.3rem;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(150, 150, 160, 0.45);
-    border: 2px solid var(--color-background, #0d0d0f);
-    transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
-    z-index: 2;
-  }
-
-  /* Active dot — brand pink/rose fill + hard glow rings */
-  .cs-tl-section.is-active .cs-tl-dot {
-    background: #e879b0;          /* brand-500 fallback */
-    background: var(--color-brand-500, #e879b0);
-    transform: scale(1.8);
-    box-shadow:
-      0 0 0 4px  rgba(232, 121, 176, 0.28),   /* inner ring */
-      0 0 12px 5px rgba(232, 121, 176, 0.45),  /* mid halo */
-      0 0 28px 10px rgba(232, 121, 176, 0.22), /* outer bloom */
-      0 0 50px 18px rgba(232, 121, 176, 0.08); /* far ambient */
-  }
-
-  /* ── Section label (H2 text shown in small-caps above the heading) ── */
-  .cs-tl-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-brand-500, #e879b0);
-    margin-bottom: 0.5rem;
-  }
-
-  .cs-tl-label::before {
-    content: '';
-    display: inline-block;
-    width: 1.5rem;
-    height: 2px;
-    background: currentColor;
-    border-radius: 1px;
-    flex-shrink: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .cs-tl-section,
-    .cs-tl-dot { transition: none; }
   }
 </style>
 
@@ -876,6 +890,7 @@ const heroImageSrc = image
   function buildTimeline() {
     const prose = document.getElementById('cs-prose');
     if (!prose) return;
+
     /* Guard: don't run twice on the same prose node */
     if (prose.dataset.tlBuilt) return;
     prose.dataset.tlBuilt = '1';
@@ -921,8 +936,7 @@ const heroImageSrc = image
       wrap.className = 'cs-tl-section';
       wrap.dataset.index = String(sectionIdx);
 
-      /* Move members into wrap */
-      const h2El = members[0];
+      const h2El = members[0]; // must be declared before use
 
       /* Dot */
       const dot = document.createElement('div');
@@ -930,32 +944,34 @@ const heroImageSrc = image
       dot.setAttribute('aria-hidden', 'true');
       wrap.appendChild(dot);
 
-      /* Label — the H2 text in small-caps (strip markdown punctuation) */
+      /* Label — show h2 text as section heading */
       const label = document.createElement('div');
       label.className = 'cs-tl-label';
       label.textContent = h2El.textContent.replace(/[*_#:`]/g, '').replace(/:$/, '').trim();
       wrap.appendChild(label);
 
+      /* Move members into wrap */
       h2El.parentNode.insertBefore(wrap, h2El);
       members.forEach(function (el) { wrap.appendChild(el); });
-      /* H2 text is already shown in the label above — hide the raw heading */
-      h2El.style.display = 'none';
+      h2El.style.display = 'none'; // heading text is shown in label
 
       sectionEls.push(wrap);
     });
 
     /* 3. IntersectionObserver — highlights active section + dot */
+    const scrollRoot = document.getElementById('cs-scroll-body');
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         const section = entry.target;
         if (entry.isIntersecting) {
+          /* Mark as active */
           sectionEls.forEach(function (s) { s.classList.remove('is-active'); });
           section.classList.add('is-active');
         }
       });
     }, {
-      root: null,
-      rootMargin: '-20% 0px -60% 0px',
+      root: scrollRoot || null,
+      rootMargin: '-15% 0px -55% 0px',
       threshold: 0,
     });
 
