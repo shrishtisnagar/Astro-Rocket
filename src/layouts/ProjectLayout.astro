@@ -182,6 +182,10 @@ const heroImageSrc = image
 
   </div><!-- /cs-shell -->
 
+  <!-- Spacer: its height = cs-scroll-body's overflow depth so that
+       window.scrollY can drive the inner content before the page continues -->
+  <div id="cs-scroll-spacer" aria-hidden="true" style="pointer-events:none;"></div>
+
   <!-- ══ Related projects ══ -->
   {related.length > 0 && (
     <section class="cs-related" data-reveal>
@@ -248,17 +252,18 @@ const heroImageSrc = image
   :global(#back-to-top) { display: none !important; }
 
   /* ════════════════════════
-     SHELL: fixed viewport height — no window scroll
+     SHELL: sticky viewport — window scroll drives inner content first
      ════════════════════════ */
   .cs-shell {
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: var(--cs-header-h);
     height: calc(100dvh - var(--cs-header-h));
     margin-top: var(--cs-header-h);
     max-width: 960px;
     margin-left: auto;
     margin-right: auto;
-    overflow: hidden;
   }
 
   /* ════════════════════════
@@ -294,14 +299,12 @@ const heroImageSrc = image
     overflow: hidden;
   }
 
-  /* Scrollable timeline body */
+  /* Timeline body — driven by window scroll via initScrollDrive() JS below */
   .cs-scroll-body {
     flex: 1;
     min-height: 0;
-    overflow-y: auto;
+    overflow-y: hidden; /* no native scrollbar; JS sets scrollTop */
     overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
     padding: 0;
   }
 
@@ -772,9 +775,10 @@ const heroImageSrc = image
     }
   }
 
-  /* Mobile: stack vertically, full normal scroll */
+  /* Mobile: stack vertically, full normal scroll (no scroll-drive) */
   @media (max-width: 767px) {
     .cs-shell {
+      position: static; /* disable sticky on mobile */
       height: auto;
       overflow: visible;
     }
@@ -793,7 +797,8 @@ const heroImageSrc = image
     }
 
     .cs-scroll-body {
-      overflow: visible;
+      overflow-y: auto; /* restore native scroll on mobile */
+      overflow-x: hidden;
       padding: 1.5rem 1.25rem 2.5rem;
     }
 
@@ -940,5 +945,81 @@ const heroImageSrc = image
     buildTimeline();
   }
   document.addEventListener('astro:page-load', buildTimeline);
+})();
+</script>
+
+<!-- ════════════════════════════════════════════════════════
+     SCRIPT: Window-scroll → inner cs-scroll-body drive
+     Makes the case study content scroll first; "More projects"
+     only reachable once the entire case study has been read.
+     ════════════════════════════════════════════════════════ -->
+<script is:inline>
+(function () {
+  'use strict';
+
+  function initScrollDrive() {
+    /* Skip on mobile — native scroll applies there */
+    if (window.innerWidth <= 767) return;
+
+    var shell   = document.getElementById('cs-shell');
+    var scrollEl = document.getElementById('cs-scroll-body');
+    var spacer  = document.getElementById('cs-scroll-spacer');
+    if (!shell || !scrollEl || !spacer) return;
+
+    var maxDriven = 0;
+
+    function measure() {
+      var visibleH = scrollEl.clientHeight;
+      var totalH   = scrollEl.scrollHeight;
+      maxDriven = Math.max(0, totalH - visibleH);
+      spacer.style.height = maxDriven + 'px';
+    }
+
+    function applyScroll() {
+      var y = window.scrollY || 0;
+      scrollEl.scrollTop = Math.max(0, Math.min(maxDriven, y));
+    }
+
+    window.addEventListener('scroll', applyScroll, { passive: true });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth <= 767) {
+        /* Switched to mobile while page is open — restore native scroll */
+        spacer.style.height = '0px';
+        scrollEl.style.overflowY = 'auto';
+        return;
+      }
+      measure();
+      applyScroll();
+    }, { passive: true });
+
+    /* Re-measure if inner content size changes (images load, etc.) */
+    if (typeof ResizeObserver !== 'undefined') {
+      new ResizeObserver(function () {
+        measure();
+        applyScroll();
+      }).observe(scrollEl);
+    }
+
+    /* Run after a rAF so the timeline script has finished mutating the DOM */
+    requestAnimationFrame(function () {
+      measure();
+      applyScroll();
+    });
+  }
+
+  function init() {
+    /* Run after buildTimeline has had a chance to restructure the DOM */
+    requestAnimationFrame(initScrollDrive);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  document.addEventListener('astro:page-load', function () {
+    requestAnimationFrame(initScrollDrive);
+  });
 })();
 </script>
