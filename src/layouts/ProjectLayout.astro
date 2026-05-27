@@ -259,6 +259,9 @@ const heroImageSrc = image
     display: flex;
     height: calc(100dvh - var(--cs-header-h));
     margin-top: var(--cs-header-h);
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
     overflow: hidden;
   }
 
@@ -290,6 +293,7 @@ const heroImageSrc = image
   /* Scrollable timeline body */
   .cs-scroll-body {
     flex: 1;
+    min-height: 0; /* required: prevents flex child from growing beyond parent */
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
