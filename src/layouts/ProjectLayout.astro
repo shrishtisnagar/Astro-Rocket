@@ -938,6 +938,8 @@ const heroImageSrc = image
 
       h2El.parentNode.insertBefore(wrap, h2El);
       members.forEach(function (el) { wrap.appendChild(el); });
+      /* H2 text is already shown in the label above — hide the raw heading */
+      h2El.style.display = 'none';
 
       sectionEls.push(wrap);
     });
