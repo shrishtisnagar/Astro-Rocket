@@ -74,64 +74,82 @@ const heroImageSrc = image
        ╚═══════════════════════════════════════════════════════╝ -->
   <div class="cs-shell" id="cs-shell">
 
-    <!-- ══════════ FULL-WIDTH header — spans the whole shell ══════════ -->
+    <!-- ══════════ HEADER ROW: text left + image right ══════════ -->
     <div class="cs-header" id="cs-header">
-      <a href={assetUrl('/projects')} class="cs-back">
-        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        All projects
-      </a>
 
-      <div class="cs-identity">
-        {tags.length > 0 && (
-          <div class="cs-id-tags">
-            {tags.map((tag) => (
-              <span class="cs-id-tag">{tag}</span>
-            ))}
+      <!-- Text column -->
+      <div class="cs-header-text">
+        <a href={assetUrl('/projects')} class="cs-back">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          All projects
+        </a>
+
+        <div class="cs-identity">
+          {tags.length > 0 && (
+            <div class="cs-id-tags">
+              {tags.map((tag) => (
+                <span class="cs-id-tag">{tag}</span>
+              ))}
+            </div>
+          )}
+          <h1 class="cs-id-title">{title}</h1>
+          {description && (
+            <p class="cs-id-desc">{description}</p>
+          )}
+
+          {(year || client || role) && (
+            <dl class="cs-meta">
+              {year && (<><dt class="cs-meta-label">Year</dt><dd class="cs-meta-value">{year}</dd></>)}
+              {client && (<><dt class="cs-meta-label">Client</dt><dd class="cs-meta-value">{client}</dd></>)}
+              {role && (<><dt class="cs-meta-label">Role</dt><dd class="cs-meta-value">{role}</dd></>)}
+            </dl>
+          )}
+
+          <div class="cs-cta-row">
+            {url && (
+              <a href={url} target="_blank" rel="noopener noreferrer" class="cs-id-cta">
+                View case study
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                </svg>
+              </a>
+            )}
+            {repo && (
+              <a href={repo} target="_blank" rel="noopener noreferrer" class="cs-id-cta cs-id-cta--secondary">
+                View source
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
+                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                </svg>
+              </a>
+            )}
           </div>
-        )}
-        <h1 class="cs-id-title">{title}</h1>
-        {description && (
-          <p class="cs-id-desc">{description}</p>
-        )}
-
-        {(year || client || role) && (
-          <dl class="cs-meta">
-            {year && (<><dt class="cs-meta-label">Year</dt><dd class="cs-meta-value">{year}</dd></>)}
-            {client && (<><dt class="cs-meta-label">Client</dt><dd class="cs-meta-value">{client}</dd></>)}
-            {role && (<><dt class="cs-meta-label">Role</dt><dd class="cs-meta-value">{role}</dd></>)}
-          </dl>
-        )}
-
-        <div class="cs-cta-row">
-          {url && (
-            <a href={url} target="_blank" rel="noopener noreferrer" class="cs-id-cta">
-              View case study
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-              </svg>
-            </a>
-          )}
-          {repo && (
-            <a href={repo} target="_blank" rel="noopener noreferrer" class="cs-id-cta cs-id-cta--secondary">
-              View source
-              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-              </svg>
-            </a>
-          )}
         </div>
-      </div>
+      </div><!-- /cs-header-text -->
+
+      <!-- Image column — sits beside the title at eye level -->
+      {heroImageSrc && (
+        <div class="cs-header-image" aria-hidden="true">
+          <div class="cs-image-wrap">
+            <img
+              src={heroImageSrc}
+              alt={imageAlt || title}
+              class="cs-hero-img"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        </div>
+      )}
+
     </div><!-- /cs-header -->
 
-    <!-- ══════════ BODY ROW: timeline (left) + image (right) ══════════ -->
+    <!-- ══════════ BODY: scrollable timeline only ══════════ -->
     <div class="cs-body-row" id="cs-body-row">
-
-      <!-- LEFT: scrollable timeline -->
       <div class="cs-left" id="cs-left">
         <div class="cs-scroll-body" id="cs-scroll-body">
           <div class="cs-timeline-wrap" id="cs-timeline-wrap">
@@ -154,30 +172,6 @@ const heroImageSrc = image
           </div>
         </div><!-- /cs-scroll-body -->
       </div><!-- /cs-left -->
-
-      <!-- RIGHT: static image -->
-      <div class="cs-image-panel" id="cs-image-panel" aria-hidden="true">
-        {heroImageSrc ? (
-          <div class="cs-image-wrap">
-            <img
-              src={heroImageSrc}
-              alt={imageAlt || title}
-              class="cs-hero-img"
-              loading="eager"
-              decoding="async"
-            />
-          </div>
-        ) : (
-          <div class="cs-image-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.25" aria-hidden="true" opacity="0.2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3 3h18M3 21h18" />
-            </svg>
-          </div>
-        )}
-      </div><!-- /cs-image-panel -->
-
     </div><!-- /cs-body-row -->
 
   </div><!-- /cs-shell -->
@@ -267,15 +261,31 @@ const heroImageSrc = image
   .cs-header {
     flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    padding: 1.75rem 1.25rem 1.5rem;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.75rem 1.25rem 1.25rem;
     box-sizing: border-box;
     width: 100%;
   }
 
+  /* Text column inside header */
+  .cs-header-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* Image column inside header — square, aligned to top */
+  .cs-header-image {
+    flex-shrink: 0;
+    width: var(--cs-image-w);
+  }
+
   /* ════════════════════════
-     BODY ROW — timeline left + image right
+     BODY ROW — timeline only (image is now in header)
      ════════════════════════ */
   .cs-body-row {
     display: flex;
@@ -624,21 +634,7 @@ const heroImageSrc = image
   :global(.dark) .cs-back-inline { color: var(--color-brand-400); }
   :global(.dark) .cs-back-inline:hover { color: var(--color-brand-300); }
 
-  /* ════════════════════════
-     RIGHT — sticky image panel
-     ════════════════════════ */
-  .cs-image-panel {
-    width: var(--cs-image-w);
-    flex-shrink: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 1.5rem 1rem 1rem;
-    background: var(--color-background);
-    overflow: hidden;
-  }
-
-  /* Square crop — fills the panel width, then clips height */
+  /* Square crop — fills the header image column */
   .cs-image-wrap {
     position: relative;
     width: 100%;
@@ -779,8 +775,22 @@ const heroImageSrc = image
       overflow: visible;
     }
 
-    .cs-body-row {
+    /* Header: stack text above image */
+    .cs-header {
       flex-direction: column;
+      padding: 1.25rem 1.25rem 1rem;
+      gap: 1rem;
+    }
+
+    .cs-header-image {
+      width: 100%;
+    }
+
+    .cs-image-wrap {
+      max-width: 320px;
+    }
+
+    .cs-body-row {
       overflow: visible;
     }
 
@@ -788,26 +798,9 @@ const heroImageSrc = image
       overflow: visible;
     }
 
-    .cs-header {
-      padding: 1.25rem 1.25rem 1.25rem;
-    }
-
     .cs-scroll-body {
       overflow: visible;
       padding: 1.5rem 1.25rem 2.5rem;
-    }
-
-    /* Image panel: move above timeline on mobile, below header */
-    .cs-image-panel {
-      order: -1;
-      width: 100%;
-      padding: 0 1.25rem 1.5rem;
-      justify-content: flex-start;
-    }
-
-    .cs-image-wrap {
-      width: 100%;
-      max-width: 320px;
     }
 
     /* Timeline: less padding on mobile */
