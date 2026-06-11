@@ -8,12 +8,13 @@ content:
     type: collection
     path: src/content/testimonials
     format: json
+    filename: "{author}"
     view:
       fields: [author, title, platform, row]
     fields:
       - name: quote
         label: Quote
-        type: text
+        type: string
         required: true
 
       - name: author
