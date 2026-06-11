@@ -23,7 +23,7 @@ function formatPrice(price: number | null | undefined): string {
 const isVideoMeeting = p.typeIcon === 'video';
 const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
 const isFree = p.price === 0;
-const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
+const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 ---
 
 <LandingLayout
