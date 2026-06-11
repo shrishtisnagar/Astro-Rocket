@@ -8,7 +8,11 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'static',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: false,
+    },
+  }),
   site: process.env.SITE_URL || 'https://thescurve.in',
 
   build: {
