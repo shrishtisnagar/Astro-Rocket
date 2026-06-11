@@ -141,6 +141,9 @@ importers:
       vitest:
         specifier: ^3.2.0
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.19.7)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)
+      wrangler:
+        specifier: ^4.100.0
+        version: 4.100.0
       zod:
         specifier: ^4.0.0
         version: 4.3.6
@@ -4952,10 +4955,6 @@ packages:
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
-  undici@7.24.5:
-    resolution: {integrity: sha512-3IWdCpjgxp15CbJnsi/Y9TCDE7HWVN19j1hmzVhoAkY/+CJx449tVxT5wZc1Gwg8J+P0LWvzlBzxYRnHJ+1i7Q==}
-    engines: {node: '>=20.18.1'}
-
   undici@7.24.8:
     resolution: {integrity: sha512-6KQ/+QxK49Z/p3HO6E5ZCZWNnCasyZLa5ExaVYyvPxUwKtbCPMKELJOqh7EqOle0t9cH/7d2TaaTRRa6Nhs4YQ==}
     engines: {node: '>=20.18.1'}
@@ -8046,7 +8045,7 @@ snapshots:
       parse5: 7.3.0
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 7.24.5
+      undici: 7.24.8
       whatwg-mimetype: 4.0.0
 
   chokidar@4.0.3:
@@ -11404,8 +11403,6 @@ snapshots:
   undici-types@6.21.0: {}
 
   undici-types@7.16.0: {}
-
-  undici@7.24.5: {}
 
   undici@7.24.8: {}
 
