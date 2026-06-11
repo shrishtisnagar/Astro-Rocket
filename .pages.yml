@@ -9,7 +9,7 @@ content:
     path: src/content/testimonials
     format: yaml-frontmatter
     view:
-      fields: [author, title, platform, row]
+      fields: [author, title, row]
     fields:
       - name: quote
         label: Quote
@@ -21,23 +21,9 @@ content:
         type: string
         required: true
 
-      - name: handle
-        label: Social Handle (e.g. @shrishti)
-        type: string
-
       - name: title
         label: Title / Company
         type: string
-
-      - name: platform
-        label: Platform
-        type: select
-        required: true
-        options:
-          values:
-            - linkedin
-            - twitter
-            - topmate
 
       - name: avatar
         label: Profile Photo
