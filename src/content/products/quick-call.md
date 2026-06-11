@@ -3,7 +3,7 @@ title: Quick Call – Ask Me Anything
 type: Video Meeting · 30 mins
 typeIcon: video
 description: For freelancers and small business owners (< 10 employees).
-price: 95
+price: 99
 originalPrice: 3000
 rating: 5
 image: /images/products/quick-call.svg
