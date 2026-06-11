@@ -8,6 +8,7 @@
  * via CLI for users who want the full landing page experience.
  */
 import BaseLayout from './BaseLayout.astro';
+import TopBar from '@/components/layout/TopBar.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ContactFooterSection from '@/components/layout/ContactFooterSection.astro';
 import { url } from '@/lib/url';
@@ -56,6 +57,8 @@ const {
   includePersonSchema={includePersonSchema}
   includeProfessionalServiceSchema={includeProfessionalServiceSchema}
 >
+  <TopBar slot="header" />
+
   <slot />
 
   <Footer slot="footer" layout="simple" background="secondary" copyright="© {year} The S Curve | Shrishti S Nagar — Serving Global Clients From India" videoBg={url("/videos/hero-bg.mp4")} videoSpeed={0.825}>
