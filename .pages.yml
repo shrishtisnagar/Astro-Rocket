@@ -154,9 +154,65 @@ content:
         type: string
         required: true
 
-      - name: calendlyUrl
-        label: "Calendly URL (video meetings only — paste your Calendly event link, e.g. https://calendly.com/you/event)"
-        type: string
+      - name: duration
+        label: "Session duration in minutes (video meetings only, e.g. 60 or 30)"
+        type: number
+
+      - name: schedule
+        label: Availability Schedule (video meetings only)
+        type: object
+        fields:
+          - name: timezone
+            label: "Timezone (e.g. Asia/Kolkata)"
+            type: string
+            default: Asia/Kolkata
+
+          - name: daysAhead
+            label: How many days ahead to show
+            type: number
+            default: 14
+
+          - name: monday
+            label: "Monday — available start times (24h, e.g. \"10:00\", \"14:00\")"
+            type: list
+            item:
+              type: string
+
+          - name: tuesday
+            label: Tuesday — available start times
+            type: list
+            item:
+              type: string
+
+          - name: wednesday
+            label: Wednesday — available start times
+            type: list
+            item:
+              type: string
+
+          - name: thursday
+            label: Thursday — available start times
+            type: list
+            item:
+              type: string
+
+          - name: friday
+            label: Friday — available start times
+            type: list
+            item:
+              type: string
+
+          - name: saturday
+            label: Saturday — available start times (leave empty to block)
+            type: list
+            item:
+              type: string
+
+          - name: sunday
+            label: Sunday — available start times (leave empty to block)
+            type: list
+            item:
+              type: string
 
       - name: badge
         label: "Badge Text (e.g. Most Popular, Free) — optional"

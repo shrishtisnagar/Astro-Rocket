@@ -7,8 +7,29 @@ price: 2500
 originalPrice: 8000
 image: /images/products/deep-consultation.svg
 checkoutUrl: https://topmate.io/shrishtisnagar
-calendlyUrl: https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti
 badge: Most Popular
+duration: 60
+schedule:
+  timezone: Asia/Kolkata
+  daysAhead: 21
+  monday:
+    - "10:00"
+    - "14:00"
+    - "18:00"
+  tuesday:
+    - "10:00"
+    - "14:00"
+    - "18:00"
+  wednesday: []
+  thursday:
+    - "10:00"
+    - "14:00"
+    - "18:00"
+  friday:
+    - "10:00"
+    - "12:00"
+  saturday: []
+  sunday: []
 features:
   - 60-minute focused strategy call
   - Marketing & business growth audit

@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import LandingLayout from '@/layouts/LandingLayout.astro';
+import BookingWidget from '@/components/booking/BookingWidget';
 
 export async function getStaticPaths() {
   const products = await getCollection('products', ({ data }) => !data.draft);
@@ -20,12 +21,7 @@ function formatPrice(price: number | null | undefined): string {
 }
 
 const isVideoMeeting = p.typeIcon === 'video';
-const hasCalendly = isVideoMeeting && !!p.calendlyUrl;
-
-// Calendly dark-mode URL params matching the site palette
-const calendlyEmbedUrl = p.calendlyUrl
-  ? `${p.calendlyUrl}?background_color=0f0508&text_color=f0e8ea&primary_color=f7b5dd`
-  : null;
+const hasSchedule = isVideoMeeting && !!p.schedule;
 ---
 
 <LandingLayout
@@ -44,7 +40,7 @@ const calendlyEmbedUrl = p.calendlyUrl
       </a>
     </div>
 
-    <div class={`checkout-container${hasCalendly ? ' has-calendly' : ''}`}>
+    <div class={`checkout-container${hasSchedule ? ' has-booking' : ''}`}>
       <!-- Left column: product info -->
       <div class="checkout-info">
         <div class="checkout-image-wrap">
@@ -106,33 +102,17 @@ const calendlyEmbedUrl = p.calendlyUrl
       </div>
 
       <!-- Right column -->
-      {hasCalendly ? (
-        <!-- Calendly inline embed for video meetings -->
-        <div class="calendly-wrap">
-          <div class="calendly-header">
-            <div class="calendly-price-row">
-              {p.price != null ? (
-                <>
-                  <span class="calendly-price">{formatPrice(p.price)}</span>
-                  {p.originalPrice != null && p.originalPrice !== p.price && (
-                    <s class="calendly-original-price">{formatPrice(p.originalPrice)}</s>
-                  )}
-                </>
-              ) : null}
-              {p.originalPrice != null && p.price != null && p.originalPrice !== p.price && (
-                <span class="checkout-savings">
-                  Save {formatPrice(p.originalPrice - p.price)} ({Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}% off)
-                </span>
-              )}
-            </div>
-            <p class="calendly-hint">Pick a slot below — you'll get a confirmation email instantly.</p>
-          </div>
-          <div
-            class="calendly-inline-widget"
-            data-url={calendlyEmbedUrl}
-          ></div>
-          <script src="https://assets.calendly.com/assets/external/widget.js" async is:inline></script>
-        </div>
+      {hasSchedule ? (
+        <!-- Custom booking widget with Google Meet -->
+        <BookingWidget
+          client:load
+          productSlug={entry.id}
+          productTitle={p.title}
+          duration={p.duration ?? 60}
+          price={formatPrice(p.price)}
+          originalPrice={p.originalPrice != null ? formatPrice(p.originalPrice) : undefined}
+          schedule={p.schedule!}
+        />
       ) : (
         <!-- Standard purchase card for digital products -->
         <div class="checkout-card">
@@ -236,18 +216,19 @@ const calendlyEmbedUrl = p.calendlyUrl
     margin: 0 auto;
     padding: 0 1.5rem;
     display: grid;
-    grid-template-columns: 1fr 420px;
+    grid-template-columns: 1fr 400px;
     gap: 3rem;
     align-items: start;
     position: relative;
   }
 
-  .checkout-container.has-calendly {
-    grid-template-columns: 1fr 520px;
+  .checkout-container.has-booking {
+    grid-template-columns: 1fr 460px;
   }
 
   @media (max-width: 900px) {
-    .checkout-container {
+    .checkout-container,
+    .checkout-container.has-booking {
       grid-template-columns: 1fr;
     }
   }
@@ -374,60 +355,7 @@ const calendlyEmbedUrl = p.calendlyUrl
     flex-shrink: 0;
   }
 
-  /* Calendly embed column */
-  .calendly-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .calendly-header {
-    background: #0f0508;
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .calendly-price-row {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-
-  .calendly-price {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.03em;
-  }
-
-  .calendly-original-price {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.28);
-    text-decoration: line-through;
-    font-weight: 500;
-  }
-
-  .calendly-hint {
-    font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.42);
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  .calendly-inline-widget {
-    min-width: 100%;
-    height: 700px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  /* Calendly card */
+  /* Purchase card (digital products) */
   .checkout-card {
     background: #0f0508;
     border: 1px solid rgba(255, 255, 255, 0.10);
