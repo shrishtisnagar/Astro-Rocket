@@ -7,7 +7,7 @@ price: 1499
 originalPrice: 3000
 rating: 5
 image: /images/products/quick-call.svg
-checkoutUrl: https://topmate.io/shrishtisnagar
+productUrl: https://topmate.io/shrishtisnagar
 appointmentUrl: https://calendar.google.com/calendar/appointments/schedules/AcZssZ1ocDkR3upcRf5yqtdPLTONnfgMNzzwsA422NnAmynRcVN54F6Lf0Tvo9bc_gbrg_9iUtYmm7Do?gv=true
 features:
   - 30-minute open Q&A session

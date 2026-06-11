@@ -23,7 +23,8 @@ function formatPrice(price: number | null | undefined): string {
 const isVideoMeeting = p.typeIcon === 'video';
 const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
 const isFree = p.price === 0;
-const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
+const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
+const productUrl = p.productUrl || '';
 ---
 
 <LandingLayout
@@ -154,7 +155,7 @@ const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
           <div id="signup-wrap">
             <form
               id="signup-form"
-              data-checkout-url={p.checkoutUrl}
+              data-checkout-url={productUrl}
               data-free={isFree ? 'true' : 'false'}
             >
               <input type="hidden" name="access_key" value={web3formsKey} />
@@ -192,7 +193,7 @@ const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
             </form>
             <div id="signup-success" class="free-signup-success hidden">
               <p class="free-signup-success-text">You're in! Here's your download:</p>
-              <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
+              <a href={productUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
                 Download now
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="5" y1="12" x2="19" y2="12"/>

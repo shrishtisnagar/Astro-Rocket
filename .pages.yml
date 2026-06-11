@@ -149,13 +149,8 @@ content:
         label: Product Image
         type: image
 
-      - name: checkoutUrl
-        label: Fallback Checkout / Booking URL
-        type: string
-        required: true
-
-      - name: web3formsKey
-        label: "Web3Forms Access Key (create a form at web3forms.com, paste its key here)"
+      - name: productUrl
+        label: "Product / Delivery URL (Google Drive, YouTube, Topmate, etc.)"
         type: string
 
       - name: appointmentUrl

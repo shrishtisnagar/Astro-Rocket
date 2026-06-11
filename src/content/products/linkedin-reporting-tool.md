@@ -6,7 +6,7 @@ description: "Track and analyse your LinkedIn performance with pre-built dashboa
 price: 299
 originalPrice: 799
 image: /images/products/linkedin-reporting-tool.svg
-checkoutUrl: https://topmate.io/shrishtisnagar
+productUrl: https://topmate.io/shrishtisnagar
 features:
   - Pre-built LinkedIn analytics dashboard
   - Track impressions, reach & engagement

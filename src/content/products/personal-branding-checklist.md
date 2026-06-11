@@ -6,7 +6,7 @@ description: "Level up your personal brand on LinkedIn with this step-by-step ch
 price: 0
 originalPrice: 500
 image: /images/products/personal-branding-checklist.svg
-checkoutUrl: https://topmate.io/shrishtisnagar
+productUrl: https://topmate.io/shrishtisnagar
 badge: Free
 features:
   - Step-by-step LinkedIn profile checklist
