@@ -37,6 +37,7 @@ content:
           values:
             - linkedin
             - twitter
+            - topmate
 
       - name: avatar
         label: Profile Photo
