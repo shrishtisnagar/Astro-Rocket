@@ -4,48 +4,12 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
-import netlify from '@astrojs/netlify';
-
-const isNetlify = process.env.DEPLOY_TARGET === 'netlify';
-
-// ─── Rehype plugin: fix image src paths when deployed under a base sub-path ───
-// When the site is hosted on GitHub Pages (e.g. /Astro-Rocket/), markdown
-// images use absolute paths like /images/projects/foo.png.  Those paths are
-// NOT automatically rewritten to include the base path, so the browser fetches
-// the wrong URL and images fail to load (showing only the CSS border = "a line").
-// This plugin rewrites every <img src="/..."> to <img src="<base>/..."> at
-// build time, matching how assetUrl() works for hero images.
-const BASE_PATH = (process.env.BASE_PATH || '').replace(/\/$/, '');
-
-function rehypeRebaseImages() {
-  return function transformer(tree) {
-    if (!BASE_PATH) return; // No sub-path (e.g. Vercel / local dev) — nothing to do
-
-    function walk(node) {
-      if (node.type === 'element' && node.tagName === 'img') {
-        const src = node.properties && node.properties.src;
-        if (
-          typeof src === 'string' &&
-          src.startsWith('/') &&
-          !src.startsWith(BASE_PATH + '/')
-        ) {
-          node.properties.src = BASE_PATH + src;
-        }
-      }
-      if (Array.isArray(node.children)) {
-        node.children.forEach(walk);
-      }
-    }
-    walk(tree);
-  };
-}
+import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'static',
-  adapter: isNetlify ? netlify() : vercel(),
+  adapter: cloudflare(),
   site: process.env.SITE_URL || 'https://thescurve.in',
-  base: process.env.BASE_PATH || '/',
 
   build: {
     inlineStylesheets: 'always',
@@ -88,7 +52,7 @@ export default defineConfig({
   },
 
   markdown: {
-    rehypePlugins: [rehypeRebaseImages],
+    rehypePlugins: [],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,

@@ -39,6 +39,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/mdx": "5.0.0",
     "@astrojs/netlify": "^7.0.2",
     "@astrojs/react": "5.0.0",
@@ -51,7 +52,7 @@
     "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/simple-icons": "^1.2.74",
     "@iconify/react": "^6.0.2",
-    "astro": "6.0.0",
+    "astro": "6.4.6",
     "astro-icon": "^1.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -88,8 +89,10 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "esbuild",
-      "sharp"
+      "sharp",
+      "workerd"
     ]
   },
   "engines": {

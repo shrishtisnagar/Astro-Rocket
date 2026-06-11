@@ -154,6 +154,10 @@ content:
         type: string
         required: true
 
+      - name: web3formsKey
+        label: "Web3Forms Access Key (create a form at web3forms.com, paste its key here)"
+        type: string
+
       - name: appointmentUrl
         label: "Google Calendar Scheduling URL (video meetings only — paste the src URL from your Google Calendar appointment schedule embed)"
         type: string

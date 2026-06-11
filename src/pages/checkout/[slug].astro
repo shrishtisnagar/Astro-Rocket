@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import LandingLayout from '@/layouts/LandingLayout.astro';
+import { PUBLIC_WEB3FORMS_ACCESS_KEY } from 'astro:env/client';
 
 export async function getStaticPaths() {
   const products = await getCollection('products', ({ data }) => !data.draft);
@@ -21,6 +22,8 @@ function formatPrice(price: number | null | undefined): string {
 
 const isVideoMeeting = p.typeIcon === 'video';
 const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
+const isFree = p.price === 0;
+const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 ---
 
 <LandingLayout
@@ -150,13 +153,56 @@ const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
             )}
           </div>
 
-          <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
-            {p.price === 0 ? 'Get for Free' : 'Get Instant Access'}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </a>
+          <div id="signup-wrap">
+            <form
+              id="signup-form"
+              data-checkout-url={p.checkoutUrl}
+              data-free={isFree ? 'true' : 'false'}
+            >
+              <input type="hidden" name="access_key" value={web3formsKey} />
+              <input type="hidden" name="subject" value={isFree ? `Free download: ${p.title}` : `New purchase intent: ${p.title}`} />
+              <input type="hidden" name="from_name" value="Shrishti S Nagar" />
+              <div class="free-signup-botcheck" aria-hidden="true">
+                <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
+              </div>
+              <div class="free-signup-fields">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your name"
+                  required
+                  autocomplete="name"
+                  class="free-signup-input"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your email"
+                  required
+                  autocomplete="email"
+                  class="free-signup-input"
+                />
+              </div>
+              <div id="signup-msg" class="free-signup-msg hidden"></div>
+              <button type="submit" id="signup-btn" class="checkout-cta free-signup-btn">
+                {isFree ? 'Get for Free' : 'Get Instant Access'}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </form>
+            <div id="signup-success" class="free-signup-success hidden">
+              <p class="free-signup-success-text">You're in! Here's your download:</p>
+              <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
+                Download now
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            </div>
+          </div>
 
           <div class="checkout-trust">
             <span class="trust-item">
@@ -553,4 +599,127 @@ const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
     color: rgba(255, 255, 255, 0.38);
     margin: 0.1rem 0 0;
   }
+
+  /* Free product signup form */
+  .free-signup-botcheck {
+    display: none;
+    visibility: hidden;
+  }
+
+  .free-signup-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .free-signup-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .free-signup-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .free-signup-input:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .free-signup-btn {
+    width: 100%;
+  }
+
+  .free-signup-msg {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+  }
+
+  .free-signup-msg.error {
+    color: oklch(70% 0.18 25);
+    background: oklch(15% 0.06 25 / 0.4);
+  }
+
+  .free-signup-success {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .free-signup-success-text {
+    font-size: 0.88rem;
+    color: oklch(75% 0.15 145);
+    margin: 0;
+    text-align: center;
+  }
+
+  .hidden {
+    display: none !important;
+  }
 </style>
+
+<script>
+  function initSignupForm() {
+    const form = document.getElementById('signup-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    const btn = document.getElementById('signup-btn') as HTMLButtonElement;
+    const msg = document.getElementById('signup-msg') as HTMLDivElement;
+    const successPanel = document.getElementById('signup-success') as HTMLDivElement;
+    const isFree = form.dataset.free === 'true';
+    const checkoutUrl = form.dataset.checkoutUrl!;
+    const originalLabel = btn.textContent?.trim() || 'Submit';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Just a sec…';
+      msg.classList.add('hidden');
+      msg.classList.remove('error');
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          if (isFree) {
+            form.classList.add('hidden');
+            successPanel.classList.remove('hidden');
+          } else {
+            window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+          }
+        } else {
+          msg.textContent = data.message || 'Something went wrong. Please try again.';
+          msg.classList.add('error');
+          msg.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = originalLabel;
+        }
+      } catch {
+        msg.textContent = 'Failed to submit. Please try again.';
+        msg.classList.add('error');
+        msg.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = originalLabel;
+      }
+    });
+  }
+
+  initSignupForm();
+  document.addEventListener('astro:after-swap', initSignupForm);
+</script>
