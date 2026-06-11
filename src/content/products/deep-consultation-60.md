@@ -7,7 +7,6 @@ price: 2500
 originalPrice: 8000
 image: /images/products/deep-consultation.svg
 productUrl: https://topmate.io/shrishtisnagar
-appointmentUrl: https://calendar.google.com/calendar/appointments/schedules/AcZssZ1ocDkR3upcRf5yqtdPLTONnfgMNzzwsA422NnAmynRcVN54F6Lf0Tvo9bc_gbrg_9iUtYmm7Do?gv=true
 badge: Most Popular
 features:
   - 60-minute focused strategy call
