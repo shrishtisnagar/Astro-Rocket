@@ -1,0 +1,202 @@
+---
+export const prerender = false;
+
+import LandingLayout from '@/layouts/LandingLayout.astro';
+
+const orderId = Astro.url.searchParams.get('order_id');
+
+type Status = 'paid' | 'pending' | 'failed' | 'error';
+let status: Status = 'error';
+let productUrl = '';
+
+if (orderId) {
+  const appId = import.meta.env.CASHFREE_APP_ID;
+  const secretKey = import.meta.env.CASHFREE_SECRET_KEY;
+  const isProd = import.meta.env.PUBLIC_CASHFREE_ENV === 'production';
+  const baseUrl = isProd ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
+
+  try {
+    const res = await fetch(`${baseUrl}/orders/${orderId}`, {
+      headers: {
+        'x-client-id': appId ?? '',
+        'x-client-secret': secretKey ?? '',
+        'x-api-version': '2023-08-01',
+      },
+    });
+    const data = await res.json();
+
+    if (data.order_status === 'PAID') {
+      status = 'paid';
+      productUrl = data.order_note || '';
+    } else if (data.order_status === 'ACTIVE') {
+      status = 'pending';
+    } else {
+      status = 'failed';
+    }
+  } catch {
+    status = 'error';
+  }
+}
+---
+
+<LandingLayout title="Order Confirmation — Shrishti S Nagar" description="Your order status">
+  <div class="success-page">
+    <div class="success-card">
+
+      {status === 'paid' && (
+        <div class="success-content">
+          <div class="success-icon success-icon--paid">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h1 class="success-title">Payment confirmed!</h1>
+          <p class="success-desc">Thank you for your purchase. Here's what you ordered:</p>
+          {productUrl && (
+            <a href={productUrl} target="_blank" rel="noopener noreferrer" class="success-cta">
+              Access your product
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+          )}
+        </div>
+      )}
+
+      {status === 'pending' && (
+        <div class="success-content">
+          <div class="success-icon success-icon--pending">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h1 class="success-title">Payment pending</h1>
+          <p class="success-desc">Your payment is being processed. You'll receive an email once confirmed.</p>
+        </div>
+      )}
+
+      {(status === 'failed' || status === 'error') && (
+        <div class="success-content">
+          <div class="success-icon success-icon--failed">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <h1 class="success-title">Payment {status === 'failed' ? 'failed' : 'could not be verified'}</h1>
+          <p class="success-desc">Something went wrong. Please <a href="/contact" class="success-link">contact me</a> with your order details.</p>
+          <a href="/#resources" class="success-back">← Back to products</a>
+        </div>
+      )}
+
+    </div>
+  </div>
+</LandingLayout>
+
+<style>
+  .success-page {
+    background: #060205;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1.5rem;
+  }
+
+  .success-card {
+    background: #0f0508;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+  }
+
+  .success-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .success-icon--paid {
+    background: oklch(15% 0.05 145 / 0.4);
+    color: oklch(75% 0.15 145);
+    border: 1px solid oklch(75% 0.15 145 / 0.3);
+  }
+
+  .success-icon--pending {
+    background: oklch(15% 0.05 85 / 0.4);
+    color: oklch(75% 0.15 85);
+    border: 1px solid oklch(75% 0.15 85 / 0.3);
+  }
+
+  .success-icon--failed {
+    background: oklch(15% 0.06 25 / 0.4);
+    color: oklch(70% 0.18 25);
+    border: 1px solid oklch(70% 0.18 25 / 0.3);
+  }
+
+  .success-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .success-desc {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.52);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .success-link {
+    color: oklch(81% 0.090 17);
+    text-decoration: underline;
+  }
+
+  .success-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: oklch(81% 0.090 17);
+    color: #0f0508;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.875rem 1.75rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.18s ease;
+    margin-top: 0.5rem;
+  }
+
+  .success-cta:hover {
+    background: oklch(87% 0.090 17);
+  }
+
+  .success-back {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+  }
+
+  .success-back:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+</style>

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import LandingLayout from '@/layouts/LandingLayout.astro';
-import { PUBLIC_WEB3FORMS_ACCESS_KEY } from 'astro:env/client';
+import { PUBLIC_WEB3FORMS_ACCESS_KEY, PUBLIC_CASHFREE_ENV } from 'astro:env/client';
 
 export async function getStaticPaths() {
   const products = await getCollection('products', ({ data }) => !data.draft);
@@ -25,7 +25,8 @@ const isFree = p.price === 0;
 const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 const productUrl = p.productUrl || '';
 const ctaLabel = isFree ? 'Get for Free' : isVideoMeeting ? 'Book Now' : 'Get Instant Access';
-const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call' : 'Get Instant Access';
+const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call' : 'Access your product';
+const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sandbox';
 ---
 
 <LandingLayout
@@ -89,20 +90,6 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
         <h1 class="checkout-title">{p.title}</h1>
         <p class="checkout-desc">{p.description}</p>
 
-        {p.features.length > 0 && (
-          <ul class="checkout-features">
-            {p.features.map((feat) => (
-              <li class="checkout-feature-item">
-                <span class="checkout-check" aria-hidden="true">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                </span>
-                {feat}
-              </li>
-            ))}
-          </ul>
-        )}
       </div>
 
       <!-- Right column -->
@@ -128,8 +115,12 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
           <div id="signup-wrap">
             <form
               id="signup-form"
-              data-checkout-url={productUrl}
+              data-product-url={productUrl}
               data-free={isFree ? 'true' : 'false'}
+              data-price={p.price ?? 0}
+              data-slug={entry.id}
+              data-product-title={p.title}
+              data-cashfree-mode={cashfreeMode}
             >
               <input type="hidden" name="access_key" value={web3formsKey} />
               <input type="hidden" name="subject" value={isFree ? `Free download: ${p.title}` : `New purchase intent: ${p.title}`} />
@@ -154,6 +145,16 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
                   autocomplete="email"
                   class="free-signup-input"
                 />
+                {!isFree && (
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone number (for payment)"
+                    required
+                    autocomplete="tel"
+                    class="free-signup-input"
+                  />
+                )}
               </div>
               <div id="signup-msg" class="free-signup-msg hidden"></div>
               <button type="submit" id="signup-btn" class="checkout-cta free-signup-btn">
@@ -354,34 +355,6 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
     margin: 0;
   }
 
-  .checkout-features {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-
-  .checkout-feature-item {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.72);
-  }
-
-  .checkout-check {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    background: oklch(23% 0.067 17 / 0.5);
-    color: oklch(81% 0.090 17);
-    flex-shrink: 0;
-  }
 
   /* Purchase card */
   .checkout-card {
@@ -573,6 +546,19 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
 </style>
 
 <script>
+  declare const Cashfree: (opts: { mode: string }) => { checkout: (opts: { paymentSessionId: string }) => Promise<unknown> };
+
+  function loadCashfreeSDK(): Promise<void> {
+    return new Promise((resolve) => {
+      if (document.getElementById('cashfree-sdk')) return resolve();
+      const s = document.createElement('script');
+      s.id = 'cashfree-sdk';
+      s.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
+      s.onload = () => resolve();
+      document.head.appendChild(s);
+    });
+  }
+
   function initSignupForm() {
     const form = document.getElementById('signup-form') as HTMLFormElement | null;
     if (!form) return;
@@ -581,8 +567,16 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
     const msg = document.getElementById('signup-msg') as HTMLDivElement;
     const successPanel = document.getElementById('signup-success') as HTMLDivElement;
     const isFree = form.dataset.free === 'true';
-    const checkoutUrl = form.dataset.checkoutUrl!;
+    const productUrl = form.dataset.productUrl || '';
     const originalLabel = btn.textContent?.trim() || 'Submit';
+
+    function showError(text: string) {
+      msg.textContent = text;
+      msg.classList.add('error');
+      msg.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = originalLabel;
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -591,35 +585,49 @@ const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call'
       msg.classList.add('hidden');
       msg.classList.remove('error');
 
-      try {
-        const res = await fetch('https://api.web3forms.com/submit', {
-          method: 'POST',
-          body: new FormData(form),
-        });
-        const data = await res.json();
+      const formData = new FormData(form);
 
-        if (data.success) {
-          if (isFree) {
-            form.classList.add('hidden');
-            successPanel.classList.remove('hidden');
-          } else {
-            window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
-            btn.disabled = false;
-            btn.textContent = originalLabel;
-          }
-        } else {
-          msg.textContent = data.message || 'Something went wrong. Please try again.';
-          msg.classList.add('error');
-          msg.classList.remove('hidden');
-          btn.disabled = false;
-          btn.textContent = originalLabel;
-        }
+      // Step 1: capture lead via Web3Forms
+      try {
+        const w3res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+        const w3data = await w3res.json();
+        if (!w3data.success) return showError(w3data.message || 'Something went wrong. Please try again.');
       } catch {
-        msg.textContent = 'Failed to submit. Please try again.';
-        msg.classList.add('error');
-        msg.classList.remove('hidden');
-        btn.disabled = false;
-        btn.textContent = originalLabel;
+        return showError('Failed to submit. Please try again.');
+      }
+
+      // Step 2: free product — reveal link
+      if (isFree) {
+        form.classList.add('hidden');
+        successPanel.classList.remove('hidden');
+        return;
+      }
+
+      // Step 3: paid product — create Cashfree order
+      btn.textContent = 'Preparing payment…';
+      try {
+        const orderRes = await fetch('/api/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            productTitle: form.dataset.productTitle,
+            price: Number(form.dataset.price),
+            slug: form.dataset.slug,
+          }),
+        });
+        const orderData = await orderRes.json();
+        if (!orderRes.ok || !orderData.paymentSessionId) return showError(orderData.error || 'Could not initiate payment. Please try again.');
+
+        // Step 4: open Cashfree checkout
+        await loadCashfreeSDK();
+        const cashfree = Cashfree({ mode: form.dataset.cashfreeMode || 'sandbox' });
+        await cashfree.checkout({ paymentSessionId: orderData.paymentSessionId });
+
+      } catch {
+        showError('Payment could not be started. Please try again.');
       }
     });
   }

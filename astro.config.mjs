@@ -12,6 +12,8 @@ export default defineConfig({
     platformProxy: {
       enabled: false,
     },
+    imageService: 'passthrough',
+    prerenderEnvironment: 'node',
   }),
   site: process.env.SITE_URL || 'https://thescurve.in',
 
@@ -33,6 +35,9 @@ export default defineConfig({
       PUBLIC_CONSENT_ENABLED: envField.boolean({ context: 'client', access: 'public', optional: true, default: false }),
       PUBLIC_PRIVACY_POLICY_URL: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
       PUBLIC_WEB3FORMS_ACCESS_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
+      CASHFREE_APP_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
+      CASHFREE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
+      PUBLIC_CASHFREE_ENV: envField.string({ context: 'client', access: 'public', optional: true, default: 'sandbox' }),
     },
   },
 
