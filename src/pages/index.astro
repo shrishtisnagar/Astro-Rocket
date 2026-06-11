@@ -28,16 +28,14 @@ import { url } from '@/lib/url';
 
     <Fragment slot="actions">
       <Button size="lg" href="https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti" target="_blank" rel="noopener noreferrer">
-        Book a call
+        Book a consultation
         <Icon name="arrow-right" size="sm" />
       </Button>
-      <a href="https://www.linkedin.com/in/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+      <a href="https://www.linkedin.com/in/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--icon" aria-label="LinkedIn">
         <Icon name="linkedin" size="md" />
-        LinkedIn
       </a>
-      <a href="https://x.com/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X (Twitter)">
+      <a href="https://x.com/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--icon" aria-label="X (Twitter)">
         <Icon name="x-twitter" size="md" />
-        Twitter
       </a>
     </Fragment>
 
@@ -63,6 +61,7 @@ import { url } from '@/lib/url';
   .social-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.4rem;
     padding: 0.6rem 1.1rem;
     border-radius: 0.5rem;
@@ -73,6 +72,11 @@ import { url } from '@/lib/url';
     color: oklch(90% 0.02 344);
     text-decoration: none;
     transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+  .social-btn--icon {
+    padding: 0.6rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
   .social-btn:hover {
     background: oklch(100% 0 0 / 0.12);
