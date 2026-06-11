@@ -5,6 +5,7 @@
  * Uses Header + Footer with content page configuration
  */
 import BaseLayout from './BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import ContactFooterSection from '@/components/layout/ContactFooterSection.astro';
 import { url } from '@/lib/url';
@@ -16,11 +17,12 @@ interface Props {
   imageAlt?: string;
   noindex?: boolean;
   nofollow?: boolean;
+  showScrollProgress?: boolean;
   eagerReveal?: boolean;
   showContactFooter?: boolean;
 }
 
-const { title, description, image, imageAlt, noindex, nofollow, eagerReveal = false, showContactFooter = true } = Astro.props;
+const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false, showContactFooter = true } = Astro.props;
 
 ---
 
@@ -33,7 +35,18 @@ const { title, description, image, imageAlt, noindex, nofollow, eagerReveal = fa
   nofollow={nofollow}
   eagerReveal={eagerReveal}
 >
-  <main class="min-h-screen">
+  <Header
+    slot="header"
+    position="fixed"
+    shape="bar"
+    variant="solid"
+    size="lg"
+    showActiveState
+    showCta={false}
+    showScrollProgress={showScrollProgress}
+  />
+
+  <main class="min-h-screen pt-16">
     <slot />
   </main>
 
