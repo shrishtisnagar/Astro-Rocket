@@ -150,9 +150,13 @@ content:
         type: image
 
       - name: checkoutUrl
-        label: Checkout / Booking URL
+        label: Fallback Checkout / Booking URL
         type: string
         required: true
+
+      - name: calendlyUrl
+        label: "Calendly URL (video meetings only — paste your Calendly event link, e.g. https://calendly.com/you/event)"
+        type: string
 
       - name: badge
         label: "Badge Text (e.g. Most Popular, Free) — optional"

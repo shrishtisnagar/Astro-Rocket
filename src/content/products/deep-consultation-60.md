@@ -7,6 +7,7 @@ price: 2500
 originalPrice: 8000
 image: /images/products/deep-consultation.svg
 checkoutUrl: https://topmate.io/shrishtisnagar
+calendlyUrl: https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti
 badge: Most Popular
 features:
   - 60-minute focused strategy call

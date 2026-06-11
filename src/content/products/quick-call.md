@@ -8,6 +8,7 @@ originalPrice: 3000
 rating: 5
 image: /images/products/quick-call.svg
 checkoutUrl: https://topmate.io/shrishtisnagar
+calendlyUrl: https://calendly.com/shrishtisnagar/quick-call
 features:
   - 30-minute open Q&A session
   - Marketing, positioning, or growth
