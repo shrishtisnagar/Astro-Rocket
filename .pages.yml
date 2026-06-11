@@ -3,6 +3,56 @@ media:
   output: /images/projects
 
 content:
+  - name: testimonials
+    label: Testimonials
+    type: collection
+    path: src/content/testimonials
+    format: json
+    view:
+      fields: [author, title, platform, row]
+    fields:
+      - name: quote
+        label: Quote
+        type: rich-text
+        required: true
+
+      - name: author
+        label: Name
+        type: string
+        required: true
+
+      - name: handle
+        label: Social Handle (e.g. @shrishti)
+        type: string
+
+      - name: title
+        label: Title / Company
+        type: string
+
+      - name: platform
+        label: Platform
+        type: select
+        required: true
+        options:
+          values:
+            - linkedin
+            - twitter
+
+      - name: avatar
+        label: Profile Photo
+        type: image
+
+      - name: row
+        label: Row (1 = top, 2 = bottom)
+        type: number
+        required: true
+        default: 1
+
+      - name: order
+        label: Order within row (1 = first)
+        type: number
+        default: 99
+
   - name: projects
     label: Case Studies
     type: collection
