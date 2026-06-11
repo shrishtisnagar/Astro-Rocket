@@ -99,6 +99,26 @@ const stack = defineCollection({
   }),
 });
 
+// Products / Resources collection — each file is one offering editable via Pages.cms
+const products = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/products' }),
+  schema: z.object({
+    title: z.string(),
+    type: z.string(),
+    typeIcon: z.enum(['video', 'file']),
+    description: z.string(),
+    price: z.number().nullable().optional(),
+    originalPrice: z.number().nullable().optional(),
+    rating: z.number().optional(),
+    image: z.string().optional(),
+    checkoutUrl: z.string(),
+    badge: z.string().optional(),
+    features: z.array(z.string()).default([]),
+    order: z.number().default(99),
+    draft: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   blog,
   pages,
@@ -106,4 +126,5 @@ export const collections = {
   faqs,
   stack,
   projects,
+  products,
 };

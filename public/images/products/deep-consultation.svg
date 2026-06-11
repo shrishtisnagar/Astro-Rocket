@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" fill="none">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="600" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a0508"/>
+      <stop offset="100%" stop-color="#2e0a12"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="50%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#7f1d1d" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#1a0508" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bg1)"/>
+  <rect width="600" height="340" fill="url(#glow1)"/>
+  <!-- grid lines -->
+  <line x1="0" y1="85" x2="600" y2="85" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="170" x2="600" y2="170" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="255" x2="600" y2="255" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="150" y1="0" x2="150" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="450" y1="0" x2="450" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <!-- video icon -->
+  <circle cx="300" cy="155" r="52" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+  <!-- camera body -->
+  <rect x="262" y="138" width="52" height="36" rx="5" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- camera lens triangle -->
+  <path d="M318 146 L342 138 L342 172 L318 164 Z" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- label -->
+  <text x="300" y="232" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="500" fill="rgba(255,255,255,0.30)" letter-spacing="0.08em">VIDEO MEETING · 60 MINS</text>
+</svg>

@@ -1,0 +1,456 @@
+---
+import { getCollection } from 'astro:content';
+import LandingLayout from '@/layouts/LandingLayout.astro';
+
+export async function getStaticPaths() {
+  const products = await getCollection('products', ({ data }) => !data.draft);
+  return products.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const p = entry.data;
+
+function formatPrice(price: number | null | undefined): string {
+  if (price == null) return '';
+  if (price === 0) return '₹0';
+  return '₹' + price.toLocaleString('en-IN');
+}
+
+const isVideoMeeting = p.typeIcon === 'video';
+---
+
+<LandingLayout
+  title={`${p.title} — Shrishti S Nagar`}
+  description={p.description}
+>
+  <div class="checkout-page">
+    <!-- Back link -->
+    <div class="checkout-back-wrap">
+      <a href="/#resources" class="checkout-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to Resources
+      </a>
+    </div>
+
+    <div class="checkout-container">
+      <!-- Left column: product info -->
+      <div class="checkout-info">
+        <div class="checkout-image-wrap">
+          {p.image ? (
+            <img src={p.image} alt={p.title} width="600" height="340" loading="eager" decoding="async" class="checkout-image" />
+          ) : (
+            <div class="checkout-image-placeholder"></div>
+          )}
+          {p.badge && (
+            <span class={`checkout-badge ${p.badge === 'Free' ? 'checkout-badge--free' : ''}`}>
+              {p.badge}
+            </span>
+          )}
+        </div>
+
+        <div class="checkout-meta">
+          <span class="checkout-type-badge">
+            {isVideoMeeting ? (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+              </svg>
+            ) : (
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+              </svg>
+            )}
+            {p.type}
+          </span>
+          {p.rating && (
+            <span class="checkout-rating">
+              {Array.from({ length: p.rating }).map(() => (
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              ))}
+            </span>
+          )}
+        </div>
+
+        <h1 class="checkout-title">{p.title}</h1>
+        <p class="checkout-desc">{p.description}</p>
+
+        {p.features.length > 0 && (
+          <ul class="checkout-features">
+            {p.features.map((feat) => (
+              <li class="checkout-feature-item">
+                <span class="checkout-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                {feat}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <!-- Right column: checkout card -->
+      <div class="checkout-card">
+        <div class="checkout-price-block">
+          {p.price != null ? (
+            <div class="checkout-price-row">
+              <span class="checkout-price">{formatPrice(p.price)}</span>
+              {p.originalPrice != null && p.originalPrice !== p.price && (
+                <s class="checkout-original-price">{formatPrice(p.originalPrice)}</s>
+              )}
+            </div>
+          ) : (
+            <span class="checkout-price">Contact</span>
+          )}
+          {p.originalPrice != null && p.price != null && p.originalPrice !== p.price && (
+            <span class="checkout-savings">
+              Save {formatPrice(p.originalPrice - p.price)} ({Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}% off)
+            </span>
+          )}
+        </div>
+
+        <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
+          {p.price === 0 ? 'Get for Free' : isVideoMeeting ? 'Book Session' : 'Get Instant Access'}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+
+        <div class="checkout-trust">
+          <span class="trust-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            Secure checkout
+          </span>
+          <span class="trust-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Instant delivery
+          </span>
+        </div>
+
+        <div class="checkout-divider"></div>
+
+        <div class="checkout-author">
+          <img src="/images/photo.png" alt="Shrishti S Nagar" class="checkout-author-avatar" width="40" height="40" />
+          <div>
+            <p class="checkout-author-name">Shrishti S Nagar</p>
+            <p class="checkout-author-role">Marketer + Business Strategist</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</LandingLayout>
+
+<style>
+  .checkout-page {
+    background: #060205;
+    min-height: 100vh;
+    padding: 2rem 0 6rem;
+    position: relative;
+  }
+
+  .checkout-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(55, 13, 18, 0.4) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .checkout-back-wrap {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .checkout-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.45);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .checkout-back:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .checkout-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 3rem;
+    align-items: start;
+    position: relative;
+  }
+
+  @media (max-width: 900px) {
+    .checkout-container {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .checkout-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .checkout-image-wrap {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    aspect-ratio: 16 / 9;
+  }
+
+  .checkout-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .checkout-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a0810 0%, #0d0507 100%);
+  }
+
+  .checkout-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    background: oklch(23% 0.067 17 / 0.85);
+    color: oklch(81% 0.090 17);
+    border: 1px solid oklch(81% 0.090 17 / 0.35);
+    backdrop-filter: blur(8px);
+  }
+
+  .checkout-badge--free {
+    background: oklch(15% 0.05 145 / 0.85);
+    color: oklch(75% 0.15 145);
+    border-color: oklch(75% 0.15 145 / 0.35);
+  }
+
+  .checkout-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .checkout-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.40);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+  }
+
+  .checkout-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    color: oklch(75% 0.15 85);
+  }
+
+  .checkout-title {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .checkout-desc {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.52);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .checkout-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .checkout-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .checkout-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background: oklch(23% 0.067 17 / 0.5);
+    color: oklch(81% 0.090 17);
+    flex-shrink: 0;
+  }
+
+  .checkout-card {
+    background: #0f0508;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px;
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: 5.5rem;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+  }
+
+  .checkout-price-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .checkout-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+  }
+
+  .checkout-price {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+  }
+
+  .checkout-original-price {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.28);
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  .checkout-savings {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: oklch(75% 0.15 145);
+    background: oklch(15% 0.05 145 / 0.35);
+    border: 1px solid oklch(75% 0.15 145 / 0.25);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    width: fit-content;
+  }
+
+  .checkout-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: oklch(81% 0.090 17);
+    color: #0f0508;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.875rem 1.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.18s ease, transform 0.15s ease;
+    letter-spacing: -0.01em;
+  }
+
+  .checkout-cta:hover {
+    background: oklch(87% 0.090 17);
+    transform: translateY(-1px);
+  }
+
+  .checkout-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.38);
+    font-weight: 500;
+  }
+
+  .checkout-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  .checkout-author {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .checkout-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .checkout-author-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+  }
+
+  .checkout-author-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.38);
+    margin: 0.1rem 0 0;
+  }
+</style>

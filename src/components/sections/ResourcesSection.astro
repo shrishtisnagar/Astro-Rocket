@@ -1,0 +1,351 @@
+---
+import { getCollection } from 'astro:content';
+
+const allProducts = await getCollection('products', ({ data }) => !data.draft);
+const products = allProducts.sort((a, b) => a.data.order - b.data.order);
+
+function formatPrice(price: number | null | undefined): string {
+  if (price == null) return '';
+  if (price === 0) return '₹0';
+  return '₹' + price.toLocaleString('en-IN');
+}
+---
+
+<section class="resources-section">
+  <div class="resources-container">
+    <!-- Header -->
+    <div class="resources-header">
+      <span class="resources-eyebrow">Explore</span>
+      <h2 class="resources-title">Resources</h2>
+      <p class="resources-desc">
+        Digital products and 1:1 sessions to help you build, grow, and market smarter.
+      </p>
+    </div>
+
+    <!-- Grid -->
+    <div class="resources-grid">
+      {products.map((entry) => {
+        const p = entry.data;
+        return (
+          <a href={`/checkout/${entry.id}`} class="product-card" aria-label={p.title}>
+            <!-- Image -->
+            <div class="card-image">
+              {p.image ? (
+                <img src={p.image} alt={p.title} width="600" height="340" loading="lazy" decoding="async" />
+              ) : (
+                <div class="card-image-placeholder"></div>
+              )}
+              {p.badge && (
+                <span class={`card-badge ${p.badge === 'Free' ? 'card-badge--free' : ''}`}>
+                  {p.badge}
+                </span>
+              )}
+            </div>
+
+            <!-- Body -->
+            <div class="card-body">
+              <div class="card-meta">
+                <span class={`card-type-icon card-type-icon--${p.typeIcon}`}>
+                  {p.typeIcon === 'video' ? (
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+                    </svg>
+                  ) : (
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <polyline points="14 2 14 8 20 8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                  )}
+                </span>
+                <span class="card-type">{p.type}</span>
+                {p.rating && (
+                  <span class="card-rating">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    {p.rating}
+                  </span>
+                )}
+              </div>
+
+              <h3 class="card-title">{p.title}</h3>
+              <p class="card-desc">{p.description}</p>
+
+              <div class="card-footer">
+                <div class="card-price-wrap">
+                  {p.price != null ? (
+                    <>
+                      <span class="card-price">{formatPrice(p.price)}</span>
+                      {p.originalPrice != null && (
+                        <s class="card-original-price">{formatPrice(p.originalPrice)}</s>
+                      )}
+                    </>
+                  ) : (
+                    <span class="card-price">Contact</span>
+                  )}
+                </div>
+                <span class="card-arrow" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                    <polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .resources-section {
+    width: 100%;
+    background: #060205;
+    padding: 5rem 0 6rem;
+    position: relative;
+  }
+
+  .resources-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(55, 13, 18, 0.45) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .resources-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+  }
+
+  /* Header */
+  .resources-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .resources-eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: oklch(81% 0.090 17);
+    background: oklch(23% 0.067 17 / 0.25);
+    border: 1px solid oklch(23% 0.067 17 / 0.45);
+    padding: 0.3rem 0.9rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+  }
+
+  .resources-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.75rem;
+    line-height: 1.1;
+  }
+
+  .resources-desc {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.48);
+    max-width: 38ch;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  /* Grid */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .resources-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Card */
+  .product-card {
+    display: flex;
+    flex-direction: column;
+    background: #0f0508;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .product-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(247, 181, 221, 0.06);
+  }
+
+  .product-card:hover .card-arrow {
+    background: oklch(81% 0.090 17);
+    color: #0f0508;
+    border-color: oklch(81% 0.090 17);
+    transform: translateX(2px);
+  }
+
+  /* Image */
+  .card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a0810 0%, #0d0507 100%);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    background: oklch(23% 0.067 17 / 0.85);
+    color: oklch(81% 0.090 17);
+    border: 1px solid oklch(81% 0.090 17 / 0.35);
+    backdrop-filter: blur(8px);
+  }
+
+  .card-badge--free {
+    background: oklch(15% 0.05 145 / 0.85);
+    color: oklch(75% 0.15 145);
+    border-color: oklch(75% 0.15 145 / 0.35);
+  }
+
+  /* Body */
+  .card-body {
+    padding: 1.25rem 1.35rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    flex: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .card-type-icon {
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.38);
+  }
+
+  .card-type {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.38);
+    text-transform: uppercase;
+  }
+
+  .card-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: oklch(75% 0.15 85);
+    margin-left: auto;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .card-desc {
+    font-size: 0.84rem;
+    color: rgba(255, 255, 255, 0.42);
+    line-height: 1.55;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .card-price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .card-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .card-original-price {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.28);
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  .card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+</style>
