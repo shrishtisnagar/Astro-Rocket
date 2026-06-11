@@ -37,7 +37,6 @@ const row2 = all.filter((t) => t.row === 2).sort((a, b) => a.order - b.order);
               </div>
             </div>
             <p class="card-quote">"{t.quote}"</p>
-            <span class="card-handle">{t.handle}</span>
           </div>
         ))}
       </div>
@@ -163,10 +162,6 @@ const row2 = all.filter((t) => t.row === 2).sort((a, b) => a.order - b.order);
     margin: 0;
   }
 
-  .card-handle {
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.3);
-  }
 
   @media (prefers-reduced-motion: reduce) {
     .marquee-left,
