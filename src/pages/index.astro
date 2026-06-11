@@ -40,6 +40,10 @@ import { url } from '@/lib/url';
         <Icon name="x-twitter" size="md" />
         Twitter
       </a>
+      <a href="/blog" class="newsletter-link">
+        <Icon name="link" size="sm" />
+        Read the Newsletter
+      </a>
     </Fragment>
 
     <div slot="aside" class="flex items-center justify-center lg:justify-end">
@@ -107,5 +111,23 @@ import { url } from '@/lib/url';
     border-radius: 1rem;
     -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
     mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+  }
+
+  .newsletter-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: opacity 0.18s ease;
+    width: 100%;
+    margin-top: 0.25rem;
+  }
+
+  .newsletter-link:hover {
+    opacity: 0.7;
   }
 </style>
