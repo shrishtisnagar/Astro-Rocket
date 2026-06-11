@@ -7,29 +7,8 @@ price: 2500
 originalPrice: 8000
 image: /images/products/deep-consultation.svg
 checkoutUrl: https://topmate.io/shrishtisnagar
+appointmentUrl: https://calendar.google.com/calendar/appointments/schedules/AcZssZ1ocDkR3upcRf5yqtdPLTONnfgMNzzwsA422NnAmynRcVN54F6Lf0Tvo9bc_gbrg_9iUtYmm7Do?gv=true
 badge: Most Popular
-duration: 60
-schedule:
-  timezone: Asia/Kolkata
-  daysAhead: 21
-  monday:
-    - "10:00"
-    - "14:00"
-    - "18:00"
-  tuesday:
-    - "10:00"
-    - "14:00"
-    - "18:00"
-  wednesday: []
-  thursday:
-    - "10:00"
-    - "14:00"
-    - "18:00"
-  friday:
-    - "10:00"
-    - "12:00"
-  saturday: []
-  sunday: []
 features:
   - 60-minute focused strategy call
   - Marketing & business growth audit

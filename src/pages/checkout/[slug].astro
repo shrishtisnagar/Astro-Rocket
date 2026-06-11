@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import LandingLayout from '@/layouts/LandingLayout.astro';
-import BookingWidget from '@/components/booking/BookingWidget';
 
 export async function getStaticPaths() {
   const products = await getCollection('products', ({ data }) => !data.draft);
@@ -21,7 +20,7 @@ function formatPrice(price: number | null | undefined): string {
 }
 
 const isVideoMeeting = p.typeIcon === 'video';
-const hasSchedule = isVideoMeeting && !!p.schedule;
+const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
 ---
 
 <LandingLayout
@@ -40,7 +39,7 @@ const hasSchedule = isVideoMeeting && !!p.schedule;
       </a>
     </div>
 
-    <div class={`checkout-container${hasSchedule ? ' has-booking' : ''}`}>
+    <div class={`checkout-container${hasAppointment ? ' has-appointment' : ''}`}>
       <!-- Left column: product info -->
       <div class="checkout-info">
         <div class="checkout-image-wrap">
@@ -102,17 +101,34 @@ const hasSchedule = isVideoMeeting && !!p.schedule;
       </div>
 
       <!-- Right column -->
-      {hasSchedule ? (
-        <!-- Custom booking widget with Google Meet -->
-        <BookingWidget
-          client:load
-          productSlug={entry.id}
-          productTitle={p.title}
-          duration={p.duration ?? 60}
-          price={formatPrice(p.price)}
-          originalPrice={p.originalPrice != null ? formatPrice(p.originalPrice) : undefined}
-          schedule={p.schedule!}
-        />
+      {hasAppointment ? (
+        <!-- Google Calendar appointment scheduling embed -->
+        <div class="appointment-col">
+          <div class="appointment-price-bar">
+            <div class="appointment-price-row">
+              <span class="appointment-price">{formatPrice(p.price)}</span>
+              {p.originalPrice != null && p.originalPrice !== p.price && (
+                <s class="appointment-original">{formatPrice(p.originalPrice)}</s>
+              )}
+              {p.originalPrice != null && p.price != null && p.originalPrice !== p.price && (
+                <span class="appointment-savings">
+                  {Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}% off
+                </span>
+              )}
+            </div>
+            <p class="appointment-hint">Pick a slot — you'll get a confirmation & Meet link by email.</p>
+          </div>
+          <div class="appointment-frame-wrap">
+            <iframe
+              src={p.appointmentUrl}
+              style="border:0"
+              width="100%"
+              height="600"
+              frameborder="0"
+              title={`Book ${p.title}`}
+            ></iframe>
+          </div>
+        </div>
       ) : (
         <!-- Standard purchase card for digital products -->
         <div class="checkout-card">
@@ -222,8 +238,8 @@ const hasSchedule = isVideoMeeting && !!p.schedule;
     position: relative;
   }
 
-  .checkout-container.has-booking {
-    grid-template-columns: 1fr 460px;
+  .checkout-container.has-appointment {
+    grid-template-columns: 1fr 520px;
   }
 
   @media (max-width: 900px) {
@@ -353,6 +369,68 @@ const hasSchedule = isVideoMeeting && !!p.schedule;
     background: oklch(23% 0.067 17 / 0.5);
     color: oklch(81% 0.090 17);
     flex-shrink: 0;
+  }
+
+  /* Appointment scheduling embed */
+  .appointment-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: sticky;
+    top: 5.5rem;
+  }
+
+  .appointment-price-bar {
+    background: #0f0508;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px 16px 0 0;
+    padding: 1.1rem 1.4rem;
+    border-bottom: none;
+  }
+
+  .appointment-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .appointment-price {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+  }
+
+  .appointment-original {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.28);
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  .appointment-savings {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: oklch(75% 0.15 145);
+    background: oklch(15% 0.05 145 / 0.35);
+    border: 1px solid oklch(75% 0.15 145 / 0.25);
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+  }
+
+  .appointment-hint {
+    margin: 0.3rem 0 0;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.38);
+    line-height: 1.5;
+  }
+
+  .appointment-frame-wrap {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+    background: #fff;
   }
 
   /* Purchase card (digital products) */
