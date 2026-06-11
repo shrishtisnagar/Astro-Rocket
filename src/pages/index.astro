@@ -56,6 +56,14 @@ import { url } from '@/lib/url';
     </div>
   </Hero>
 
+  <!-- Newsletter CTA -->
+  <section class="flex justify-center py-20">
+    <a href="/blog" class="newsletter-cta">
+      <Icon name="link" size="sm" class="newsletter-cta-icon" />
+      Read the Newsletter
+    </a>
+  </section>
+
 </LandingLayout>
 
 <style>
@@ -107,5 +115,25 @@ import { url } from '@/lib/url';
     border-radius: 1rem;
     -webkit-mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
     mask-image: radial-gradient(ellipse 85% 85% at 50% 45%, black 40%, transparent 100%);
+  }
+
+  .newsletter-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: opacity 0.18s ease;
+  }
+
+  .newsletter-cta:hover {
+    opacity: 0.75;
+  }
+
+  .newsletter-cta-icon {
+    opacity: 0.7;
   }
 </style>
