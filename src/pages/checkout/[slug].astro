@@ -1,28 +1,30 @@
 ---
+import { getCollection } from 'astro:content';
 import LandingLayout from '@/layouts/LandingLayout.astro';
-import { products } from '@/data/products';
 
-export function getStaticPaths() {
-  return products.map((product) => ({
-    params: { slug: product.slug },
-    props: { product },
+export async function getStaticPaths() {
+  const products = await getCollection('products', ({ data }) => !data.draft);
+  return products.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
   }));
 }
 
-const { product } = Astro.props;
+const { entry } = Astro.props;
+const p = entry.data;
 
-function formatPrice(price: number | null): string {
-  if (price === null) return '';
+function formatPrice(price: number | null | undefined): string {
+  if (price == null) return '';
   if (price === 0) return '₹0';
   return '₹' + price.toLocaleString('en-IN');
 }
 
-const isVideoMeeting = product.typeIcon === 'video';
+const isVideoMeeting = p.typeIcon === 'video';
 ---
 
 <LandingLayout
-  title={`${product.title} — Shrishti S Nagar`}
-  description={product.description}
+  title={`${p.title} — Shrishti S Nagar`}
+  description={p.description}
 >
   <div class="checkout-page">
     <!-- Back link -->
@@ -40,18 +42,14 @@ const isVideoMeeting = product.typeIcon === 'video';
       <!-- Left column: product info -->
       <div class="checkout-info">
         <div class="checkout-image-wrap">
-          <img
-            src={product.image}
-            alt={product.title}
-            width="600"
-            height="340"
-            loading="eager"
-            decoding="async"
-            class="checkout-image"
-          />
-          {product.badge && (
-            <span class={`checkout-badge ${product.badge === 'Free' ? 'checkout-badge--free' : ''}`}>
-              {product.badge}
+          {p.image ? (
+            <img src={p.image} alt={p.title} width="600" height="340" loading="eager" decoding="async" class="checkout-image" />
+          ) : (
+            <div class="checkout-image-placeholder"></div>
+          )}
+          {p.badge && (
+            <span class={`checkout-badge ${p.badge === 'Free' ? 'checkout-badge--free' : ''}`}>
+              {p.badge}
             </span>
           )}
         </div>
@@ -69,11 +67,11 @@ const isVideoMeeting = product.typeIcon === 'video';
                 <polyline points="14 2 14 8 20 8"/>
               </svg>
             )}
-            {product.type}
+            {p.type}
           </span>
-          {product.rating && (
+          {p.rating && (
             <span class="checkout-rating">
-              {Array.from({ length: product.rating }).map(() => (
+              {Array.from({ length: p.rating }).map(() => (
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
@@ -82,13 +80,12 @@ const isVideoMeeting = product.typeIcon === 'video';
           )}
         </div>
 
-        <h1 class="checkout-title">{product.title}</h1>
-        <p class="checkout-desc">{product.description}</p>
+        <h1 class="checkout-title">{p.title}</h1>
+        <p class="checkout-desc">{p.description}</p>
 
-        <!-- Features -->
-        {product.features.length > 0 && (
+        {p.features.length > 0 && (
           <ul class="checkout-features">
-            {product.features.map((feat) => (
+            {p.features.map((feat) => (
               <li class="checkout-feature-item">
                 <span class="checkout-check" aria-hidden="true">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -105,30 +102,25 @@ const isVideoMeeting = product.typeIcon === 'video';
       <!-- Right column: checkout card -->
       <div class="checkout-card">
         <div class="checkout-price-block">
-          {product.price !== null ? (
+          {p.price != null ? (
             <div class="checkout-price-row">
-              <span class="checkout-price">{formatPrice(product.price)}</span>
-              {product.originalPrice && product.originalPrice !== product.price && (
-                <s class="checkout-original-price">{formatPrice(product.originalPrice)}</s>
+              <span class="checkout-price">{formatPrice(p.price)}</span>
+              {p.originalPrice != null && p.originalPrice !== p.price && (
+                <s class="checkout-original-price">{formatPrice(p.originalPrice)}</s>
               )}
             </div>
           ) : (
             <span class="checkout-price">Contact</span>
           )}
-          {product.originalPrice && product.price !== null && product.originalPrice !== product.price && (
+          {p.originalPrice != null && p.price != null && p.originalPrice !== p.price && (
             <span class="checkout-savings">
-              Save {formatPrice(product.originalPrice - (product.price ?? 0))} ({Math.round(((product.originalPrice - (product.price ?? 0)) / product.originalPrice) * 100)}% off)
+              Save {formatPrice(p.originalPrice - p.price)} ({Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}% off)
             </span>
           )}
         </div>
 
-        <a
-          href={product.checkoutUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="checkout-cta"
-        >
-          {product.price === 0 ? 'Get for Free' : isVideoMeeting ? 'Book Session' : 'Get Instant Access'}
+        <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
+          {p.price === 0 ? 'Get for Free' : isVideoMeeting ? 'Book Session' : 'Get Instant Access'}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12"/>
             <polyline points="12 5 19 12 12 19"/>
@@ -220,7 +212,6 @@ const isVideoMeeting = product.typeIcon === 'video';
     }
   }
 
-  /* Info column */
   .checkout-info {
     display: flex;
     flex-direction: column;
@@ -240,6 +231,12 @@ const isVideoMeeting = product.typeIcon === 'video';
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  .checkout-image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a0810 0%, #0d0507 100%);
   }
 
   .checkout-badge {
@@ -337,7 +334,6 @@ const isVideoMeeting = product.typeIcon === 'video';
     flex-shrink: 0;
   }
 
-  /* Checkout card */
   .checkout-card {
     background: #0f0508;
     border: 1px solid rgba(255, 255, 255, 0.10);
