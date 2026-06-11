@@ -7,7 +7,7 @@ content:
     label: Testimonials
     type: collection
     path: src/content/testimonials
-    format: json
+    format: yaml-frontmatter
     filename: "{author}"
     view:
       fields: [author, title, platform, row]

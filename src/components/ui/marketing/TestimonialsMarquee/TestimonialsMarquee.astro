@@ -1,7 +1,4 @@
 ---
-import { readdir, readFile } from 'node:fs/promises';
-import { join } from 'node:path';
-
 interface Testimonial {
   quote: string;
   author: string;
@@ -13,15 +10,8 @@ interface Testimonial {
   order: number;
 }
 
-const files = await readdir(join(process.cwd(), 'src/content/testimonials'));
-const all: Testimonial[] = await Promise.all(
-  files
-    .filter((f) => f.endsWith('.json'))
-    .map(async (f) => {
-      const raw = await readFile(join(process.cwd(), 'src/content/testimonials', f), 'utf-8');
-      return JSON.parse(raw) as Testimonial;
-    })
-);
+const mdFiles = import.meta.glob('/src/content/testimonials/*.md', { eager: true });
+const all: Testimonial[] = Object.values(mdFiles).map((f: any) => f.frontmatter as Testimonial);
 
 const row1 = all.filter((t) => t.row === 1).sort((a, b) => a.order - b.order);
 const row2 = all.filter((t) => t.row === 2).sort((a, b) => a.order - b.order);
