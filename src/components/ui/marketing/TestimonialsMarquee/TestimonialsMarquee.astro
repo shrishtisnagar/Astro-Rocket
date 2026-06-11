@@ -38,12 +38,7 @@ const row2 = all.filter((t) => t.row === 2).sort((a, b) => a.order - b.order);
                 {t.avatar ? (
                   <img src={t.avatar} alt={t.author} class="avatar" />
                 ) : (
-                  <div class="avatar-fallback">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="8" r="4" fill="#aaa"/>
-                      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="#aaa"/>
-                    </svg>
-                  </div>
+                  <div class="avatar-fallback">{t.author.charAt(0).toUpperCase()}</div>
                 )}
                 <div class="author-info">
                   <span class="author-name">{t.author}</span>
@@ -160,12 +155,14 @@ const row2 = all.filter((t) => t.row === 2).sort((a, b) => a.order - b.order);
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #f0f0f0;
+    background: #f3e8ff;
+    color: #7c3aed;
+    font-weight: 700;
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    overflow: hidden;
   }
 
   .author-info {
