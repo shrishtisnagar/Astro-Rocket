@@ -1,7 +1,2 @@
 name = "astro-rocket"
 compatibility_date = "2026-01-31"
-main = "dist/server/entry.mjs"
-
-[assets]
-directory = "./dist/client"
-binding = "ASSETS"
