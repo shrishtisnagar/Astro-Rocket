@@ -8,6 +8,7 @@ originalPrice: 3000
 rating: 5
 image: /images/products/quick-call.svg
 productUrl: https://calendar.app.google/ef8C5hpsif4wF5FH9
+badge: Most Popular
 features: |-
   30-minute open Q&A session, 
   Marketing, positioning, or growth, 
