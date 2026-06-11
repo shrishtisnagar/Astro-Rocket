@@ -14,6 +14,7 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { label: 'Home', href: '/', order: 1 },
   { label: 'Newsletter', href: 'https://newsletter.thescurve.in/', order: 2 },
+  { label: 'SOP Checklist', href: '/sop-checklist', order: 3 },
 ];
 
 /**

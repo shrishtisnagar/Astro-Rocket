@@ -1,0 +1,410 @@
+---
+/**
+ * SOP Checklist page — The S Curve
+ * URL: /sop-checklist
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import { Hero } from '@/components/hero';
+
+const categories = [
+  {
+    id: 'lead-generation',
+    label: 'Lead Generation',
+    icon: 'zap',
+    color: 'from-brand-500/20 to-brand-500/5',
+    sops: [
+      { id: 'lg-1', number: 1,  title: 'Outbound Prospecting SOP',    desc: 'Identify, research, and reach out to ideal clients.' },
+      { id: 'lg-2', number: 2,  title: 'Inbound Lead Handling SOP',   desc: 'Process and respond to inbound enquiries quickly.' },
+      { id: 'lg-3', number: 3,  title: 'Follow-Up SOP',               desc: 'Consistent nurture sequence for warm leads.' },
+      { id: 'lg-4', number: 4,  title: 'Discovery Call SOP',          desc: 'Run structured calls that qualify and convert.' },
+      { id: 'lg-5', number: 5,  title: 'Referral Generation SOP',     desc: 'Systematically ask for and track referrals.' },
+    ],
+  },
+  {
+    id: 'sales',
+    label: 'Sales',
+    icon: 'trending-up',
+    color: 'from-brand-500/20 to-brand-500/5',
+    sops: [
+      { id: 'sl-1', number: 6,  title: 'Pricing SOP',                 desc: 'Define and communicate your pricing confidently.' },
+      { id: 'sl-2', number: 7,  title: 'Proposal Creation SOP',       desc: 'Write proposals that close deals faster.' },
+      { id: 'sl-3', number: 8,  title: 'Objection Handling SOP',      desc: 'Address doubts without pressure or panic.' },
+      { id: 'sl-4', number: 9,  title: 'Contract & Agreement SOP',    desc: 'Protect yourself with clear, signed agreements.' },
+      { id: 'sl-5', number: 10, title: 'Sales Pipeline Management SOP', desc: 'Track deals so nothing falls through the cracks.' },
+    ],
+  },
+  {
+    id: 'client-onboarding',
+    label: 'Client Onboarding',
+    icon: 'users',
+    color: 'from-brand-500/20 to-brand-500/5',
+    sops: [
+      { id: 'co-1', number: 11, title: 'Client Kickoff SOP',          desc: 'Start every engagement on a strong, clear note.' },
+      { id: 'co-2', number: 12, title: 'Welcome Email SOP',           desc: 'Set the tone and build trust from day one.' },
+      { id: 'co-3', number: 13, title: 'Access Collection SOP',       desc: 'Gather logins, assets, and approvals efficiently.' },
+      { id: 'co-4', number: 14, title: 'Project Setup SOP',           desc: 'Create folders, docs, and systems before work starts.' },
+      { id: 'co-5', number: 15, title: 'Expectation Setting SOP',     desc: 'Align on scope, timelines, and communication norms.' },
+    ],
+  },
+  {
+    id: 'client-delivery',
+    label: 'Client Delivery',
+    icon: 'package',
+    color: 'from-brand-500/20 to-brand-500/5',
+    sops: [
+      { id: 'cd-1', number: 16, title: 'Research SOP',                desc: 'Gather insights before every strategy or piece of content.' },
+      { id: 'cd-2', number: 17, title: 'Strategy Development SOP',    desc: 'Build frameworks that are repeatable and defensible.' },
+      { id: 'cd-3', number: 18, title: 'Quality Assurance SOP',       desc: 'Review everything before it leaves your desk.' },
+      { id: 'cd-4', number: 19, title: 'Client Communication SOP',    desc: 'Keep clients informed without constant check-ins.' },
+      { id: 'cd-5', number: 20, title: 'Reporting SOP',               desc: 'Show impact with data your clients actually care about.' },
+    ],
+  },
+  {
+    id: 'content-marketing',
+    label: 'Content & Marketing',
+    icon: 'pen-tool',
+    color: 'from-brand-500/20 to-brand-500/5',
+    sops: [
+      { id: 'cm-1', number: 21, title: 'Content Research SOP',        desc: 'Find ideas and angles that resonate with your audience.' },
+      { id: 'cm-2', number: 22, title: 'Content Creation SOP',        desc: 'Write, record, and design with a repeatable process.' },
+      { id: 'cm-3', number: 23, title: 'Social Media Publishing SOP', desc: 'Schedule and post consistently without burnout.' },
+      { id: 'cm-4', number: 24, title: 'Newsletter SOP',              desc: 'Send emails your list looks forward to opening.' },
+      { id: 'cm-5', number: 25, title: 'Content Repurposing SOP',     desc: 'Turn one piece of content into five across channels.' },
+    ],
+  },
+  {
+    id: 'operations',
+    label: 'Operations',
+    icon: 'settings',
+    color: 'from-brand-500/20 to-brand-500/5',
+    sops: [
+      { id: 'op-1', number: 26, title: 'Invoice SOP',                 desc: 'Get paid on time, every time, without chasing.' },
+      { id: 'op-2', number: 27, title: 'File Management SOP',         desc: 'Keep your digital workspace clean and findable.' },
+      { id: 'op-3', number: 28, title: 'Weekly Review SOP',           desc: 'Reflect, plan, and stay on top of your week.' },
+      { id: 'op-4', number: 29, title: 'Knowledge Management SOP',    desc: 'Capture insights so you never re-learn what you know.' },
+      { id: 'op-5', number: 30, title: 'SOP Creation SOP',            desc: 'Build new SOPs fast using a consistent template.' },
+    ],
+  },
+];
+
+const bonusSops = [
+  { id: 'bx-1',  title: 'AI Workflow SOP',           desc: 'Integrate AI tools without losing your voice or quality.' },
+  { id: 'bx-2',  title: 'Decision-Making SOP',        desc: 'Stop overthinking. Use a framework for every big call.' },
+  { id: 'bx-3',  title: 'Client Offboarding SOP',     desc: 'End projects well and set up the next one.' },
+  { id: 'bx-4',  title: 'Testimonial Collection SOP', desc: 'Make it easy for clients to give glowing reviews.' },
+  { id: 'bx-5',  title: 'Personal CRM SOP',           desc: 'Manage relationships before they go cold.' },
+  { id: 'bx-6',  title: 'Offer Creation SOP',         desc: 'Design irresistible offers that sell themselves.' },
+  { id: 'bx-7',  title: 'Annual Planning SOP',        desc: 'Set the year up for growth instead of guessing.' },
+  { id: 'bx-8',  title: 'Crisis Management SOP',      desc: 'Handle difficult situations without losing clients.' },
+  { id: 'bx-9',  title: 'Hiring SOP',                 desc: 'Bring the right people in at the right time.' },
+  { id: 'bx-10', title: 'Partnership SOP',            desc: 'Build collabs that multiply your reach.' },
+];
+
+const totalCore  = categories.reduce((acc, c) => acc + c.sops.length, 0);
+const totalBonus = bonusSops.length;
+const totalAll   = totalCore + totalBonus;
+---
+
+<PageLayout
+  title="30 SOPs for Solopreneurs — The S Curve"
+  description="The complete SOP checklist every solopreneur needs: lead generation, sales, client delivery, content, and operations — all in one place."
+>
+  <!-- Hero -->
+  <Hero layout="centered" size="sm">
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="list-checks" size="sm" />
+      The S Curve SOP System
+    </Badge>
+    <h1 slot="title">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">30 SOPs Every</span><br />
+      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)]">Solopreneur Needs.</span>
+    </h1>
+    <p slot="description">
+      Stop reinventing the wheel every time a lead comes in or a client asks a question. Check off each SOP as you build it — and watch your business run without you.
+    </p>
+  </Hero>
+
+  <!-- Overall Progress -->
+  <section class="py-10 bg-background">
+    <div class="mx-auto max-w-4xl px-6">
+      <Card variant="elevated" padding="lg" class="text-center" id="overall-progress-card">
+        <div class="flex flex-col items-center gap-4">
+          <Badge variant="brand" pill>Your Progress</Badge>
+          <div class="flex items-end gap-3">
+            <span class="font-display text-5xl font-bold text-brand-500" id="overall-count">0</span>
+            <span class="text-2xl text-foreground-muted font-medium mb-1">/ {totalAll} SOPs built</span>
+          </div>
+          <div class="w-full max-w-lg">
+            <div class="h-3 w-full rounded-full bg-card-border overflow-hidden">
+              <div
+                id="overall-bar"
+                class="h-full rounded-full bg-brand-500 transition-all duration-500"
+                style="width: 0%"
+              ></div>
+            </div>
+            <p class="text-xs text-foreground-muted mt-2" id="overall-pct">0% complete</p>
+          </div>
+          <button
+            id="reset-btn"
+            class="text-xs text-foreground-subtle hover:text-foreground-muted transition-colors underline underline-offset-2 mt-1"
+          >
+            Reset all
+          </button>
+        </div>
+      </Card>
+    </div>
+  </section>
+
+  <!-- Core 30 SOPs -->
+  <section class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-10">
+      <div class="text-center flex flex-col items-center gap-4" data-reveal>
+        <Badge variant="brand" pill>Core 30</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Build these first.
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-xl text-balance">
+          Six categories. Five SOPs each. This is the foundation every solopreneur needs before they can scale.
+        </p>
+      </div>
+
+      {categories.map((cat) => (
+        <div class="flex flex-col gap-4" data-reveal id={`section-${cat.id}`}>
+          <!-- Category header -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class={`w-9 h-9 rounded-lg bg-gradient-to-br ${cat.color} flex items-center justify-center text-brand-500 shrink-0`}>
+                <Icon name={cat.icon} size="sm" />
+              </div>
+              <h3 class="font-display text-lg font-semibold text-foreground">{cat.label}</h3>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-medium text-foreground-muted" id={`count-${cat.id}`}>0 / {cat.sops.length}</span>
+              <div class="w-24 h-1.5 rounded-full bg-card-border overflow-hidden">
+                <div
+                  id={`bar-${cat.id}`}
+                  class="h-full rounded-full bg-brand-500 transition-all duration-500"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SOP items -->
+          <Card variant="elevated" class="divide-y divide-border overflow-hidden !p-0">
+            {cat.sops.map((sop) => (
+              <label
+                class="sop-item flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-card/60 transition-colors group"
+                data-category={cat.id}
+              >
+                <input
+                  type="checkbox"
+                  class="sop-checkbox sr-only"
+                  id={sop.id}
+                  data-category={cat.id}
+                />
+                <div class="sop-box mt-0.5 w-5 h-5 rounded-md border-2 border-border group-hover:border-brand-500/60 transition-colors shrink-0 flex items-center justify-center text-brand-500">
+                  <svg class="sop-check w-3 h-3 opacity-0 transition-opacity" viewBox="0 0 12 10" fill="none">
+                    <path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-xs font-bold text-brand-500/70 tabular-nums">#{String(sop.number).padStart(2, '0')}</span>
+                    <span class="sop-title text-sm font-semibold text-foreground group-hover:text-brand-500 transition-colors">{sop.title}</span>
+                  </div>
+                  <p class="text-xs text-foreground-muted mt-0.5 leading-relaxed">{sop.desc}</p>
+                </div>
+              </label>
+            ))}
+          </Card>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Bonus SOPs -->
+  <section class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-6">
+      <div class="text-center flex flex-col items-center gap-4" data-reveal>
+        <Badge variant="brand" pill>Bonus</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Advanced SOPs.
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-xl text-balance">
+          Once the core 30 are in place, these 10 advanced SOPs separate the businesses that plateau from the ones that keep growing.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between px-1" data-reveal>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+            <Icon name="star" size="sm" />
+          </div>
+          <h3 class="font-display text-lg font-semibold text-foreground">Advanced SOPs</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-medium text-foreground-muted" id="count-bonus">0 / {totalBonus}</span>
+          <div class="w-24 h-1.5 rounded-full bg-card-border overflow-hidden">
+            <div id="bar-bonus" class="h-full rounded-full bg-brand-500 transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <Card variant="elevated" class="divide-y divide-border overflow-hidden !p-0" data-reveal>
+        {bonusSops.map((sop) => (
+          <label
+            class="sop-item flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-card/60 transition-colors group"
+            data-category="bonus"
+          >
+            <input
+              type="checkbox"
+              class="sop-checkbox sr-only"
+              id={sop.id}
+              data-category="bonus"
+            />
+            <div class="sop-box mt-0.5 w-5 h-5 rounded-md border-2 border-border group-hover:border-brand-500/60 transition-colors shrink-0 flex items-center justify-center text-brand-500">
+              <svg class="sop-check w-3 h-3 opacity-0 transition-opacity" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-bold text-brand-500/70">Bonus</span>
+                <span class="sop-title text-sm font-semibold text-foreground group-hover:text-brand-500 transition-colors">{sop.title}</span>
+              </div>
+              <p class="text-xs text-foreground-muted mt-0.5 leading-relaxed">{sop.desc}</p>
+            </div>
+          </label>
+        ))}
+      </Card>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-2xl px-6 text-center" data-reveal>
+      <Badge variant="brand" pill class="mb-6">Ready to systemise?</Badge>
+      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
+        Want help building these?
+      </h2>
+      <p class="text-lg text-foreground-muted mb-8 text-balance">
+        Book a clarity call and we'll map out which SOPs will give your business the biggest leverage right now.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button size="lg" href="https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti" target="_blank" rel="noopener noreferrer" class="cta-btn-brand">
+          Book a call
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+        <Button size="lg" variant="outline" href="/contact">
+          Contact
+          <Icon name="arrow-right" size="sm" />
+        </Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .sop-checkbox:checked ~ .sop-box {
+    background-color: var(--color-brand-500);
+    border-color: var(--color-brand-500);
+  }
+  .sop-checkbox:checked ~ .sop-box .sop-check {
+    opacity: 1;
+    color: white;
+  }
+  .sop-item:has(.sop-checkbox:checked) .sop-title {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+</style>
+
+<script define:vars={{ totalAll, categories: categories.map(c => ({ id: c.id, count: c.sops.length })), totalBonus }}>
+  const STORAGE_KEY = 'scurve-sop-checklist';
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch { return {}; }
+  }
+
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function updateProgress(state) {
+    // Per-category bars
+    for (const cat of categories) {
+      const checked = cat.sops
+        ? 0
+        : 0;
+      // count checked in this category
+      const inputs = document.querySelectorAll(`input[data-category="${cat.id}"]`);
+      const done = [...inputs].filter(i => i.checked).length;
+      const total = inputs.length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      const bar = document.getElementById(`bar-${cat.id}`);
+      const cnt = document.getElementById(`count-${cat.id}`);
+      if (bar) bar.style.width = `${pct}%`;
+      if (cnt) cnt.textContent = `${done} / ${total}`;
+    }
+
+    // Bonus bar
+    const bonusInputs = document.querySelectorAll('input[data-category="bonus"]');
+    const bonusDone = [...bonusInputs].filter(i => i.checked).length;
+    const bonusPct = bonusInputs.length ? Math.round((bonusDone / bonusInputs.length) * 100) : 0;
+    const bonusBar = document.getElementById('bar-bonus');
+    const bonusCnt = document.getElementById('count-bonus');
+    if (bonusBar) bonusBar.style.width = `${bonusPct}%`;
+    if (bonusCnt) bonusCnt.textContent = `${bonusDone} / ${bonusInputs.length}`;
+
+    // Overall
+    const allInputs = document.querySelectorAll('.sop-checkbox');
+    const totalDone = [...allInputs].filter(i => i.checked).length;
+    const overallPct = totalAll ? Math.round((totalDone / totalAll) * 100) : 0;
+    const overallBar = document.getElementById('overall-bar');
+    const overallCnt = document.getElementById('overall-count');
+    const overallPctEl = document.getElementById('overall-pct');
+    if (overallBar) overallBar.style.width = `${overallPct}%`;
+    if (overallCnt) overallCnt.textContent = String(totalDone);
+    if (overallPctEl) overallPctEl.textContent = `${overallPct}% complete`;
+  }
+
+  function init() {
+    const state = loadState();
+
+    // Restore checkbox states
+    document.querySelectorAll('.sop-checkbox').forEach(input => {
+      if (state[input.id]) {
+        input.checked = true;
+      }
+      input.addEventListener('change', () => {
+        const s = loadState();
+        if (input.checked) s[input.id] = true;
+        else delete s[input.id];
+        saveState(s);
+        updateProgress(s);
+      });
+    });
+
+    updateProgress(state);
+
+    // Reset button
+    document.getElementById('reset-btn')?.addEventListener('click', () => {
+      if (!confirm('Reset all progress? This cannot be undone.')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      document.querySelectorAll('.sop-checkbox').forEach(i => { i.checked = false; });
+      updateProgress({});
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
