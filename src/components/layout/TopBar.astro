@@ -5,14 +5,14 @@ interface Props {
   newsletterHref?: string;
 }
 
-const { newsletterHref = '/blog' } = Astro.props;
+const { newsletterHref = 'https://newsletter.thescurve.in/' } = Astro.props;
 ---
 
 <div class="top-bar">
   <a href="/" aria-label="Home" class="top-bar-logo">
     <Logo size="lg" />
   </a>
-  <a href={newsletterHref} class="top-bar-link">
+  <a href={newsletterHref} target="_blank" rel="noopener noreferrer" class="top-bar-link">
     Read the Newsletter
   </a>
 </div>
