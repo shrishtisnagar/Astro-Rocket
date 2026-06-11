@@ -105,7 +105,6 @@ const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 
       <!-- Right column -->
       {hasAppointment ? (
-        <!-- Google Calendar appointment scheduling embed -->
         <div class="appointment-col">
           <div class="appointment-price-bar">
             <div class="appointment-price-row">
@@ -133,7 +132,6 @@ const web3formsKey = p.web3formsKey || PUBLIC_WEB3FORMS_ACCESS_KEY || '';
           </div>
         </div>
       ) : (
-        <!-- Standard purchase card for digital products -->
         <div class="checkout-card">
           <div class="checkout-price-block">
             {p.price != null ? (
