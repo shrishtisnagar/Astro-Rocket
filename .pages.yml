@@ -13,7 +13,7 @@ content:
     fields:
       - name: quote
         label: Quote
-        type: rich-text
+        type: text
         required: true
 
       - name: author
