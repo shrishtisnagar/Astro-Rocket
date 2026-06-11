@@ -153,62 +153,56 @@ const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
             )}
           </div>
 
-          {isFree ? (
-            <div id="free-signup-wrap">
-              <form id="free-signup-form" data-checkout-url={p.checkoutUrl} data-product={p.title}>
-                <input type="hidden" name="access_key" value={web3formsKey} />
-                <input type="hidden" name="subject" value={`Free download: ${p.title}`} />
-                <input type="hidden" name="from_name" value="Shrishti S Nagar" />
-                <div class="free-signup-botcheck" aria-hidden="true">
-                  <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
-                </div>
-                <div class="free-signup-fields">
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your name"
-                    required
-                    autocomplete="name"
-                    class="free-signup-input"
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your email"
-                    required
-                    autocomplete="email"
-                    class="free-signup-input"
-                  />
-                </div>
-                <div id="free-signup-msg" class="free-signup-msg hidden"></div>
-                <button type="submit" id="free-signup-btn" class="checkout-cta free-signup-btn">
-                  Get for Free
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </button>
-              </form>
-              <div id="free-signup-success" class="free-signup-success hidden">
-                <p class="free-signup-success-text">You're in! Here's your download:</p>
-                <a id="free-signup-link" href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
-                  Download now
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                    <polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </a>
+          <div id="signup-wrap">
+            <form
+              id="signup-form"
+              data-checkout-url={p.checkoutUrl}
+              data-free={isFree ? 'true' : 'false'}
+            >
+              <input type="hidden" name="access_key" value={web3formsKey} />
+              <input type="hidden" name="subject" value={isFree ? `Free download: ${p.title}` : `New purchase intent: ${p.title}`} />
+              <input type="hidden" name="from_name" value="Shrishti S Nagar" />
+              <div class="free-signup-botcheck" aria-hidden="true">
+                <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
               </div>
+              <div class="free-signup-fields">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your name"
+                  required
+                  autocomplete="name"
+                  class="free-signup-input"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your email"
+                  required
+                  autocomplete="email"
+                  class="free-signup-input"
+                />
+              </div>
+              <div id="signup-msg" class="free-signup-msg hidden"></div>
+              <button type="submit" id="signup-btn" class="checkout-cta free-signup-btn">
+                {isFree ? 'Get for Free' : 'Get Instant Access'}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </button>
+            </form>
+            <div id="signup-success" class="free-signup-success hidden">
+              <p class="free-signup-success-text">You're in! Here's your download:</p>
+              <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
+                Download now
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
             </div>
-          ) : (
-            <a href={p.checkoutUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
-              Get Instant Access
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-            </a>
-          )}
+          </div>
 
           <div class="checkout-trust">
             <span class="trust-item">
@@ -675,18 +669,21 @@ const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 </style>
 
 <script>
-  function initFreeSignup() {
-    const form = document.getElementById('free-signup-form') as HTMLFormElement | null;
+  function initSignupForm() {
+    const form = document.getElementById('signup-form') as HTMLFormElement | null;
     if (!form) return;
 
-    const btn = document.getElementById('free-signup-btn') as HTMLButtonElement;
-    const msg = document.getElementById('free-signup-msg') as HTMLDivElement;
-    const successPanel = document.getElementById('free-signup-success') as HTMLDivElement;
+    const btn = document.getElementById('signup-btn') as HTMLButtonElement;
+    const msg = document.getElementById('signup-msg') as HTMLDivElement;
+    const successPanel = document.getElementById('signup-success') as HTMLDivElement;
+    const isFree = form.dataset.free === 'true';
+    const checkoutUrl = form.dataset.checkoutUrl!;
+    const originalLabel = btn.textContent?.trim() || 'Submit';
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       btn.disabled = true;
-      btn.textContent = 'Sending…';
+      btn.textContent = 'Just a sec…';
       msg.classList.add('hidden');
       msg.classList.remove('error');
 
@@ -698,25 +695,31 @@ const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
         const data = await res.json();
 
         if (data.success) {
-          form.classList.add('hidden');
-          successPanel.classList.remove('hidden');
+          if (isFree) {
+            form.classList.add('hidden');
+            successPanel.classList.remove('hidden');
+          } else {
+            window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+          }
         } else {
           msg.textContent = data.message || 'Something went wrong. Please try again.';
           msg.classList.add('error');
           msg.classList.remove('hidden');
           btn.disabled = false;
-          btn.textContent = 'Get for Free';
+          btn.textContent = originalLabel;
         }
       } catch {
         msg.textContent = 'Failed to submit. Please try again.';
         msg.classList.add('error');
         msg.classList.remove('hidden');
         btn.disabled = false;
-        btn.textContent = 'Get for Free';
+        btn.textContent = originalLabel;
       }
     });
   }
 
-  initFreeSignup();
-  document.addEventListener('astro:after-swap', initFreeSignup);
+  initSignupForm();
+  document.addEventListener('astro:after-swap', initSignupForm);
 </script>
