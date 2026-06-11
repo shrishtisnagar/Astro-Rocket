@@ -3,8 +3,8 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 export const POST: APIRoute = async ({ request }) => {
-  const appId = import.meta.env.CASHFREE_APP_ID;
-  const secretKey = import.meta.env.CASHFREE_SECRET_KEY;
+  const appId = import.meta.env.TEST_CASHFREE_APP_ID;
+  const secretKey = import.meta.env.TEST_CASHFREE_SECRET_KEY;
 
   if (!appId || !secretKey) {
     return new Response(JSON.stringify({ error: 'Payment not configured' }), { status: 500 });

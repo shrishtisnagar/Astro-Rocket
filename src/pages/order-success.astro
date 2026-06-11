@@ -10,8 +10,8 @@ let status: Status = 'error';
 let productUrl = '';
 
 if (orderId) {
-  const appId = import.meta.env.CASHFREE_APP_ID;
-  const secretKey = import.meta.env.CASHFREE_SECRET_KEY;
+  const appId = import.meta.env.TEST_CASHFREE_APP_ID;
+  const secretKey = import.meta.env.TEST_CASHFREE_SECRET_KEY;
   const isProd = import.meta.env.PUBLIC_CASHFREE_ENV === 'production';
   const baseUrl = isProd ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
 
