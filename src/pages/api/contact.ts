@@ -2,7 +2,6 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 import { z } from 'astro/zod';
-import { Resend } from 'resend';
 import siteConfig from '@/config/site.config';
 
 const contactSchema = z.object({
@@ -52,7 +51,7 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Send email via Resend
+    // Send email via Resend REST API
     const apiKey = import.meta.env.RESEND_API_KEY;
     if (!apiKey) {
       console.error('RESEND_API_KEY is not set');
@@ -62,8 +61,6 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const resend = new Resend(apiKey);
-
     const toEmail = siteConfig.email;
     const fromEmail = import.meta.env.RESEND_FROM_EMAIL || toEmail;
     const siteLabel = siteConfig.name;
@@ -72,23 +69,31 @@ export const POST: APIRoute = async ({ request }) => {
       ? `[${siteLabel}] ${result.data.subject}`
       : `[${siteLabel}] New contact from ${result.data.name}`;
 
-    const { error } = await resend.emails.send({
-      from: `Contact Form <${fromEmail}>`,
-      to: toEmail,
-      replyTo: result.data.email,
-      subject,
-      html: `
-        <p><strong>Name:</strong> ${result.data.name}</p>
-        <p><strong>Email:</strong> ${result.data.email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${result.data.message.replace(/\n/g, '<br>')}</p>
-      `,
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: `Contact Form <${fromEmail}>`,
+        to: [toEmail],
+        reply_to: result.data.email,
+        subject,
+        html: `
+          <p><strong>Name:</strong> ${result.data.name}</p>
+          <p><strong>Email:</strong> ${result.data.email}</p>
+          <p><strong>Message:</strong></p>
+          <p>${result.data.message.replace(/\n/g, '<br>')}</p>
+        `,
+      }),
     });
 
-    if (error) {
-      console.error('Resend error:', error);
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({})) as { message?: string };
+      console.error('Resend error:', errorData);
       return new Response(
-        JSON.stringify({ success: false, errors: { form: [error.message || 'Failed to send email'] } }),
+        JSON.stringify({ success: false, errors: { form: [errorData.message || 'Failed to send email'] } }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }

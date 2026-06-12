@@ -1,8 +1,7 @@
+export const prerender = false;
+
 import type { APIRoute } from 'astro';
 import { z } from 'astro/zod';
-import { Resend } from 'resend';
-
-export const prerender = false;
 
 const newsletterSchema = z.object({
   email: z.email('Please enter a valid email address'),
@@ -55,15 +54,21 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const resend = new Resend(apiKey);
-    const { error } = await resend.contacts.create({
-      audienceId,
-      email: result.data.email,
-      unsubscribed: false,
+    const res = await fetch(`https://api.resend.com/audiences/${audienceId}/contacts`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: result.data.email,
+        unsubscribed: false,
+      }),
     });
 
-    if (error) {
-      console.error('Resend newsletter error:', error);
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({})) as { message?: string };
+      console.error('Resend newsletter error:', errorData);
       return new Response(
         JSON.stringify({
           success: false,
