@@ -93,7 +93,10 @@
       "esbuild",
       "sharp",
       "workerd"
-    ]
+    ],
+    "overrides": {
+      "workerd": "1.20260610.1"
+    }
   },
   "engines": {
     "node": ">=22.12.0"
