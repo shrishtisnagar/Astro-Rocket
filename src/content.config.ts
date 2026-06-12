@@ -113,6 +113,7 @@ const products = defineCollection({
     image: z.string().optional(),
     productUrl: z.string().optional(),
     badge: z.string().optional(),
+    features: z.array(z.string()).optional(),
     order: z.number().default(99),
     draft: z.boolean().default(false),
   }),

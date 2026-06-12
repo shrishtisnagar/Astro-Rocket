@@ -8,8 +8,11 @@ price: 0
 originalPrice: 799
 image: /images/products/linkedin-reporting-tool.svg
 productUrl: https://shrishtisnagar.github.io/linkedin-dashboard/#
-features: Pre-built LinkedIn analytics dashboard, Track impressions, reach &
-  engagement, Monthly & weekly report templates, Easy-to-use spreadsheet format
+features:
+  - Pre-built LinkedIn analytics dashboard
+  - Track impressions, reach & engagement
+  - Monthly & weekly report templates
+  - Easy-to-use spreadsheet format
 order: 4
 draft: false
 ---

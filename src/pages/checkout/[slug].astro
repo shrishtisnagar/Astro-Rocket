@@ -90,6 +90,19 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
         <h1 class="checkout-title">{p.title}</h1>
         <p class="checkout-desc">{p.description}</p>
 
+        {p.features && p.features.length > 0 && (
+          <ul class="checkout-features">
+            {p.features.map((feature) => (
+              <li class="checkout-feature-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="checkout-feature-icon">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        )}
+
       </div>
 
       <!-- Right column -->
@@ -353,6 +366,29 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
     color: rgba(255, 255, 255, 0.52);
     line-height: 1.65;
     margin: 0;
+  }
+
+  .checkout-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .checkout-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.4;
+  }
+
+  .checkout-feature-icon {
+    color: oklch(75% 0.15 145);
+    flex-shrink: 0;
   }
 
 

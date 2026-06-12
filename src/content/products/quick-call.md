@@ -9,11 +9,11 @@ rating: 5
 image: /images/products/quick-call.svg
 productUrl: https://calendar.app.google/ef8C5hpsif4wF5FH9
 badge: Most Popular
-features: |-
-  30-minute open Q&A session, 
-  Marketing, positioning, or growth, 
-  No prep required, 
-  Actionable answers & next steps
+features:
+  - 30-minute open Q&A session
+  - Marketing, positioning, or growth
+  - No prep required
+  - Actionable answers & next steps
 order: 3
 draft: false
 ---
