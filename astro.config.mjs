@@ -1,4 +1,4 @@
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig, envField, sessionDrivers } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
@@ -41,6 +41,11 @@ export default defineConfig({
       PUBLIC_CASHFREE_ENV: envField.string({ context: 'client', access: 'public', optional: true, default: 'sandbox' }),
     },
   },
+
+  // Explicitly set a memory session driver to prevent @astrojs/cloudflare from
+  // auto-injecting the KV session driver (unstorage/drivers/cloudflare-kv-binding),
+  // which is a CJS module that fails with "require is not defined" in workerd.
+  session: sessionDrivers.memory(),
 
   image: {
     layout: 'constrained',
