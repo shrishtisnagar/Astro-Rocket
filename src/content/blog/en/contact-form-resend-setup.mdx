@@ -1,9 +1,9 @@
 ---
-title: "Contact Form Setup: Resend, Vercel, and GoDaddy Step by Step"
-description: "Astro Rocket's contact form is wired up but needs three things to actually deliver email: a Resend account, a verified domain, and one environment variable on Vercel."
+title: "Contact Form Setup: Resend, Cloudflare, and GoDaddy Step by Step"
+description: "Astro Rocket's contact form is wired up but needs three things to actually deliver email: a Resend account, a verified domain, and one environment variable on Cloudflare Pages."
 publishedAt: 2026-03-31
 author: "Hans Martens"
-tags: ["astro-rocket", "tutorial", "email", "vercel", "deployment"]
+tags: ["astro-rocket", "tutorial", "email", "cloudflare", "deployment"]
 featured: false
 locale: en
 image: "../../../assets/blog/contact-form-resend-setup.svg"
@@ -11,11 +11,11 @@ svgSlug: "contact-form-resend-setup"
 imageAlt: "A paper-plane send icon above the words 'send email' on a brand-coloured background"
 ---
 
-[Astro Rocket](https://astrorocket.dev) ships with a fully working contact form — validation, honeypot spam protection, error handling, the lot. The one thing it does not include is an email service account, because that belongs to you. Getting the form to actually deliver requires three external pieces: a [Resend](https://resend.com) account, a verified sending domain, and one environment variable on Vercel. Here is exactly how to connect them.
+[Astro Rocket](https://astrorocket.dev) ships with a fully working contact form — validation, honeypot spam protection, error handling, the lot. The one thing it does not include is an email service account, because that belongs to you. Getting the form to actually deliver requires three external pieces: a [Resend](https://resend.com) account, a verified sending domain, and one environment variable on Cloudflare Pages. Here is exactly how to connect them.
 
 **[Resend](https://resend.com)** is a developer-focused email delivery service. You send email through their API and they handle the infrastructure — deliverability, authentication, and sending reputation. It has a generous free tier and is what Astro Rocket uses under the hood.
 
-**[Vercel](https://vercel.com)** is the hosting platform this site runs on. It builds and deploys your Astro project on every push, and manages environment variables like API keys so they stay out of your source code.
+**[Cloudflare Pages](https://pages.cloudflare.com)** is the hosting platform this site runs on. It builds and deploys your Astro project on every push, and manages environment variables like API keys so they stay out of your source code.
 
 **[GoDaddy](https://godaddy.com)** is the domain registrar where `yourdomain.com` is registered. To send email from an address on your domain, you need to add a few DNS records there so Resend can prove to receiving mail servers that the emails are legitimate.
 
@@ -23,7 +23,7 @@ imageAlt: "A paper-plane send icon above the words 'send email' on a brand-colou
 
 - A Resend account (free tier is fine)
 - Access to your domain's DNS settings in GoDaddy
-- Access to your project's environment variables on Vercel
+- Access to your project's environment variables on Cloudflare Pages
 
 The form sends to your inbox from an address on your domain. The only moving part is convincing Resend that you own that domain.
 
@@ -59,9 +59,9 @@ Once all records are added, go back to Resend and click **Verify DNS Records**. 
 3. Permission: **Sending access** is sufficient
 4. Click **Add** and copy the key immediately — Resend only shows it once
 
-## Step 4 — Add the API key to Vercel
+## Step 4 — Add the API key to Cloudflare Pages
 
-1. In Vercel, open your project and go to **Settings → Environment Variables**
+1. In the Cloudflare dashboard, open your Pages project and go to **Settings → Environment variables**
 2. Add a new variable:
    - **Name:** `RESEND_API_KEY`
    - **Value:** the key you just copied
@@ -72,10 +72,10 @@ Once all records are added, go back to Resend and click **Verify DNS Records**. 
 
 Environment variable changes do not take effect on running deployments. Trigger a new deployment to pick up the key:
 
-1. In Vercel, go to **Deployments**
-2. Find your latest deployment, click the three-dot menu, and choose **Redeploy**
+1. In Cloudflare Pages, go to **Deployments**
+2. Find your latest deployment and click **Retry deployment**
 
-Alternatively, push any small change to your main branch — Vercel will build and deploy automatically.
+Alternatively, push any small change to your main branch — Cloudflare Pages will build and deploy automatically.
 
 ## Step 6 — Test it
 
@@ -85,7 +85,7 @@ If the form returns an error, the most common causes are:
 
 | Problem | Likely cause |
 |---------|-------------|
-| "API key not authorized" | Domain not verified in Resend yet, or the API key was added without saving the Vercel deployment |
+| "API key not authorized" | Domain not verified in Resend yet, or the API key was added without redeploying on Cloudflare Pages |
 | No email received | Check your spam folder; Resend's dashboard shows delivery status under **Emails** |
 | 500 error on submit | `RESEND_API_KEY` env variable is missing or the deployment has not been re-run since adding it |
 
