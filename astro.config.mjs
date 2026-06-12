@@ -12,9 +12,6 @@ export default defineConfig({
     platformProxy: {
       enabled: false,
     },
-    imageService: 'passthrough',
-    prerenderEnvironment: 'node',
-    sessionKVBindingName: false,
   }),
   site: process.env.SITE_URL || 'https://thescurve.in',
 
