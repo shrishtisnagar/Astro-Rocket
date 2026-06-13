@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/patch-wrangler.js",
-    "deploy": "wrangler versions upload",
+    "deploy": "wrangler versions upload --config dist/server/wrangler.json",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
