@@ -28,6 +28,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "deploy": "echo done",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
