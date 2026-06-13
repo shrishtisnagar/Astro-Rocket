@@ -11,6 +11,7 @@ delete config.images;
 
 writeFileSync(path, JSON.stringify(config, null, 2));
 console.log('patched dist/server/wrangler.json: removed kv_namespaces and images bindings');
+console.log('final wrangler config:', JSON.stringify(config, null, 2));
 
 // Delete the cached deploy config so Wrangler doesn't remember the SESSION
 // binding from a previous build and try to re-provision it.
