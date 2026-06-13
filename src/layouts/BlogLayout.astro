@@ -2,7 +2,7 @@
 import type { ImageMetadata } from 'astro';
 import siteConfig from '@/config/site.config';
 import BaseLayout from './BaseLayout.astro';
-import Header from '@/components/layout/Header.astro';
+import TopBar from '@/components/layout/TopBar.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
 import ArticleHero from '@/components/blog/ArticleHero.astro';
@@ -77,17 +77,9 @@ const blogPostingSchema = createBlogPostSchema({
   }}
   extraSchemas={[blogPostingSchema]}
 >
-  <Header
-    slot="header"
-    position="fixed"
-    shape="bar"
-    variant="solid"
-    size="lg"
-    showCta={false}
-    showScrollProgress
-  />
+  <TopBar slot="header" />
 
-  <div class="min-h-screen pt-16">
+  <div class="min-h-screen">
   <!-- Article Hero -->
   <ArticleHero
     title={title}

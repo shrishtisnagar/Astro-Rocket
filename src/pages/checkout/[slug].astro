@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import LandingLayout from '@/layouts/LandingLayout.astro';
-import { PUBLIC_WEB3FORMS_ACCESS_KEY, PUBLIC_CASHFREE_ENV } from 'astro:env/client';
+import { PUBLIC_WEB3FORMS_ACCESS_KEY } from 'astro:env/client';
 
 export async function getStaticPaths() {
   const products = await getCollection('products', ({ data }) => !data.draft);
@@ -21,12 +21,10 @@ function formatPrice(price: number | null | undefined): string {
 }
 
 const isVideoMeeting = p.typeIcon === 'video';
+const hasAppointment = isVideoMeeting && !!p.appointmentUrl;
 const isFree = p.price === 0;
 const web3formsKey = PUBLIC_WEB3FORMS_ACCESS_KEY || '';
 const productUrl = p.productUrl || '';
-const ctaLabel = isFree ? 'Get for Free' : isVideoMeeting ? 'Book Now' : 'Get Instant Access';
-const successLabel = isFree ? 'Download now' : isVideoMeeting ? 'Book your call' : 'Access your product';
-const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sandbox';
 ---
 
 <LandingLayout
@@ -45,7 +43,7 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
       </a>
     </div>
 
-    <div class="checkout-container">
+    <div class={`checkout-container${hasAppointment ? ' has-appointment' : ''}`}>
       <!-- Left column: product info -->
       <div class="checkout-info">
         <div class="checkout-image-wrap">
@@ -90,23 +88,52 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
         <h1 class="checkout-title">{p.title}</h1>
         <p class="checkout-desc">{p.description}</p>
 
-        {p.features && p.features.length > 0 && (
+        {p.features.length > 0 && (
           <ul class="checkout-features">
-            {p.features.map((feature) => (
+            {p.features.map((feat) => (
               <li class="checkout-feature-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="checkout-feature-icon">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                {feature}
+                <span class="checkout-check" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </span>
+                {feat}
               </li>
             ))}
           </ul>
         )}
-
       </div>
 
       <!-- Right column -->
-      <div class="checkout-card">
+      {hasAppointment ? (
+        <div class="appointment-col">
+          <div class="appointment-price-bar">
+            <div class="appointment-price-row">
+              <span class="appointment-price">{formatPrice(p.price)}</span>
+              {p.originalPrice != null && p.originalPrice !== p.price && (
+                <s class="appointment-original">{formatPrice(p.originalPrice)}</s>
+              )}
+              {p.originalPrice != null && p.price != null && p.originalPrice !== p.price && (
+                <span class="appointment-savings">
+                  {Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100)}% off
+                </span>
+              )}
+            </div>
+            <p class="appointment-hint">Pick a slot — you'll get a confirmation & Meet link by email.</p>
+          </div>
+          <div class="appointment-frame-wrap">
+            <iframe
+              src={p.appointmentUrl}
+              style="border:0"
+              width="100%"
+              height="600"
+              frameborder="0"
+              title={`Book ${p.title}`}
+            ></iframe>
+          </div>
+        </div>
+      ) : (
+        <div class="checkout-card">
           <div class="checkout-price-block">
             {p.price != null ? (
               <div class="checkout-price-row">
@@ -128,12 +155,8 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
           <div id="signup-wrap">
             <form
               id="signup-form"
-              data-product-url={productUrl}
+              data-checkout-url={productUrl}
               data-free={isFree ? 'true' : 'false'}
-              data-price={p.price ?? 0}
-              data-slug={entry.id}
-              data-product-title={p.title}
-              data-cashfree-mode={cashfreeMode}
             >
               <input type="hidden" name="access_key" value={web3formsKey} />
               <input type="hidden" name="subject" value={isFree ? `Free download: ${p.title}` : `New purchase intent: ${p.title}`} />
@@ -158,20 +181,10 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
                   autocomplete="email"
                   class="free-signup-input"
                 />
-                {!isFree && (
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone number (for payment)"
-                    required
-                    autocomplete="tel"
-                    class="free-signup-input"
-                  />
-                )}
               </div>
               <div id="signup-msg" class="free-signup-msg hidden"></div>
               <button type="submit" id="signup-btn" class="checkout-cta free-signup-btn">
-                {ctaLabel}
+                {isFree ? 'Get for Free' : 'Get Instant Access'}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="5" y1="12" x2="19" y2="12"/>
                   <polyline points="12 5 19 12 12 19"/>
@@ -179,9 +192,9 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
               </button>
             </form>
             <div id="signup-success" class="free-signup-success hidden">
-              <p class="free-signup-success-text">{isFree ? "You're in! Here's your download:" : "You're confirmed! Here's your next step:"}</p>
+              <p class="free-signup-success-text">You're in! Here's your download:</p>
               <a href={productUrl} target="_blank" rel="noopener noreferrer" class="checkout-cta">
-                {successLabel}
+                Download now
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <line x1="5" y1="12" x2="19" y2="12"/>
                   <polyline points="12 5 19 12 12 19"/>
@@ -215,6 +228,7 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
             </div>
           </div>
         </div>
+      )}
     </div>
   </div>
 </LandingLayout>
@@ -269,8 +283,13 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
     position: relative;
   }
 
+  .checkout-container.has-appointment {
+    grid-template-columns: 1fr 520px;
+  }
+
   @media (max-width: 900px) {
-    .checkout-container {
+    .checkout-container,
+    .checkout-container.has-booking {
       grid-template-columns: 1fr;
     }
   }
@@ -374,25 +393,92 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
+    gap: 0.6rem;
   }
 
   .checkout-feature-item {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.65rem;
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.72);
-    line-height: 1.4;
   }
 
-  .checkout-feature-icon {
-    color: oklch(75% 0.15 145);
+  .checkout-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background: oklch(23% 0.067 17 / 0.5);
+    color: oklch(81% 0.090 17);
     flex-shrink: 0;
   }
 
+  /* Appointment scheduling embed */
+  .appointment-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: sticky;
+    top: 5.5rem;
+  }
 
-  /* Purchase card */
+  .appointment-price-bar {
+    background: #0f0508;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 16px 16px 0 0;
+    padding: 1.1rem 1.4rem;
+    border-bottom: none;
+  }
+
+  .appointment-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .appointment-price {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+  }
+
+  .appointment-original {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.28);
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+
+  .appointment-savings {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: oklch(75% 0.15 145);
+    background: oklch(15% 0.05 145 / 0.35);
+    border: 1px solid oklch(75% 0.15 145 / 0.25);
+    padding: 0.15rem 0.55rem;
+    border-radius: 9999px;
+  }
+
+  .appointment-hint {
+    margin: 0.3rem 0 0;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.38);
+    line-height: 1.5;
+  }
+
+  .appointment-frame-wrap {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  /* Purchase card (digital products) */
   .checkout-card {
     background: #0f0508;
     border: 1px solid rgba(255, 255, 255, 0.10);
@@ -582,19 +668,6 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
 </style>
 
 <script>
-  declare const Cashfree: (opts: { mode: string }) => { checkout: (opts: { paymentSessionId: string }) => Promise<unknown> };
-
-  function loadCashfreeSDK(): Promise<void> {
-    return new Promise((resolve) => {
-      if (document.getElementById('cashfree-sdk')) return resolve();
-      const s = document.createElement('script');
-      s.id = 'cashfree-sdk';
-      s.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
-      s.onload = () => resolve();
-      document.head.appendChild(s);
-    });
-  }
-
   function initSignupForm() {
     const form = document.getElementById('signup-form') as HTMLFormElement | null;
     if (!form) return;
@@ -603,16 +676,8 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
     const msg = document.getElementById('signup-msg') as HTMLDivElement;
     const successPanel = document.getElementById('signup-success') as HTMLDivElement;
     const isFree = form.dataset.free === 'true';
-    const productUrl = form.dataset.productUrl || '';
+    const checkoutUrl = form.dataset.checkoutUrl!;
     const originalLabel = btn.textContent?.trim() || 'Submit';
-
-    function showError(text: string) {
-      msg.textContent = text;
-      msg.classList.add('error');
-      msg.classList.remove('hidden');
-      btn.disabled = false;
-      btn.textContent = originalLabel;
-    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -621,49 +686,35 @@ const cashfreeMode = PUBLIC_CASHFREE_ENV === 'production' ? 'production' : 'sand
       msg.classList.add('hidden');
       msg.classList.remove('error');
 
-      const formData = new FormData(form);
-
-      // Step 1: capture lead via Web3Forms
       try {
-        const w3res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
-        const w3data = await w3res.json();
-        if (!w3data.success) return showError(w3data.message || 'Something went wrong. Please try again.');
-      } catch {
-        return showError('Failed to submit. Please try again.');
-      }
-
-      // Step 2: free product — reveal link
-      if (isFree) {
-        form.classList.add('hidden');
-        successPanel.classList.remove('hidden');
-        return;
-      }
-
-      // Step 3: paid product — create Cashfree order
-      btn.textContent = 'Preparing payment…';
-      try {
-        const orderRes = await fetch('/api/create-order', {
+        const res = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.get('name'),
-            email: formData.get('email'),
-            phone: formData.get('phone'),
-            productTitle: form.dataset.productTitle,
-            price: Number(form.dataset.price),
-            slug: form.dataset.slug,
-          }),
+          body: new FormData(form),
         });
-        const orderData = await orderRes.json();
-        if (!orderRes.ok || !orderData.paymentSessionId) return showError(orderData.error || 'Could not initiate payment. Please try again.');
+        const data = await res.json();
 
-        // Step 4: open Cashfree checkout
-        await loadCashfreeSDK();
-        const cashfree = Cashfree({ mode: form.dataset.cashfreeMode || 'sandbox' });
-        await cashfree.checkout({ paymentSessionId: orderData.paymentSessionId });
-
+        if (data.success) {
+          if (isFree) {
+            form.classList.add('hidden');
+            successPanel.classList.remove('hidden');
+          } else {
+            window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+          }
+        } else {
+          msg.textContent = data.message || 'Something went wrong. Please try again.';
+          msg.classList.add('error');
+          msg.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = originalLabel;
+        }
       } catch {
-        showError('Payment could not be started. Please try again.');
+        msg.textContent = 'Failed to submit. Please try again.';
+        msg.classList.add('error');
+        msg.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = originalLabel;
       }
     });
   }

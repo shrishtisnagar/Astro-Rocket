@@ -28,7 +28,6 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "deploy": "echo done",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
@@ -42,8 +41,10 @@
   "dependencies": {
     "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/mdx": "5.0.0",
+    "@astrojs/netlify": "^7.0.2",
     "@astrojs/react": "5.0.0",
     "@astrojs/sitemap": "^3.7.1",
+    "@astrojs/vercel": "^10.0.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/manrope": "^5.2.8",

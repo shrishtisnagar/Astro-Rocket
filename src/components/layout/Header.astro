@@ -643,7 +643,7 @@ const buttonId = `${menuId}-button`;
     if (header.dataset.navMorphInit) return;
     header.dataset.navMorphInit = 'true';
 
-    header.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
+    header.querySelectorAll('a[href]').forEach((link) => {
       link.addEventListener('click', async (e) => {
         const href = link.getAttribute('href');
         if (

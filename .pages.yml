@@ -153,9 +153,19 @@ content:
         label: "Product / Delivery URL (Google Drive, YouTube, Topmate, etc.)"
         type: string
 
+      - name: appointmentUrl
+        label: "Google Calendar Scheduling URL (video meetings only — paste the src URL from your Google Calendar appointment schedule embed)"
+        type: string
+
       - name: badge
         label: "Badge Text (e.g. Most Popular, Free) — optional"
         type: string
+
+      - name: features
+        label: Feature List
+        type: list
+        item:
+          type: string
 
       - name: order
         label: Display Order (lower number = shown first)

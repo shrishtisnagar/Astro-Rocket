@@ -4,9 +4,15 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
+import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'static',
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: false,
+    },
+  }),
   site: process.env.SITE_URL || 'https://thescurve.in',
 
   build: {
@@ -27,7 +33,6 @@ export default defineConfig({
       PUBLIC_CONSENT_ENABLED: envField.boolean({ context: 'client', access: 'public', optional: true, default: false }),
       PUBLIC_PRIVACY_POLICY_URL: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
       PUBLIC_WEB3FORMS_ACCESS_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
-      PUBLIC_CASHFREE_ENV: envField.string({ context: 'client', access: 'public', optional: true, default: 'sandbox' }),
     },
   },
 
@@ -46,7 +51,12 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
+  security: {
+    checkOrigin: true,
+  },
+
   markdown: {
+    rehypePlugins: [],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,

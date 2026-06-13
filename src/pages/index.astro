@@ -18,29 +18,25 @@ import { url } from '@/lib/url';
 >
   <!-- Hero -->
   <Hero layout="split" size="xl" class="hero-dark-gradient" videoSpeed={0.825} videoBg={url("/videos/hero-bg.mp4")} style="background:#2C0300">
-    <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-300">Available for consulting &amp; projects</Badge>
-
     <h1 slot="title">
       <span class="text-foreground [-webkit-text-fill-color:currentColor]">I'm Shrishti,</span><br />
       <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] !text-2xl md:!text-3xl lg:!text-3xl !font-semibold !leading-snug">Marketer + Business Strategist</span>
     </h1>
 
     <p slot="description">
-      I solve messy marketing problems across systems, positioning, and growth.
+      I'm building a $10K/month business in public with Marketing, Systems, and Psychology - and teaching you how to do the same.
     </p>
 
     <Fragment slot="actions">
       <Button size="lg" href="https://calendly.com/shrishtisnagar/1-1-clarity-call-with-shrishti" target="_blank" rel="noopener noreferrer">
-        Book a call
+        Book a consultation
         <Icon name="arrow-right" size="sm" />
       </Button>
-      <a href="https://www.linkedin.com/in/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+      <a href="https://www.linkedin.com/in/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--icon" aria-label="LinkedIn">
         <Icon name="linkedin" size="md" />
-        LinkedIn
       </a>
-      <a href="https://x.com/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X (Twitter)">
+      <a href="https://x.com/shrishtisnagar" target="_blank" rel="noopener noreferrer" class="social-btn social-btn--icon" aria-label="X (Twitter)">
         <Icon name="x-twitter" size="md" />
-        Twitter
       </a>
     </Fragment>
 
@@ -70,6 +66,7 @@ import { url } from '@/lib/url';
   .social-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.4rem;
     padding: 0.6rem 1.1rem;
     border-radius: 0.5rem;
@@ -80,6 +77,11 @@ import { url } from '@/lib/url';
     color: oklch(90% 0.02 344);
     text-decoration: none;
     transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+  .social-btn--icon {
+    padding: 0.6rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
   .social-btn:hover {
     background: oklch(100% 0 0 / 0.12);

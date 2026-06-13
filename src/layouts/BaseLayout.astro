@@ -127,9 +127,11 @@ schemas.push(...extraSchemas);
       <slot name="footer" />
     </div>
 
+    <!-- Header sits outside page-content-wrap so position:fixed works without any containing-block interference -->
+    <slot name="header" />
+
     <!-- Main content scrolls over the footer -->
     <div class="page-content-wrap">
-      <slot name="header" />
       <main id="main-content" class="flex-1 relative">
         <slot />
         <div class="page-end-glow" aria-hidden="true"></div>
