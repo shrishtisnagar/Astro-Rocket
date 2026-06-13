@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "deploy": "echo done",
+    "deploy": "wrangler pages deploy dist --project-name astro-rocket",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
