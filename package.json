@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/patch-wrangler.js",
-    "deploy": "wrangler pages deploy dist/client --project-name $CF_PAGES_PROJECT_NAME",
+    "deploy": "wrangler pages deploy",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
