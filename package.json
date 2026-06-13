@@ -27,7 +27,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/setup-cloudflare-pages.js",
+    "build": "astro build && node scripts/patch-wrangler.js",
+    "deploy": "wrangler deploy --config dist/server/wrangler.json",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
