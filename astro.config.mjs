@@ -4,15 +4,9 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'static',
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: false,
-    },
-  }),
   site: process.env.SITE_URL || 'https://thescurve.in',
 
   build: {
