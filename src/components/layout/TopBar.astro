@@ -1,0 +1,57 @@
+---
+import Logo from '@/components/ui/marketing/Logo/Logo.astro';
+
+interface Props {
+  newsletterHref?: string;
+}
+
+const { newsletterHref = 'https://newsletter.thescurve.in/' } = Astro.props;
+---
+
+<div class="top-bar">
+  <a href="/" aria-label="Home" class="top-bar-logo">
+    <Logo size="lg" />
+  </a>
+  <a href={newsletterHref} target="_blank" rel="noopener noreferrer" class="top-bar-link">
+    Read the Newsletter
+  </a>
+</div>
+
+<style>
+  .top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    pointer-events: none;
+  }
+
+  .top-bar-logo,
+  .top-bar-link {
+    pointer-events: auto;
+  }
+
+  .top-bar-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .top-bar-link {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: opacity 0.18s ease;
+  }
+
+  .top-bar-link:hover {
+    opacity: 0.65;
+  }
+</style>

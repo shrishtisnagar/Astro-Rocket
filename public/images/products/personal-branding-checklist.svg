@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" fill="none">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="600" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#070d1a"/>
+      <stop offset="100%" stop-color="#0d1428"/>
+    </linearGradient>
+    <radialGradient id="glow2" cx="50%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#1e3a6e" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#070d1a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bg2)"/>
+  <rect width="600" height="340" fill="url(#glow2)"/>
+  <line x1="0" y1="85" x2="600" y2="85" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="170" x2="600" y2="170" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="255" x2="600" y2="255" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="150" y1="0" x2="150" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="450" y1="0" x2="450" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <!-- file icon with checklist -->
+  <circle cx="300" cy="155" r="52" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+  <!-- document -->
+  <rect x="272" y="128" width="44" height="56" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.5"/>
+  <path d="M284 128 L284 120 L308 120 L316 128" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+  <!-- check lines -->
+  <line x1="282" y1="147" x2="306" y2="147" stroke="rgba(255,255,255,0.30)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="282" y1="157" x2="306" y2="157" stroke="rgba(255,255,255,0.30)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="282" y1="167" x2="299" y2="167" stroke="rgba(255,255,255,0.30)" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- checkmark circle -->
+  <circle cx="316" cy="175" r="12" fill="#1d3a6e" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+  <path d="M311 175 L314 178 L321 171" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="300" y="232" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="500" fill="rgba(255,255,255,0.30)" letter-spacing="0.08em">DIGITAL PRODUCT</text>
+</svg>

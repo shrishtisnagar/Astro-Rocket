@@ -1,8 +1,45 @@
 media:
-  input: public/images/projects
-  output: /images/projects
+  input: public/images
+  output: /images
 
 content:
+  - name: testimonials
+    label: Testimonials
+    type: collection
+    path: src/content/testimonials
+    format: yaml-frontmatter
+    view:
+      fields: [author, title, row]
+    fields:
+      - name: quote
+        label: Quote
+        type: string
+        required: true
+
+      - name: author
+        label: Name
+        type: string
+        required: true
+
+      - name: title
+        label: Title / Company
+        type: string
+
+      - name: avatar
+        label: Profile Photo
+        type: image
+
+      - name: row
+        label: Row (1 = top, 2 = bottom)
+        type: number
+        required: true
+        default: 1
+
+      - name: order
+        label: Order within row (1 = first)
+        type: number
+        default: 99
+
   - name: projects
     label: Case Studies
     type: collection
@@ -63,3 +100,69 @@ content:
       - name: body
         label: Case Study Content (optional — if filled, clicking the card opens this page instead of the external link)
         type: rich-text
+
+  - name: products
+    label: Resources & Products
+    type: collection
+    path: src/content/products
+    format: yaml-frontmatter
+    view:
+      fields: [title, type, price, draft]
+    fields:
+      - name: title
+        label: Product Title
+        type: string
+        required: true
+
+      - name: type
+        label: Type Label (e.g. "Video Meeting · 60 mins" or "Digital Product")
+        type: string
+        required: true
+
+      - name: typeIcon
+        label: Type Icon
+        type: select
+        required: true
+        options:
+          values:
+            - { label: "Video Meeting", value: video }
+            - { label: "Digital Product / File", value: file }
+
+      - name: description
+        label: Description
+        type: string
+        required: true
+
+      - name: price
+        label: "Price (₹) — enter 0 for Free, leave blank for Contact"
+        type: number
+
+      - name: originalPrice
+        label: "Original / Crossed-out Price (₹)"
+        type: number
+
+      - name: rating
+        label: Star Rating (1–5, optional)
+        type: number
+
+      - name: image
+        label: Product Image
+        type: image
+
+      - name: productUrl
+        label: "Product / Delivery URL (Google Drive, YouTube, Topmate, etc.)"
+        type: string
+
+      - name: badge
+        label: "Badge Text (e.g. Most Popular, Free) — optional"
+        type: string
+
+      - name: order
+        label: Display Order (lower number = shown first)
+        type: number
+        default: 99
+
+      - name: draft
+        label: Hide from site (draft mode)
+        type: boolean
+        default: false

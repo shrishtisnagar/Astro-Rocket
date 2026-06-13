@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" fill="none">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="600" y2="340" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#080f08"/>
+      <stop offset="100%" stop-color="#0e1a0e"/>
+    </linearGradient>
+    <radialGradient id="glow3" cx="50%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#14532d" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#080f08" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="340" fill="url(#bg3)"/>
+  <rect width="600" height="340" fill="url(#glow3)"/>
+  <line x1="0" y1="85" x2="600" y2="85" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="170" x2="600" y2="170" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="0" y1="255" x2="600" y2="255" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="150" y1="0" x2="150" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <line x1="450" y1="0" x2="450" y2="340" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  <!-- speech bubble / quick call icon -->
+  <circle cx="300" cy="155" r="52" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.10)" stroke-width="1.5"/>
+  <!-- lightning bolt -->
+  <path d="M305 127 L287 160 L299 160 L295 183 L313 150 L301 150 Z" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="300" y="232" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="500" fill="rgba(255,255,255,0.30)" letter-spacing="0.08em">VIDEO MEETING · 30 MINS</text>
+</svg>

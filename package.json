@@ -27,7 +27,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/patch-wrangler.js",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
@@ -39,11 +39,10 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
     "@astrojs/mdx": "5.0.0",
-    "@astrojs/netlify": "^7.0.2",
     "@astrojs/react": "5.0.0",
     "@astrojs/sitemap": "^3.7.1",
-    "@astrojs/vercel": "^10.0.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/manrope": "^5.2.8",
@@ -51,7 +50,7 @@
     "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/simple-icons": "^1.2.74",
     "@iconify/react": "^6.0.2",
-    "astro": "6.0.0",
+    "astro": "6.4.6",
     "astro-icon": "^1.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -84,12 +83,15 @@
     "typescript": "^5.7.0",
     "typescript-eslint": "^8.18.0",
     "vitest": "^3.2.0",
+    "wrangler": "^4.100.0",
     "zod": "^4.0.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@parcel/watcher",
       "esbuild",
-      "sharp"
+      "sharp",
+      "workerd"
     ]
   },
   "engines": {
