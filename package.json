@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/patch-wrangler.js",
-    "deploy": "wrangler pages deploy",
+    "deploy": "echo 'Cloudflare Pages deploys from dist/client automatically'",
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
