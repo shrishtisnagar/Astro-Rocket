@@ -1,8 +1,3 @@
 name = "astro-rocket"
-main = "dist/server/entry.mjs"
 compatibility_date = "2026-01-31"
 compatibility_flags = ["nodejs_compat"]
-
-[assets]
-binding = "ASSETS"
-directory = "dist/client"
